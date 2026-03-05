@@ -7,7 +7,7 @@ services:
     container_name: pym_node
     restart: unless-stopped
     ports:
-      - 5000:5000
+      - "5000:5000"
     depends_on:
       - postgres
     networks:
@@ -25,8 +25,8 @@ services:
   container_name: pym_web
   restart: always
   ports:
-    - 80:80
-    - 443:443
+    - "80:80"
+    - "443:443"
   volumes:
     - ./nginx/frontend.conf:/etc/nginx/frontend.conf
     # Montar toda la estructura de Let's Encrypt
@@ -50,7 +50,7 @@ services:
       - POSTGRES_PASSWORD=fzZf9DdAZi
       - TZ=America/La_Paz
     ports:
-      - 5555:5432
+      - "5555:5432"
     volumes:
       - ./schemas:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -65,4 +65,5 @@ volumes:
 networks:
   pym:
     driver: bridge
+
 
