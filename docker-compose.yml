@@ -30,7 +30,8 @@ services:
       - "443:443"    # Corregido: con comillas
     volumes:
       - ./nginx/frontend.conf:/etc/nginx/frontend.conf
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - ./ssl/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     depends_on:
