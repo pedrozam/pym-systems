@@ -19,26 +19,29 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
   nginx:
-    build:
-      context: .
-      dockerfile: nginx.dockerfile
-    container_name: pym_web
-    restart: always
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/frontend.conf:/etc/nginx/frontend.conf
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-    depends_on:
-      - app
-      - postgres
-    networks:
-      - pym
-    environment:
-      - TZ=America/La_Paz
+  build:
+    context: .
+    dockerfile: nginx.dockerfile
+  container_name: pym_web
+  restart: always
+  ports:
+    - 80:80
+    - 443:443
+  volumes:
+    - ./nginx/frontend.conf:/etc/nginx/frontend.conf
+    # Montar toda la estructura de Let's Encrypt
+    - /etc/letsencrypt:/etc/letsencrypt:ro
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+  depends_on:
+    - app
+    - postgres
+  networks:
+    - pym
+  environment:
+    - TZ=America/La_Paz
   postgres:
-    image: postgres:15.1
+    image: postgres:15.5
     container_name: pym_db
     restart: always
     environment:
