@@ -2,18 +2,20 @@ FROM node:20-bullseye as builder
 
 WORKDIR /app
 
-# 1. Copiar solo archivos de configuración
+# Capa 1: Copiar solo archivos de configuración (cambian poco)
 COPY ./app-pym/package*.json ./
 COPY ./app-pym/quasar.config.js ./
-COPY ./app-pym/quasar.extensions.json ./
+COPY ./app-pym/index.html ./
 
-# 2. Instalar dependencias (aprovecha caché si no cambian)
+# Capa 2: Instalar dependencias (cacheable)
 RUN npm install
 
-# 3. Copiar el código fuente
-COPY ./app-pym .
+# Capa 3: Copiar código fuente (cambia frecuentemente)
+COPY ./app-pym/src ./src/
+COPY ./app-pym/public ./public/
 
-# 4. Construir
+
+# Capa 4: Construir
 RUN npm run build --prod
 
 FROM nginx:alpine
