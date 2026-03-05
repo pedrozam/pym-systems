@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="format-detection" content="telephone=no">
+    <title>Notificación SINNA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!--[if mso]>
+    <style>
+        .es-button {
+            mso-style-priority: 100 !important;
+            text-decoration: none !important;
+        }
+    </style>
+    <![endif]-->
+    
+    <style type="text/css">
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            margin: 0;
+            padding: 40px 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        
+        .email-container {
+            max-width: 98%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Encabezado con logo a la izquierda */
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+            padding: 25px 40px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            margin-right: 25px;
+            flex-shrink: 0;
+        }
+        
+        .logo-banner {
+            max-width: 100px;
+            height: auto;
+            display: block;
+        }
+        
+        .header-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 3px;
+        }
+        
+        .acronym {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
+        }
+        
+        /* Contenido principal con fondo sutil */
+        .content {
+            padding: 35px 40px;
+            position: relative;
+            background: #ffffff;
+        }
+        
+        .content-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f1f8e9" width="100" height="100"/><path fill="%23e8f5e9" d="M0 0h50v50H0z"/><path fill="%23c8e6c9" d="M50 50h50v50H50z"/></svg>');
+            background-size: 300px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .message-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.15);
+            border: 1px solid #e8f5e9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .message-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4CAF50, #66BB6A);
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .message-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        .message-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        
+        .message-body {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #455A64;
+            background: #f9fdf9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #C8E6C9;
+        }
+        
+        /* Botón con diseño verde */
+        .button-container {
+            text-align: center;
+            margin: 35px 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(33, 150, 243, 0.5);
+        }
+        
+        /* Pie de página mejorado */
+        .footer {
+            background: linear-gradient(135deg, #4cc452 0%, #9ce09e 100%);
+            padding: 35px 40px;
+            color: white;
+            position: relative;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .contact-info {
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-info i {
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .contact-link {
+            color: #C8E6C9;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .signature {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+        
+        .signature p {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Elementos decorativos */
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .decoration-1 {
+            background: #4CAF50;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+        
+        .decoration-2 {
+            background: #66BB6A;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .email-container {
+                max-width: 95%;
+            }
+            
+            .header, .content, .footer {
+                padding: 25px 30px;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .header-content {
+                min-width: auto;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .message-title {
+                font-size: 18px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .message-card {
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 15px;
+            }
+            
+            .header, .content, .footer {
+                padding: 20px;
+            }
+            
+            .message-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .message-icon {
+                margin-right: 0;
+                margin-bottom: 12px;
+            }
+            
+            .logo-banner {
+                max-width: 80px;
+            }
+        }
+        
+        /* Estilos específicos para clientes de email */
+        @media only screen and (max-width:600px) {
+            .email-container {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            .header, .content, .footer {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+        }
+        
+        /* Compatibilidad Outlook */
+        .es-button {
+            mso-style-priority: 100 !important;
+            text-decoration: none !important;
+        }
+    </style>
+</head>
+<body style="width:100%;font-family:'Poppins', Arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
+    <div class="email-container" lang="es" style="background-color:#FFFFFF">
+        <!-- Encabezado con logo a la izquierda -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://desarrollo.sinna.justicia.gob.bo/backend/public/comun/modulos/fondo_modipi.png" alt="Logo MODIPI" class="logo-banner">
+            </div>
+            <div class="header-content">
+                <h1>{{titulo}}</h1>
+                <p>SISTEMA DE INFORMACIÓN DE NIÑAS, NIÑOS Y ADOLESCENTES</p>
+                <p class="acronym">SINNA</p>
+            </div>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="content">
+            <!-- Fondo de contenido -->
+            <div class="content-background"></div>
+
+            <div class="message-card">
+                <div class="message-header">
+                    <div class="message-icon">
+                        
+                    </div>
+                    <h2 class="message-title">{{subTitulo}}</h2>
+                </div>
+                <div class="message-body">
+                    <p>{{mensaje}}</p>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <a href="[[direccionUrl]]" class="btn" target="_blank">[[nombreBoton]]</a>
+            </div>
+        </div>
+        
+        <!-- Pie de página -->
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Contacto SINNA</h3>
+                    <div class="contact-info">
+                        <i>📞</i> Teléfono: <strong> 2-2158900</strong>
+                    </div>
+                    <div class="contact-info">
+                        <i>📱</i> WhatsApp: 
+                        <a href="https://api.whatsapp.com/send?phone=71211126&text=Hola,%20tengo%20consultas%20sobre%20el%20sistema%20SINNA." 
+                           class="contact-link" target="_blank">
+                            <strong> +591 - 71211126</strong>
+                        </a>
+                    </div>
+                    <div class="contact-info">
+                        <i>✉️</i> Email: 
+                        <a href="mailto:sinna-soporte@justicia.gob.bo" class="contact-link">
+                            sinna-soporte@justicia.gob.bo
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Horario de Atención</h3>
+                    <div class="contact-info">
+                        <i>🕒</i> Lunes a Viernes: 8:30 - 16:30
+                    </div>
+                    <div class="contact-info">
+                        <a href="https://www.google.com/maps/place/Ministerio+de+Justicia+y+Transparencia+Institucional/data=!4m2!3m1!1s0x0:0x6119e2b02494ee3c?sa=X&ved=1t:2428&ictx=111">
+                            <i>🏢</i> Dirección: Avenida 16 de Julio, El Prado Nº 1769, en La Paz. 
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="signature">
+                <p>Gracias,</p>
+                <p>{{entidad}}</p>
+            </div>
+            
+            <div class="copyright">
+                <p>Copyright © 2025 Ministerio de Justicia y Transparencia Institucional</p>
+                <p>SISTEMA DE INFORMACIÓN DE NIÑAS, NIÑOS Y ADOLESCENTES - SINNA</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

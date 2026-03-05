@@ -1,0 +1,293 @@
+const multer = require('multer');
+const fs = require('fs-extra');
+const path = require('path');
+
+// Mapeo de MIME types a extensiones seguras
+const mimeToExt = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png',
+  'image/gif': '.gif',
+  'application/pdf': '.pdf',
+  'application/msword': '.doc',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx'
+};
+
+function getSafeExtension(mimetype) {
+  return mimeToExt[mimetype] || '.bin';
+}
+
+// Configuración unificada de validación por campo
+const fieldValidations = {
+  
+  // Archivos del registro de usuarios
+  'url_contrato_pdf': {
+    mimes: ['application/pdf'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Contrato PDF',
+    folder: 'comun/usuarios/contratos'
+  },
+  'url_foto_ci': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Foto cédula de identidad',
+    folder: 'comun/usuarios/ci'
+  },
+  'url_foto_memo': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Foto memo',
+    folder: 'comun/usuarios/memo'
+  },
+  'url_foto_ddjj': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Foto declaración jurada',
+    folder: 'comun/usuarios/ddjj'
+  },
+
+  //Archivos MID
+  'url_foto_extravio': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Foto extravío',
+    folder: 'comun/mid/extraviados'
+  },
+
+  //Archivos MODIPI
+  'url_acta_subconsejo_aprobacion': {
+    mimes: ['application/pdf', 'image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Acta subconsejo aprobación',
+    folder: 'modipi'
+  },
+  'url_doc_envio_formal': {
+    mimes: ['application/pdf', 'image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Documento envío formal',
+    folder: 'modipi/notas_planes'
+  },
+  
+  // Archivos del formulario de viajes
+  'url_ci_padre': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Cédula de identidad del padre',
+    folder: 'mid_aut_viajes/padres'
+  },
+  'url_ci_madre': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Cédula de identidad de la madre',
+    folder: 'mid_aut_viajes/madres'
+  },
+  'url_ci_tutor': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Cédula de identidad del tutor',
+    folder: 'mid_aut_viajes/tutores'
+  },
+  'url_ci_persona': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Cédula de identidad de la persona',
+    folder: 'mid_aut_viajes/personas'
+  },
+
+  //Archivos del MOSPA
+  'url_foto_adolescente': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Foto del adolescente',
+    folder: 'mospa/ingresos'
+  },
+
+  //Archivos para el componente de flujos
+  'url_imagen_flujo': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Imagen de flujo',
+    folder: 'comun/flujos'
+  },
+
+  //Archivos MODEFA
+  'url_foto_modefa': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Foto MODEFA',
+    folder: 'modefa/nna'
+  },
+  
+  // Campos genéricos (para uso general)
+  'documento': {
+    mimes: ['application/pdf', 'image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Documento general',
+    folder: 'documentos'
+  },
+  'imagen': {
+    mimes: ['image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Imagen general',
+    folder: 'imagenes'
+  },
+
+  //documentos de autorizaciones laborales
+  'doc_valoracion_medica': {
+    mimes: ['application/pdf'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Valoración médica de la autorización laboral',
+    folder: 'aut_laboral/valoraciones_medicas'
+  },
+  'doc_valoracion_socio_economica': {
+    mimes: ['application/pdf'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Valoración socio económica de la autorización laboral',
+    folder: 'aut_laboral/valoraciones_socio_economicas'
+  },
+  'doc_inpeccion_ocular': {
+    mimes: ['application/pdf'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Inspección ocular de la autorización laboral',
+    folder: 'aut_laboral/inspeccion_ocular'
+  },
+  'doc_actividad_prohibida': {
+    mimes: ['application/pdf'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Actividad prohibida de la autorización laboral',
+    folder: 'aut_laboral/actividad_prohibida'
+  },
+  'doc_actividad_derechos': {
+    mimes: ['application/pdf'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Actividad derechos de la autorización laboral',
+    folder: 'aut_laboral/actividad_derechos'
+  },
+  'adjunto': {
+    mimes: ['application/pdf', 'image/jpeg', 'image/png'],
+    maxSize: 5 * 1024 * 1024,
+    description: 'Adjuntos de la autorización laboral',
+    folder: 'aut_laboral/adjuntos'
+  },
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    let folder = 'documentos'; // Folder por defecto
+    
+    // 1. Prioridad: folder específico por fieldname
+    const validation = fieldValidations[file.fieldname];
+    if (validation && validation.folder) {
+      folder = validation.folder;
+    }
+    
+    // 2. Prioridad: folder desde body (si se especifica)
+    if (req.body.folder && req.body.folder.trim() !== '') {
+      folder = req.body.folder;
+    }
+    
+    
+    
+    const destFolder = path.join(__dirname, '..', 'public', folder);
+    fs.ensureDirSync(destFolder);
+    cb(null, destFolder);
+  },
+  filename: (req, file, cb) => {
+    // Sanitizar nombre y forzar extensión segura
+    const nameWithoutExt = path.basename(file.originalname, path.extname(file.originalname));
+    const sanitizedName = nameWithoutExt.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const safeExtension = getSafeExtension(file.mimetype);
+    const filename = `${Date.now()}-${sanitizedName}${safeExtension}`;
+    cb(null, filename);
+  }
+});
+
+// Función auxiliar para validación de archivos - CORREGIDA
+function validateFile(file, validation, req, cb) { // ← AÑADIDO req como parámetro
+  // Validar MIME type
+  if (!validation.mimes.includes(file.mimetype)) {
+    const allowedTypes = validation.mimes.map(mime => {
+      if (mime.startsWith('image/')) return mime.split('/')[1].toUpperCase();
+      if (mime.startsWith('application/')) {
+        if (mime.includes('pdf')) return 'PDF';
+        if (mime.includes('msword')) return 'DOC';
+        if (mime.includes('openxmlformats')) return 'DOCX';
+      }
+      return mime;
+    }).join(', ');
+    
+    return cb(new Error(`Tipo de archivo no permitido para ${validation.description}. Tipos válidos: ${allowedTypes}`), false);
+  }
+
+  // Validar tamaño (usando content-length como aproximación)
+  if (req && req.headers['content-length'] && parseInt(req.headers['content-length']) > validation.maxSize) {
+    return cb(new Error(`Archivo demasiado grande para ${validation.description}. Tamaño máximo: ${validation.maxSize / 1024 / 1024}MB`), false);
+  }
+
+  cb(null, true);
+}
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5 // Límite global de 5MB
+  },
+  fileFilter: (req, file, cb) => {
+    const validation = fieldValidations[file.fieldname];
+    
+    // Si no hay validación específica, usar validación por defecto según el tipo
+    if (!validation) {
+      const defaultValidation = file.fieldname.includes('documento') 
+        ? fieldValidations.documento 
+        : fieldValidations.imagen;
+      
+      return validateFile(file, defaultValidation, req, cb); // ← PASA req
+    }
+    
+    validateFile(file, validation, req, cb); // ← PASA req
+  }
+});
+
+// Manejo de errores mejorado
+upload.errorHandler = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    switch (err.code) {
+      case 'LIMIT_FILE_SIZE':
+        return res.status(400).json({ 
+          success: false,
+          error: 'El archivo es demasiado grande. Tamaño máximo: 5MB' 
+        });
+      case 'LIMIT_UNEXPECTED_FILE':
+        return res.status(400).json({ 
+          success: false,
+          error: 'Campo de archivo no permitido o inesperado' 
+        });
+      case 'LIMIT_PART_COUNT':
+        return res.status(400).json({ 
+          success: false,
+          error: 'Demasiadas partes en el formulario' 
+        });
+      case 'LIMIT_FIELD_KEY':
+        return res.status(400).json({ 
+          success: false,
+          error: 'Nombre de campo demasiado largo' 
+        });
+      default:
+        return res.status(400).json({ 
+          success: false,
+          error: `Error al subir archivo: ${err.message}` 
+        });
+    }
+  } else if (err) {
+    return res.status(400).json({ 
+      success: false,
+      error: err.message 
+    });
+  }
+  next();
+};
+
+// Exportar también las validaciones por si se necesitan externamente
+upload.fieldValidations = fieldValidations;
+upload.getSafeExtension = getSafeExtension;
+
+module.exports = upload;

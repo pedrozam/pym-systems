@@ -1,0 +1,24 @@
+backend-pym/pass.js
+
+# Ignore node_modules directory del APP
+/app-pym/node_modules
+/app-pym/.DS_Store
+/app-pym/.thumbs.db
+
+# Quasar core related directories
+/app-pym/.quasar
+/app-pym/.vscode
+/app-pym/dist
+/app-pym/quasar.config.*.temporary.compiled*
+
+# Backend node_modules y otros
+/backend-pym/node_modules
+
+/backend-pym/uploads
+
+/backend-pym/src/infraestructure/config/config.js
+
+/backend-pym/package-lock.json
+/backend-pym/*.env
+/backend-pym/.env
+/backend-pym/.vscode

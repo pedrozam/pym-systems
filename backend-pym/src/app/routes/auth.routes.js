@@ -1,0 +1,203 @@
+const jwt = require('jsonwebtoken');
+const express = require('express');
+const passport = require('passport');
+const router = express.Router();
+const { 
+    getMe,
+} = require ('../controllers/auth.controller')
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Auth:
+ *          type: object
+ *          properties:
+ *              ci_usuario:
+ *                  type: string
+ *                  description: CI del usuario
+ *              password:
+ *                  type: string
+ *                  description: contraseña del usuario
+ *          required:
+ *              - ci_usuario
+ *              - password
+ *          example:
+ *              ci_usuario: 888999
+ *              password: admin123
+ */
+/**
+ * @swagger
+ * /api/auth/login:
+ *  post:
+ *      summary: Autenticación de usuario local
+ *      tags: [auth]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Auth'
+ *      responses:
+ *          200:
+ *              description: Peticion Exitosa
+ * 
+ */
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) {
+            return res.status(401).json({
+                mensaje: "Credenciales incorrectas. No se encontró el usuario, revise e intente nuevamente.",
+                cod: 401
+            });
+        }
+
+        if(user.estado_wf!=='ACTIVO'){
+            return res.status(401).json({
+                mensaje: "El usuario no esta ACTIVADO, estado actual: "+user.estado_wf,
+                cod: 401
+            });
+        }
+
+        
+
+        const payload = {
+            sub: user.id_usuario,
+            ci: user.ci_usuario
+        };
+        //aca configurar el tiempo del token
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        res.status(200).json({
+            datoAdicional: {
+                user,
+                token
+            },
+            mensaje: "Bienvenido al sistema SINNA",
+            cod: 200
+        });
+    })(req, res, next);
+});
+
+
+router.post('/loginPublic', (req, res, next) => {
+    req.sub=3;
+    req.ci='44307';
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        /*if (!user) {
+            return res.status(401).json({
+                mensaje: "Credenciales incorrectas",
+                cod: 401
+            });
+        }*/
+        const payload = {
+            sub: 3,
+            ci: '44307'
+        };
+        //aca configurar el tiempo del token
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+        res.status(200).json({
+            datoAdicional: {
+                user,
+                token
+            },
+            mensaje: "Bienvenido al sistema SINNA, Pre registro de autorizaciones de viaje.",
+            cod: 200
+        });
+    })(req, res, next);
+});
+
+
+router.post('/loginPublicUsr', (req, res, next) => {
+    req.sub=2;
+    req.ci='44300';
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        /*if (!user) {
+            return res.status(401).json({
+                mensaje: "Credenciales incorrectas",
+                cod: 401
+            });
+        }*/
+        const payload = {
+            sub: 2,
+            ci: '44300'
+        };
+        //aca configurar el tiempo del token
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+        res.status(200).json({
+            datoAdicional: {
+                user,
+                token
+            },
+            mensaje: "Bienvenido al sistema SINNA, Pre registro de usuarios.",
+            cod: 200
+        });
+    })(req, res, next);
+});
+
+
+
+
+/**
+ * @swagger
+ * /api/auth/me:
+ *  get:
+ *      summary: Obtiene los datos del usuario mediante el token
+ *      tags: [auth]
+ *      responses:
+ *          200:
+ *              description: Peticion Exitosa
+ * 
+ */
+router.get('/me', 
+    passport.authenticate('jwt', {session:false}),
+    getMe
+);
+
+router.post('/login-anonimo', (req, res, next) => {
+    req.body.ci_usuario='44307';
+    req.body.password='admin123';
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(401).json({
+                mensaje: "Credenciales incorrectas",
+                cod: 401
+            });
+        }
+        const payload = {
+            sub: user.id_usuario,
+            ci: user.ci_usuario
+        };
+        //aca configurar el tiempo del token
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        res.status(200).json({
+            datoAdicional: {
+                user,
+                token
+            },
+            mensaje: "Bienvenido al sistema SINNA",
+            cod: 200
+        });
+    })(req, res, next);
+});
+
+module.exports = router;
+
+
+
+
