@@ -1,50 +1,19 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <div class="bg-amber-200 p-2.5">
-      Hola esto es tailwind
-      <svg width="28" height="28">
-        <use xlink:href="/src/assets/svg/sprite.svg#x"/>
-      </svg>
-
-    </div>
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="bg-white dark:bg-gray-900">
+    <PageContainer>
+      <HeroSection :background-image="backgroundImage" />
+      <ServicesSection :background="backgroundImage"/>
+      <ProjectsSection />
+      <AboutSection />
+    </PageContainer>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
-
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
-
-const meta = ref<Meta>({
-  totalCount: 1200
-});
+import PageContainer from 'components/layout/PageContainer.vue'
+import HeroSection from 'components/home/HeroSection.vue'
+import ServicesSection from 'components/home/ServicesSection.vue'
+import ProjectsSection from 'components/home/ProjectsSection.vue'
+import AboutSection from 'components/home/AboutSection.vue'
+import backgroundImage from '/src/assets/imagenes/bg_inicial.png'
 </script>
