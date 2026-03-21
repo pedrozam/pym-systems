@@ -1,5 +1,7 @@
 <template>
-  <div class="digital-laptop-bg">
+  <div class="digital-laptop-bg" @mousemove="updateMouse">
+    <div class="mouse-spotlight" :style="{ left: mouseX + 'px', top: mouseY + 'px' }"></div>
+
     <div v-if="!logoInToolbar" class="loading-dots">
       <span></span><span></span><span></span><span></span><span></span>
     </div>
@@ -10,10 +12,13 @@
       <q-layout view="hHh lpR fFf">
         <q-header elevated class="bg-transparent">
           <q-toolbar class="custom-toolbar">
-            <q-toolbar-title> </q-toolbar-title>
+            <q-toolbar-title>
+              <img src="/favicon.ico" alt="App logo"
+                :class="logoInToolbar ? 'toolbar-logo favicon-rotate' : 'center-logo'" />
+            </q-toolbar-title>
 
-            <img src="/favicon.ico" alt="App logo"
-              :class="logoInToolbar ? 'toolbar-logo favicon-rotate' : 'center-logo'" />
+            <q-btn icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
+
           </q-toolbar>
         </q-header>
 
@@ -22,16 +27,28 @@
         </q-page-container>
       </q-layout>
     </div>
+
+    <q-dialog v-model="showLogin" class="flex flex-center">
+      <LoginForm />
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-
+import LoginForm from '../components/LoginForm.vue'
 
 const $q = useQuasar()
 const logoInToolbar = ref(false)
+const mouseX = ref(0)
+const mouseY = ref(0)
+const showLogin = ref(false)
+
+function updateMouse(event) {
+  mouseX.value = event.clientX
+  mouseY.value = event.clientY
+}
 
 onMounted(() => {
   $q.dark.set(false)

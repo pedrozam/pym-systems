@@ -107,6 +107,17 @@
 .loading-dots span:nth-child(4) { animation-delay: 0.16s; }
 .loading-dots span:nth-child(5) { animation-delay: 0.32s; }
 
+.mouse-spotlight {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-green-700) 0%, transparent 20%, var(--color-blue-400) 50%, transparent 90%);
+  pointer-events: none;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+}
+
 .custom-toolbar {
   height: 84px;
 }
@@ -122,8 +133,8 @@
 }
 
 .toolbar-logo {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   transition: all 1s ease;
 }
 
@@ -134,5 +145,28 @@
 @keyframes logo-rotate {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.border-neon {
+  border: 1px solid #05d7ff;
+  box-shadow: 0 0 5px #05d7ff, 0 0 10px #05d7ff;
+}
+
+/* Estilos para inputs en modo oscuro */
+.q-field__label {
+  color: white !important;
+}
+
+.q-field__native {
+  color: white !important;
+}
+
+.q-field__hint {
+  color: #ccc !important;
+}
+
+/* Color de íconos en inputs */
+.q-field__control .q-icon {
+  color: #05d7ff !important;
 }
 
