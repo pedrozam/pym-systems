@@ -2,7 +2,7 @@
   "name": "app-pym",
   "version": "0.0.1",
   "description": "PyM Systems",
-  "productName": "App PyM Systems",
+  "productName": "PyM Systems",
   "author": "pedrozam <pedro.zambrana.rivera@gmail.com>",
   "type": "module",
   "private": true,
