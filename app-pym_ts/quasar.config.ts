@@ -40,6 +40,12 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
+      env: {
+        API_URL: ctx.dev
+          ? 'http://localhost:5000/api'
+          : 'https://pymsystems.com/api'
+      },
+
       target: {
         browser: [ 'es2022', 'firefox115', 'chrome115', 'safari14' ],
         node: 'node20'
