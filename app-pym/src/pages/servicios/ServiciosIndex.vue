@@ -29,7 +29,7 @@ const servicios = [
     nombre_servicio: 'Páginas web - Landing Page',
     descripcion:
       'Para tu negocio, emprendimiento, empresa, o incluso personales para profesionales independientes, entre otros.',
-    image: '../src/assets/servicios/1.png',
+    image: '../assets/servicios/1.png',
     costo_servicio: 'Desde los 350 Bs.',
     costo_alojamiento: 'Desde los 80 Bs. mensuales',
     costo_dominio: 'Si lo necesitas, desde los 120 Bs. anuales',
