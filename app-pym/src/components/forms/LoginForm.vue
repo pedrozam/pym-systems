@@ -24,8 +24,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import InputText from './inputs/InputText.vue'
-import InputPassword from './inputs/InputPassword.vue'
+import InputText from '../inputs/InputText.vue'
+import InputPassword from '../inputs/InputPassword.vue'
 
 const username = ref('')
 const password = ref('')

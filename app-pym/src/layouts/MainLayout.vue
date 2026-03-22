@@ -37,7 +37,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import LoginForm from '../components/LoginForm.vue'
+import LoginForm from '../components/forms/LoginForm.vue'
 
 const $q = useQuasar()
 const logoInToolbar = ref(false)

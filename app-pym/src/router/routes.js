@@ -1,8 +1,13 @@
+import serviciosRoutes from './serviciosRoutes'
+
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      { path: '', component: () => import('pages/IndexPage.vue') },
+      ...serviciosRoutes,
+    ],
   },
 
   // Always leave this as last one,
