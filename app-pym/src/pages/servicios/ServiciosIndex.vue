@@ -13,11 +13,15 @@
     </q-banner>
 
     <q-btn to="/servicios" label="Refrescar lista" color="cyan" class="mb-1" /> -->
-
-    <div class="q-gutter-md grid grid-cols-1 md:grid-cols-2 p-6">
-      <CardServicios v-for="(servicio, index) in servicios" :key="servicio.nombre_servicio" :service="servicio"
-        :index="index" />
+    <div class="row">
+      <span class="col-12 col-sm-2"></span>
+      <div class="col-12 col-sm-8 q-gutter-md grid grid-cols-1 md:grid-cols-2 p-1">
+        <CardServicios v-for="(servicio, index) in servicios" :key="servicio.nombre_servicio" :service="servicio"
+          :index="index" />
+      </div>
+      <span class="col-12 col-sm-2"></span>
     </div>
+
   </q-page>
 </template>
 
@@ -44,7 +48,7 @@ const servicios = [
     icono2: 'visibility',
     ruta2: '/paginas-web/previsualiza',
     boton3: 'Solicítalo ahora',
-    icono3: 'shopping_cart',
+    icono3: 'event',
     ruta3: '/paginas-web/solicitud',
   },
   {
@@ -66,7 +70,7 @@ const servicios = [
     icono2: 'visibility',
     ruta2: '/sistemas-web/previsualiza',
     boton3: 'Solicítalo ahora',
-    icono3: 'shopping_cart',
+    icono3: 'event',
     ruta3: '/sistemas-web/solicitud',
   },
   {
@@ -88,7 +92,7 @@ const servicios = [
     icono2: 'visibility',
     ruta2: '/ecommerce/previsualiza',
     boton3: 'Solicítalo ahora',
-    icono3: 'shopping_cart',
+    icono3: 'event',
     ruta3: '/ecommerce/solicitud',
   },
   {

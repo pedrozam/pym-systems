@@ -10,14 +10,14 @@
 
     <div class="laptop-content">
       <q-layout view="hHh lpR fFf">
-        <q-header elevated class="bg-transparent">
-          <q-toolbar class="custom-toolbar">
+        <q-header elevated class="bg-black/75">
+          <q-toolbar class="custom-toolbar p-2">
             <q-toolbar-title>
               <img src="/favicon.ico" alt="App logo"
                 :class="logoInToolbar ? 'toolbar-logo favicon-rotate' : 'center-logo'" />
             </q-toolbar-title>
 
-            <q-btn icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
+            <q-btn class="p-2" icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
 
           </q-toolbar>
         </q-header>

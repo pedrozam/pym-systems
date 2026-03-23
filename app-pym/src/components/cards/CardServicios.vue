@@ -1,5 +1,6 @@
 <template>
-  <q-card class="card-servicio p-6 bg-gradient text-white shadow-2xl overflow-hidden" bordered flat>
+  <q-card class="card-servicio p-6 bg-gradient text-white shadow-2xl overflow-hidden animate-slide-in-left" bordered
+    flat>
     <div class="card-img-wrap">
       <img :src="service.image" :alt="service.nombre_servicio" class="card-img" />
       <div class="card-overlay"></div>
@@ -8,15 +9,16 @@
       </div>
     </div>
 
-    <q-card-section class="p-4">
+    <q-card-section>
       <p class="card-text">{{ service.descripcion }}</p>
     </q-card-section>
 
     <q-separator />
 
-    <q-card-section class="p-3 flex justify-center">
-      <BotonInicio label="Ver más" icon="visibility" @click="openDialog" />
-    </q-card-section>
+
+    <BotonInicio class="absolute inset-0 w-full h-full bg-black/80 opacity-0 hover:opacity-100 transition-opacity"
+      label="Ver más" icon="visibility" @click="openDialog" />
+
 
     <DialogServicios :service="service" v-model="dialogOpen" />
   </q-card>
@@ -34,9 +36,7 @@ const { service } = defineProps({
     required: true,
   },
 })
-
 const dialogOpen = ref(false)
-
 const openDialog = () => {
   dialogOpen.value = true
 }
@@ -50,11 +50,13 @@ const openDialog = () => {
   background: linear-gradient(145deg, rgba(11, 31, 51, 0.96), rgba(4, 13, 24, 0.85));
   box-shadow: 0 0 30px rgba(12, 173, 255, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  opacity: 0.7;
 }
 
 .card-servicio:hover {
   transform: translateY(-6px);
   box-shadow: 0 0 40px rgba(34, 220, 255, 0.45);
+  opacity: 1;
 }
 
 .card-img-wrap {
@@ -94,15 +96,16 @@ const openDialog = () => {
 .card-titulo {
   margin: 0;
   color: #ffffff;
-  font-size: 1.55rem;
-  line-height: 1.2;
+  font-size: 1.25rem;
+  line-height: 1;
   font-weight: 900;
   text-shadow: 0 0 28px rgba(40, 215, 255, 0.65);
+  text-align: center;
 }
 
 .card-text {
   color: #d7edf8;
-  font-size: 0.99rem;
+  font-size: 0.8rem;
   line-height: 1.45;
   text-align: center;
   font-weight: 500;
