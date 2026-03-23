@@ -37,6 +37,7 @@ const { service } = defineProps({
   },
 })
 const dialogOpen = ref(false)
+
 const openDialog = () => {
   dialogOpen.value = true
 }
@@ -50,7 +51,7 @@ const openDialog = () => {
   background: linear-gradient(145deg, rgba(11, 31, 51, 0.96), rgba(4, 13, 24, 0.85));
   box-shadow: 0 0 30px rgba(12, 173, 255, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  opacity: 0.7;
+
 }
 
 .card-servicio:hover {
