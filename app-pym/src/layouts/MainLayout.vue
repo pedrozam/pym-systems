@@ -16,12 +16,14 @@
               <img src="/favicon.ico" alt="App logo" :class="logoInToolbar ? 'toolbar-logo' : 'center-logo'" />
             </q-toolbar-title>
 
-            <!-- <q-btn class="p-2" icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
-              -->
 
-            <div class="group relative">
-              <q-btn class="p-2 transition" icon="account_circle" color="primary" @click="showLogin = true">
-                <span class="hidden group-hover:inline ml-1">Iniciar Sesión</span>
+            <div class="group relative inline-block">
+              <q-btn class="p-2 group-hover:pr-4 transition-all duration-600" icon="account_circle" color="primary"
+                @click="showLogin = true">
+                <span
+                  class="inline-block max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-600 whitespace-nowrap">
+                  Iniciar Sesión
+                </span>
               </q-btn>
             </div>
 
@@ -48,6 +50,15 @@
               </div>
             </div>
 
+            <q-btn round color="primary" icon="support_agent" class="floating-button" @click="showContactar = true">
+              <q-tooltip anchor="top right" self="center left" :offset="[10, 10]">
+                Contactar a PyM Systems
+                <svg width="32" height="32">
+                  <use xlink:href="/assets/sprite.svg#x" />
+                </svg>
+              </q-tooltip>
+            </q-btn>
+
 
 
 
@@ -64,6 +75,13 @@
       <LoginForm />
     </q-dialog>
   </div>
+
+  <!-- Dialog del formulario -->
+  <q-dialog v-model="showContactar" persistent>
+    <ContactarForm @close="showContactar = false" />
+
+  </q-dialog>
+
 </template>
 
 <script setup>
@@ -72,7 +90,7 @@ import { useQuasar } from 'quasar'
 import LoginForm from '../components/forms/LoginForm.vue'
 import InstallButton from '../components/botones/InstallButton.vue'
 import { usePWA } from 'src/composables/mobil/usePwa'
-
+import ContactarForm from '../components/forms/ContactarForm.vue'
 // Inicializar PWA
 const { showInstallPrompt, isInstalled, isIOS } = usePWA()
 
@@ -81,6 +99,8 @@ const logoInToolbar = ref(false)
 const mouseX = ref(0)
 const mouseY = ref(0)
 const showLogin = ref(false)
+const showContactar = ref(false)
+
 
 function updateMouse(event) {
   mouseX.value = event.clientX
