@@ -9,7 +9,7 @@ COPY ./app-pym .
 RUN npm install
 
 # Construir la aplicación en MODO PWA (no SPA)
-RUN npm run build -- -m pwa  # 👈 CAMBIADO: build para PWA
+RUN npm run build -- -m pwa 
 
 FROM nginx:alpine
 
@@ -17,10 +17,10 @@ FROM nginx:alpine
 RUN apk add --no-cache curl
 
 # Copiar el build PWA (cambia la ruta de spa a pwa)
-COPY --from=builder /app/dist/pwa /usr/share/nginx/html  # 👈 CAMBIADO: dist/pwa
+COPY --from=builder /app/dist/pwa /usr/share/nginx/html  
 
 # Copiar configuración de nginx
-ADD ./nginx/frontend.conf /etc/nginx/conf.d/default.conf  # 👈 CAMBIADO: a default.conf
+ADD ./nginx/frontend.conf /etc/nginx/conf.d/default.conf 
 
 # Verificar que los archivos se copiaron correctamente
 RUN ls -la /usr/share/nginx/html && \
