@@ -1,31 +1,13 @@
 <!-- components/InstallButton.vue -->
 <template>
   <div>
-    <!-- Para Android/iOS con PWA -->
-    <q-item v-if="showInstallPrompt" clickable v-close-popup @click="installApp">
-      <q-item-section avatar>
-        <q-icon name="install_mobile" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>Instalar App</q-item-label>
-        <q-item-label caption>
-          Instalar como aplicación en tu dispositivo
-        </q-item-label>
-      </q-item-section>
-    </q-item>
+    <!-- Botón para Android/Desktop con PWA -->
+    <q-btn v-if="showInstallPrompt" color="primary" icon="install_mobile" label="Instalar App" @click="installApp"
+      glossy no-caps />
 
-    <!-- Para iOS (instrucciones específicas) -->
-    <q-item v-else-if="isIOS" clickable v-close-popup @click="showIOSInstructions">
-      <q-item-section avatar>
-        <q-icon name="apple" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>Instalar en iOS</q-item-label>
-        <q-item-label caption>
-          Agregar a pantalla de inicio
-        </q-item-label>
-      </q-item-section>
-    </q-item>
+    <!-- Botón para iOS (instrucciones específicas) -->
+    <q-btn v-else-if="isIOS" color="secondary" icon="apple" label="Instalar en iOS" @click="showIOSInstructions" glossy
+      no-caps />
   </div>
 </template>
 
@@ -59,7 +41,8 @@ const installApp = async () => {
   if (outcome === 'accepted') {
     $q.notify({
       type: 'positive',
-      message: '¡Aplicación instalada correctamente!'
+      message: '¡Aplicación instalada correctamente!',
+      position: 'top'
     })
     showInstallPrompt.value = false
   }
@@ -72,7 +55,24 @@ const showIOSInstructions = () => {
     title: 'Instalar en iOS',
     message: 'Para instalar esta app:\n\n1. Toca el botón "Compartir"\n2. Desplázate hacia abajo\n3. Toca "Agregar a pantalla de inicio"',
     persistent: true,
-    ok: 'Entendido'
+    ok: {
+      label: 'Entendido',
+      color: 'primary'
+    }
   })
 }
 </script>
+
+<style scoped>
+/* Estilos opcionales para darle un mejor aspecto */
+.q-btn {
+  min-width: 150px;
+  margin: 8px 0;
+}
+
+@media (max-width: 600px) {
+  .q-btn {
+    width: 100%;
+  }
+}
+</style>

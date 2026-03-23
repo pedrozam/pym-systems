@@ -40,6 +40,7 @@
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import LoginForm from '../components/forms/LoginForm.vue'
+import InstallButton from '../components/botones/InstallButton.vue'
 
 const $q = useQuasar()
 const logoInToolbar = ref(false)
