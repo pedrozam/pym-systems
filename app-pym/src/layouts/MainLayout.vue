@@ -16,52 +16,40 @@
               <img src="/favicon.ico" alt="App logo" :class="logoInToolbar ? 'toolbar-logo' : 'center-logo'" />
             </q-toolbar-title>
 
-            <q-btn class="p-2" icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
+            <!-- <q-btn class="p-2" icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
+              -->
 
-            <!-- Botón de instalación directo en el toolbar (para pruebas) -->
-            <InstallButton />
+            <div class="group relative">
+              <q-btn class="p-2 transition" icon="account_circle" color="primary" @click="showLogin = true">
+                <span class="hidden group-hover:inline ml-1">Iniciar Sesión</span>
+              </q-btn>
+            </div>
 
-            <q-btn flat round icon="menu">
-              <q-menu>
-                <q-list>
-                  <q-item clickable v-close-popup>
-                    <q-item-section>
-                      <q-btn flat icon="home" to="/">Inicio</q-btn>
-                    </q-item-section>
-                  </q-item>
 
-                  <!-- Botón de instalación en el menú -->
-                  <q-item>
-                    <q-item-section>
-                      <InstallButton />
-                    </q-item-section>
-                  </q-item>
 
-                  <q-separator />
+            <div class="fixed bottom-0 right-0 p-2 opacity-10 hover:opacity-100 transition-opacity duration-300">
+              <div class="row items-center">
+                <q-icon name="info" size="sm" class="q-mr-sm" />
+                <span class="text-caption">
+                  Estado:
+                  <strong :class="isInstalled ? 'text-positive' : 'text-warning'">
+                    {{ isInstalled ? 'Instalada' : 'No instalada' }}
+                  </strong>
+                </span>
+              </div>
+              <div class="text-caption q-mt-xs">
+                Prompt visible: {{ showInstallPrompt }}
+              </div>
+              <div class="text-caption">
+                iOS: {{ isIOS }}
+              </div>
+              <div>
+                <InstallButton />
+              </div>
+            </div>
 
-                  <!-- Mostrar estado de instalación en el menú -->
-                  <q-item>
-                    <q-item-section>
-                      <div class="row items-center">
-                        <q-icon name="info" size="sm" class="q-mr-sm" />
-                        <span class="text-caption">
-                          Estado:
-                          <strong :class="isInstalled ? 'text-positive' : 'text-warning'">
-                            {{ isInstalled ? 'Instalada' : 'No instalada' }}
-                          </strong>
-                        </span>
-                      </div>
-                      <div class="text-caption q-mt-xs">
-                        Prompt visible: {{ showInstallPrompt }}
-                      </div>
-                      <div class="text-caption">
-                        iOS: {{ isIOS }}
-                      </div>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
+
+
 
           </q-toolbar>
         </q-header>

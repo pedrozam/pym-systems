@@ -4,30 +4,7 @@
       <q-bar class="bg-primary text-white">
         <div class="text-h6 font-bold">{{ service.nombre_servicio }}</div>
         <q-space />
-        <q-btn v-if="service.boton1" dense flat round :icon="service.icono1" :to="service.ruta1">
-          <q-tooltip>
-            <div class="flex items-center gap-1">
-              <q-icon :name="service.icono1" size="xs" />
-              <span>{{ service.boton1 }}</span>
-            </div>
-          </q-tooltip>
-        </q-btn>
-        <q-btn v-if="service.boton2" dense flat round :icon="service.icono2" :to="service.ruta2">
-          <q-tooltip>
-            <div class="flex items-center gap-1">
-              <q-icon :name="service.icono2" size="xs" />
-              <span>{{ service.boton2 }}</span>
-            </div>
-          </q-tooltip>
-        </q-btn>
-        <q-btn v-if="service.boton3" dense flat round :icon="service.icono3" :to="service.ruta3">
-          <q-tooltip>
-            <div class="flex items-center gap-1">
-              <q-icon :name="service.icono3" size="xs" />
-              <span>{{ service.boton3 }}</span>
-            </div>
-          </q-tooltip>
-        </q-btn>
+
         <q-btn dense flat round icon="close" @click="close">
           <q-tooltip>
             <div class="flex items-center gap-1">
@@ -38,9 +15,10 @@
         </q-btn>
       </q-bar>
 
-      <q-carousel v-model="tab" animated control-color="white" navigation autoplay="4200" unlimited
+      <q-carousel swipeable infinite v-model="tab" animated :autoplay="autoplay" ref="carousel"
         class="contenedor-carousel"
         :style="{ backgroundImage: `url(${service.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }">
+
         <q-carousel-slide name="duracion" class="slide-color inset-0 bg-black/80">
           <div class="slide-content">
             <h2 class="slide-title">Duración</h2>
@@ -68,23 +46,30 @@
             </ul>
           </div>
         </q-carousel-slide>
+
+        <template v-slot:control>
+          <q-carousel-control position="top-right" :offset="[18, 18]" class="text-white rounded-borders"
+            style="background: rgba(0, 0, 0, .3); padding: 4px 8px;">
+            <q-toggle dense dark color="orange" v-model="autoplay" label="Auto Play" />
+          </q-carousel-control>
+
+          <q-carousel-control position="bottom-right" :offset="[18, 18]" class="q-gutter-xs">
+            <q-btn push round dense color="white" text-color="black" icon="arrow_left"
+              @click="$refs.carousel.previous()" />
+            <q-btn push round dense color="white" text-color="black" icon="arrow_right"
+              @click="$refs.carousel.next()" />
+          </q-carousel-control>
+        </template>
       </q-carousel>
 
-      <q-card-actions class="bg-primary-9" align="around">
-        <q-btn dense round icon="schedule" :class="{ 'btn-hover-mode': true }" @click="tab = 'duracion'"
-          @mouseenter="btnText = 'Duración'" @mouseleave="btnText = ''">
-          <template v-if="btnText === 'Duración'">{{ btnText }}</template>
-        </q-btn>
+      <q-card-actions class="bg-primary-9 row" align="around">
+        <q-btn class="col-4" v-if="service.boton1" dense flat :icon="service.icono1" :to="service.ruta1"
+          :label="service.boton1" />
+        <q-btn class="col-4" v-if="service.boton2" dense flat :icon="service.icono2" :to="service.ruta2"
+          :label="service.boton2" />
+        <q-btn class="col-4" v-if="service.boton3" dense flat :icon="service.icono3" :to="service.ruta3"
+          :label="service.boton3" />
 
-        <q-btn dense round icon="payments" :class="{ 'btn-hover-mode': true }" @click="tab = 'costos'"
-          @mouseenter="btnText = 'Costos'" @mouseleave="btnText = ''">
-          <template v-if="btnText === 'Costos'">{{ btnText }}</template>
-        </q-btn>
-
-        <q-btn dense round icon="thumb_up" :class="{ 'btn-hover-mode': true }" @click="tab = 'ventajas'"
-          @mouseenter="btnText = 'Ventajas'" @mouseleave="btnText = ''">
-          <template v-if="btnText === 'Ventajas'">{{ btnText }}</template>
-        </q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -106,7 +91,8 @@ const emit = defineEmits(['update:modelValue'])
 
 const opened = ref(props.modelValue)
 const tab = ref('duracion')
-const btnText = ref('')
+
+const autoplay = ref(true);
 
 watch(
   () => props.modelValue,
