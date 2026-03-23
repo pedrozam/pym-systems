@@ -19,6 +19,8 @@
 
             <q-btn class="p-2" icon="account_circle" label="Iniciar Sesión" color="primary" @click="showLogin = true" />
 
+            <InstallButton />
+
           </q-toolbar>
         </q-header>
 
