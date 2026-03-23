@@ -29,7 +29,7 @@ const servicios = [
     nombre_servicio: 'Páginas web - Landing Page',
     descripcion:
       'Para tu negocio, emprendimiento, empresa, o incluso personales para profesionales independientes, entre otros.',
-    image: '~/../public/servicios/1.png',
+    image: '/servicios/1.png',
     costo_servicio: 'Desde los 350 Bs.',
     costo_alojamiento: 'Desde los 80 Bs. mensuales',
     costo_dominio: 'Si lo necesitas, desde los 120 Bs. anuales',
@@ -51,7 +51,7 @@ const servicios = [
     nombre_servicio: 'Sistemas web',
     descripcion:
       'La automatización de tu empresa o negocio llegó; explícanos los procesos manuales o semi-automáticos que podrías estar realizando y las posibles dificultades que tienes. Nosotros nos contactamos y te haremos una propuesta de automatización.',
-    image: '~/../public/servicios/3.png',
+    image: '/servicios/3.png',
     costo_servicio: 'Desde los 1500 Bs.',
     costo_alojamiento: 'Desde los 150 Bs. mensuales',
     costo_dominio: 'Si lo necesitas, desde los 120 Bs. anuales',
@@ -73,7 +73,7 @@ const servicios = [
     nombre_servicio: 'Sitios E-Commerce',
     descripcion:
       'Este servicio está orientado a emprendimientos, negocios y empresas que necesitan automatizar sus ventas en línea.',
-    image: '~/../public/servicios/4.png',
+    image: '/servicios/4.png',
     costo_servicio: 'Desde los 1500 Bs.',
     costo_alojamiento: 'Desde los 150 Bs. mensuales',
     costo_dominio: 'Si lo necesitas, desde los 120 Bs. anuales',
@@ -95,7 +95,7 @@ const servicios = [
     nombre_servicio: 'Servicio de mantenimiento de equipos',
     descripcion:
       'Si en tu casa, oficina o lugar donde tengas equipos CPU, laptops, MAC o impresoras, necesitas soporte y asistencia técnica, contrata un plan para que te apoyemos en todo momento.',
-    image: '~/../public/servicios/2.png',
+    image: '/servicios/2.png',
     costo_servicio: 'Desde los 100 Bs.',
     costo_alojamiento: null,
     costo_dominio: null,
