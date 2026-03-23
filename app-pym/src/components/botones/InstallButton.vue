@@ -1,78 +1,46 @@
-<!-- components/InstallButton.vue -->
+<!-- components/botones/InstallButton.vue -->
 <template>
   <div>
-    <!-- Botón para Android/Desktop con PWA -->
-    <q-btn v-if="showInstallPrompt" color="primary" icon="install_mobile" label="Instalar App" @click="installApp"
-      glossy no-caps />
+    <!-- Botón para Android/Desktop -->
+    <q-btn v-if="showInstallPrompt && !isInstalled" color="primary" icon="install_mobile" label="Instalar App"
+      @click="installApp" glossy no-caps />
 
-    <!-- Botón para iOS (instrucciones específicas) -->
-    <q-btn v-else-if="isIOS" color="secondary" icon="apple" label="Instalar en iOS" @click="showIOSInstructions" glossy
-      no-caps />
+    <!-- Botón para iOS -->
+    <q-btn v-else-if="isIOS && !isInstalled" color="secondary" icon="apple" label="Instalar en iOS"
+      @click="showIOSInstructions" glossy no-caps />
+
+    <!-- Indicador de app instalada -->
+    <q-chip v-if="isInstalled" color="positive" text-color="white" icon="check_circle" class="q-ml-sm">
+      App Instalada
+    </q-chip>
+
+    <!-- Debug: Mostrar estado actual (solo en desarrollo) -->
+    <div v-if="false" class="text-caption q-mt-xs">
+      Estado: show={{ showInstallPrompt }}, installed={{ isInstalled }}, ios={{ isIOS }}
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import { usePWA } from 'src/composables/mobil/usePwa'
 
-const $q = useQuasar()
-const showInstallPrompt = ref(false)
-const isIOS = ref(false)
-let deferredPrompt = null
+const {
+  showInstallPrompt,
+  isInstalled,
+  isIOS,
+  installApp,
+  showIOSInstructions
+} = usePWA()
 
-onMounted(() => {
-  // Detectar iOS
-  isIOS.value = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
-
-  // Escuchar evento de instalación
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault()
-    deferredPrompt = e
-    showInstallPrompt.value = true
-  })
-})
-
-const installApp = async () => {
-  if (!deferredPrompt) return
-
-  deferredPrompt.prompt()
-  const { outcome } = await deferredPrompt.userChoice
-
-  if (outcome === 'accepted') {
-    $q.notify({
-      type: 'positive',
-      message: '¡Aplicación instalada correctamente!',
-      position: 'top'
-    })
-    showInstallPrompt.value = false
-  }
-
-  deferredPrompt = null
-}
-
-const showIOSInstructions = () => {
-  $q.dialog({
-    title: 'Instalar en iOS',
-    message: 'Para instalar esta app:\n\n1. Toca el botón "Compartir"\n2. Desplázate hacia abajo\n3. Toca "Agregar a pantalla de inicio"',
-    persistent: true,
-    ok: {
-      label: 'Entendido',
-      color: 'primary'
-    }
-  })
-}
+// Log para debug
+console.log('InstallButton montado')
+console.log('showInstallPrompt:', showInstallPrompt.value)
+console.log('isInstalled:', isInstalled.value)
+console.log('isIOS:', isIOS.value)
 </script>
 
 <style scoped>
-/* Estilos opcionales para darle un mejor aspecto */
 .q-btn {
   min-width: 150px;
-  margin: 8px 0;
-}
-
-@media (max-width: 600px) {
-  .q-btn {
-    width: 100%;
-  }
 }
 </style>

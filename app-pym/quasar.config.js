@@ -175,6 +175,49 @@ export default defineConfig((ctx) => {
       // extendPWACustomSWConf (esbuildConf) {},
       // extendGenerateSWOptions (cfg) {},
       // extendInjectManifestOptions (cfg) {}
+      manifest: {
+        name: 'PyM Systems',
+        short_name: 'PyM',
+        description: 'PyM Systems Page',
+        display: 'standalone',
+        start_url: '/',
+        orientation: 'portrait',
+        background_color: '#ffffff',
+        theme_color: '#027be3',
+        icons: [
+          // Asegúrate de tener iconos
+          {
+            src: 'icons/icon-128x128.png',
+            sizes: '128x128',
+            type: 'image/png'
+          },
+          {
+            src: 'icons/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'icons/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          }
+        ],
+        screenshots: [
+          {
+            src: 'screenshots/desktop.png',
+            sizes: '1280x720',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Vista de escritorio'
+          },
+          {
+            src: 'screenshots/mobile.png',
+            sizes: '720x1280',
+            type: 'image/png',
+            label: 'Vista móvil'
+          }
+        ]
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
