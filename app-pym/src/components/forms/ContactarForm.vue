@@ -4,7 +4,7 @@
       <div class="text-h6 flex items-center justify-between">
         <div class="flex items-center">
           <img src="/favicon.ico" alt="Logo" class="w-8 h-8 mr-2" />
-          Contactar a Soporte Técnico
+          Contactar a PyM Systems
         </div>
         <q-btn flat round dense icon="close" @click="$emit('close')" />
       </div>
@@ -28,15 +28,17 @@
       <InputText class="border-neon p-2 mb-4" etiqueta="Mensaje a enviar *" tipo="textarea" v-model:valor="form.mensaje"
         :validacion="[val => !!val || 'El mensaje es requerido']" :rows="4" />
 
-      <svg width="32" height="32">
-        <use xlink:href="/assets/sprite.svg#x" />
-      </svg>
+
     </q-card-section>
 
     <q-card-actions class="justify-center">
 
-      <q-btn label="Contactar por WhatsApp" color="positive" icon="whatsapp" @click="enviarWhatsApp" :loading="cargando"
-        class="q-px-lg" />
+      <q-btn label="Contactar por WhatsApp" color="positive" @click="enviarWhatsApp" :loading="cargando"
+        class="q-px-lg normal-case">
+        <svg width="32" height="32" class="p-1">
+          <use :xlink:href="`${spriteUrl}#waap`" />
+        </svg>
+      </q-btn>
     </q-card-actions>
 
     <q-card-section class="text-center text-sm text-grey-6">
@@ -49,7 +51,7 @@
 import { ref, reactive } from 'vue'
 import { useQuasar } from 'quasar'
 import InputText from '../inputs/InputText.vue'
-
+import spriteUrl from 'assets/sprite.svg'
 const $q = useQuasar()
 const cargando = ref(false)
 

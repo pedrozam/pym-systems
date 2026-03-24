@@ -50,12 +50,12 @@
               </div>
             </div>
 
-            <q-btn round color="primary" icon="support_agent" class="floating-button" @click="showContactar = true">
+            <q-btn round color="primary" class="floating-button" @click="showContactar = true">
+              <svg width="32" height="32" class="p-1">
+                <use :xlink:href="`${spriteUrl}#waap`" />
+              </svg>
               <q-tooltip anchor="top right" self="center left" :offset="[10, 10]">
                 Contactar a PyM Systems
-                <svg width="32" height="32">
-                  <use xlink:href="/assets/sprite.svg#x" />
-                </svg>
               </q-tooltip>
             </q-btn>
 
@@ -91,6 +91,7 @@ import LoginForm from '../components/forms/LoginForm.vue'
 import InstallButton from '../components/botones/InstallButton.vue'
 import { usePWA } from 'src/composables/mobil/usePwa'
 import ContactarForm from '../components/forms/ContactarForm.vue'
+import spriteUrl from 'assets/sprite.svg'
 // Inicializar PWA
 const { showInstallPrompt, isInstalled, isIOS } = usePWA()
 
