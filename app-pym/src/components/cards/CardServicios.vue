@@ -1,5 +1,5 @@
 <template>
-  <q-card class="card-servicio p-6 bg-gradient text-white shadow-2xl overflow-hidden animate-slide-in-left" bordered
+  <q-card class="card-servicio p-4 bg-gradient text-white shadow-2xl overflow-hidden animate-slide-in-left" bordered
     flat>
     <div class="card-img-wrap">
       <img :src="service.image" :alt="service.nombre_servicio" class="card-img" />

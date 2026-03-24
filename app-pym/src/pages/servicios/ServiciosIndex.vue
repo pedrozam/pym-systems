@@ -8,7 +8,7 @@
 
     <div class="row">
       <span class="col-12 col-sm-1"></span>
-      <div class="col-12 col-sm-10 q-gutter-md grid grid-cols-1 md:grid-cols-3 p-1">
+      <div class="col-12 col-sm-10 q-gutter-md grid grid-cols-1 md:grid-cols-3">
         <CardServicios v-for="(servicio, index) in servicios" :key="servicio.nombre_servicio" :service="servicio"
           :index="index" />
       </div>

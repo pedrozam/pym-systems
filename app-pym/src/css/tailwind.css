@@ -139,8 +139,8 @@
 /* Spotlight del mouse con gradientes de colores */
 .mouse-spotlight {
   position: fixed;
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--color-green-700) 0%, transparent 20%, var(--color-blue-400) 50%, transparent 90%);
   pointer-events: none;
