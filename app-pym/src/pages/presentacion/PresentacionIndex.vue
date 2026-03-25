@@ -71,8 +71,9 @@
               <div 
                 class="tech-card p-5 md:p-7 border border-cyan-300/30 rounded-2xl backdrop-blur-md"
               >
-                <p class="text-white text-lg md:text-xl font-semibold leading-relaxed">
-                  <i class="fas fa-code text-cyan-400 mr-2"></i> 
+                <p class="text-white md:text-xl font-semibold leading-relaxed">
+                  
+                  <q-icon name="laptop_windows" class="text-cyan-400 mr-2"/>
                   Tenemos experiencia en la creación de sitios web profesionales utilizando las siguientes tecnologías:
                 </p>
               </div>

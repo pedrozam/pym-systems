@@ -1,7 +1,8 @@
 <template>
   <q-page class="q-pa-none">
-    <PresentacionIndex />
+    
     <ServiciosIndex />
+    <PresentacionIndex/>
   </q-page>
 </template>
 

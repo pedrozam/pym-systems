@@ -2,53 +2,32 @@
   <div class="digital-laptop-bg" @mousemove="updateMouse">
     <div class="mouse-spotlight" :style="{ left: mouseX + 'px', top: mouseY + 'px' }"></div>
 
-    <div v-if="!logoInToolbar" class="loading-dots">
+    <!-- <div v-if="!logoInToolbar" class="loading-dots">
       <span></span><span></span><span></span><span></span><span></span>
-    </div>
+    </div> -->
     <div class="neon-typing-lines"></div>
     <div class="neon-typing-highlight"></div>
 
     <div class="laptop-content">
       <q-layout view="hHh lpR fFf">
         <q-header elevated class="bg-black/75">
-          <q-toolbar class="custom-toolbar p-2">
-            <q-toolbar-title>
-              <img src="/favicon.ico" alt="App logo" :class="logoInToolbar ? 'toolbar-logo' : 'center-logo'" />
+          <q-toolbar class="custom-toolbar p-2 row">
+            <q-toolbar-title class="col-2">
+              <a href="/"><img src="/favicon.ico" alt="App logo" class="size-28 p-3 cursor-pointer hover:animate-tada hover:infinite " to="/"/></a>
             </q-toolbar-title>
-
-
-            <div class="group relative inline-block">
-              <q-btn class="p-2 group-hover:pr-4 transition-all duration-600" icon="account_circle" color="primary"
-                @click="showLogin = true">
-                <span
-                  class="inline-block max-w-0 group-hover:max-w-xs overflow-hidden transition-all duration-600 whitespace-nowrap">
-                  Iniciar Sesión
-                </span>
-              </q-btn>
+            <div class="align-center col-10">
+              <q-btn-toggle
+                v-model="model"
+                flat
+                stretch
+                toggle-color="yellow"
+                :options="menuOptions"
+                class="items-center gap-1 icon-hover"
+              />
             </div>
-
-
-
-            <div class="fixed bottom-0 right-0 p-2 opacity-10 hover:opacity-100 transition-opacity duration-300">
-              <div class="row items-center">
-                <q-icon name="info" size="sm" class="q-mr-sm" />
-                <span class="text-caption">
-                  Estado:
-                  <strong :class="isInstalled ? 'text-positive' : 'text-warning'">
-                    {{ isInstalled ? 'Instalada' : 'No instalada' }}
-                  </strong>
-                </span>
-              </div>
-              <div class="text-caption q-mt-xs">
-                Prompt visible: {{ showInstallPrompt }}
-              </div>
-              <div class="text-caption">
-                iOS: {{ isIOS }}
-              </div>
-              <div>
-                <InstallButton />
-              </div>
-            </div>
+            <q-btn class="floating-sesion" icon="account_circle"
+              @click="showLogin = true" label="Iniciar sesión">
+            </q-btn>
 
             <q-btn round color="primary" class="floating-button" @click="showContactar = true">
               <svg width="32" height="32" class="p-1">
@@ -88,7 +67,6 @@
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import LoginForm from '../components/forms/LoginForm.vue'
-import InstallButton from '../components/botones/InstallButton.vue'
 import { usePWA } from 'src/composables/mobil/usePwa'
 import ContactarForm from '../components/forms/ContactarForm.vue'
 import spriteUrl from 'assets/sprite.svg'
@@ -101,7 +79,13 @@ const mouseX = ref(0)
 const mouseY = ref(0)
 const showLogin = ref(false)
 const showContactar = ref(false)
-
+const menuOptions = [
+  { label: 'Inicio', value: 'inicio', icon: 'home', to:'/' },
+  { label: 'Quienes somos', value: 'quienes', icon: 'groups', to:'/' },
+  { label: 'Servicios', value: 'servicios', icon: 'settings', to:'/servicios' },
+  { label: 'Tecnología', value: 'tecnologia', icon: 'code', to:'/presentacion' },
+  { label: 'Proyectos en curso', value: 'proyectos', icon: 'developer_board', to:'/proyectos' },
+]
 
 function updateMouse(event) {
   mouseX.value = event.clientX

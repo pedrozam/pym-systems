@@ -47,6 +47,10 @@ const serviciosRoutes = [
     path: 'mantenimiento-equipos/planes',
     component: () => import('pages/servicios/MantenimientoEquiposPlanes.vue'),
   },
+  {
+    path: 'presentacion',
+    component: () => import('pages/presentacion/PresentacionIndex.vue'),
+  },
 ]
 
 export default serviciosRoutes

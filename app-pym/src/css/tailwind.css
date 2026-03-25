@@ -151,7 +151,7 @@
 
 /* Toolbar personalizada con altura fija */
 .custom-toolbar {
-  height: 84px;
+  height: 6rem;
 }
 
 /* Logo en la toolbar con rotación al cargar */
@@ -209,4 +209,21 @@
 .floating-button:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease;
+}
+
+/* Boton flotante de inicio de sesion */
+
+.floating-sesion {
+  position: fixed;
+  top: 10%;
+  right: 1%;
+  z-index: 9999;
+  text-transform: none;
+  color: var(--color-sky-300);
+}
+
+.floating-sesion:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+  background:transparent;
 }

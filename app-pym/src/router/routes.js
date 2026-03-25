@@ -1,5 +1,6 @@
 import serviciosRoutes from './serviciosRoutes'
 
+
 const routes = [
   {
     path: '/',
@@ -9,6 +10,7 @@ const routes = [
       ...serviciosRoutes,
     ],
   },
+  
 
   // Always leave this as last one,
   // but you can also remove it
