@@ -1,75 +1,196 @@
 <template>
-  <q-dialog v-model="opened" persistent :overlay-class="overlayClass">
-    <q-card class="dialog-servicio bg-primary text-white" style="min-width: 360px; max-width: 680px;">
+  <q-dialog
+    v-model="opened"
+    persistent
+    :overlay-class="overlayClass"
+  >
+    <q-card
+      class="dialog-servicio bg-primary text-white"
+      style="min-width: 360px; max-width: 680px"
+    >
       <q-bar class="bg-primary text-white">
         <div class="text-h6 font-bold">{{ service.nombre_servicio }}</div>
         <q-space />
 
-        <q-btn dense flat round icon="close" @click="close">
+        <q-btn
+          dense
+          flat
+          round
+          icon="close"
+          @click="close"
+        >
           <q-tooltip>
             <div class="flex items-center gap-1">
-              <q-icon name="close" size="xs" />
+              <q-icon
+                name="close"
+                size="xs"
+              />
               <span>Salir</span>
             </div>
           </q-tooltip>
         </q-btn>
       </q-bar>
 
-      <q-carousel swipeable infinite v-model="tab" animated :autoplay="autoplay" ref="carousel"
+      <q-carousel
+        swipeable
+        infinite
+        v-model="tab"
+        animated
+        :autoplay="autoplay"
+        ref="carousel"
         class="contenedor-carousel"
-        :style="{ backgroundImage: `url(${service.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }">
-
-        <q-carousel-slide name="duracion" class="slide-color inset-0 bg-black/80">
+        :style="{
+          backgroundImage: `url(${service.image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }"
+      >
+        <q-carousel-slide
+          name="duracion"
+          class="slide-color inset-0 bg-black/80"
+        >
           <div class="slide-content">
             <h2 class="slide-title">Duración</h2>
             <p class="slide-body">{{ service.tiempo }}</p>
           </div>
         </q-carousel-slide>
 
-        <q-carousel-slide name="costos" class="slide-color inset-0 bg-black/80">
+        <q-carousel-slide
+          name="costos"
+          class="slide-color inset-0 bg-black/80"
+        >
           <div class="slide-content">
             <h2 class="slide-title">Costos</h2>
             <div class="slide-body">
-              <div v-for="(item, i) in costos" :key="i" class="slide-item">
-                <q-icon :name="item.icon" class="text-cyan-2" />
+              <div
+                v-for="(item, i) in costos"
+                :key="i"
+                class="slide-item"
+              >
+                <q-icon
+                  :name="item.icon"
+                  class="text-cyan-2"
+                />
                 <strong>{{ item.label }}:</strong> {{ item.value }}
               </div>
             </div>
           </div>
         </q-carousel-slide>
 
-        <q-carousel-slide name="ventajas" class="slide-color inset-0 bg-black/80">
+        <q-carousel-slide
+          name="ventajas"
+          class="slide-color inset-0 bg-black/80"
+        >
           <div class="slide-content">
             <h2 class="slide-title">Ventajas</h2>
             <ul class="slide-body list-disc ml-4">
-              <li v-for="(item, i) in ventajas" :key="i">{{ item.trim() }}</li>
+              <li
+                v-for="(item, i) in ventajas"
+                :key="i"
+              >
+                {{ item.trim() }}
+              </li>
             </ul>
           </div>
         </q-carousel-slide>
 
         <template v-slot:control>
-          <q-carousel-control position="top-right" :offset="[18, 18]" class="text-white rounded-borders"
-            style="background: rgba(0, 0, 0, .3); padding: 4px 8px;">
-            <q-toggle dense dark color="orange" v-model="autoplay" label="Auto Play" />
+          <q-carousel-control
+            position="top-right"
+            :offset="[18, 18]"
+            class="text-white rounded-borders"
+            style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px"
+          >
+            <q-toggle
+              dense
+              dark
+              color="orange"
+              v-model="autoplay"
+              label="Auto Play"
+            />
           </q-carousel-control>
 
-          <q-carousel-control position="bottom-right" :offset="[18, 18]" class="q-gutter-xs">
-            <q-btn push round dense color="white" text-color="black" icon="arrow_left"
-              @click="$refs.carousel.previous()" />
-            <q-btn push round dense color="white" text-color="black" icon="arrow_right"
-              @click="$refs.carousel.next()" />
+          <q-carousel-control
+            position="bottom-right"
+            :offset="[18, 18]"
+            class="q-gutter-xs"
+          >
+            <q-btn
+              push
+              round
+              dense
+              color="white"
+              text-color="black"
+              icon="arrow_left"
+              @click="$refs.carousel.previous()"
+            />
+            <q-btn
+              push
+              round
+              dense
+              color="white"
+              text-color="black"
+              icon="arrow_right"
+              @click="$refs.carousel.next()"
+            />
           </q-carousel-control>
         </template>
       </q-carousel>
 
-      <q-card-actions class="bg-primary-9 row" align="around">
-        <q-btn class="col-4" v-if="service.boton1" dense flat :icon="service.icono1" :to="service.ruta1"
-          :label="service.boton1" />
-        <q-btn class="col-4" v-if="service.boton2" dense flat :icon="service.icono2" :to="service.ruta2"
-          :label="service.boton2" />
-        <q-btn class="col-4" v-if="service.boton3" dense flat :icon="service.icono3" :to="service.ruta3"
-          :label="service.boton3" />
-
+      <q-card-actions
+        class="bg-primary-9 row"
+        align="around"
+      >
+        <q-btn
+          class="col-12"
+          v-if="service.boton1"
+          dense
+          flat
+          :to="service.ruta1"
+          :label="service.boton1"
+        >
+          <svg
+            width="32"
+            height="32"
+            class="p-1"
+          >
+            <use :xlink:href="`${spriteUrl}#${service.icono1}`" />
+          </svg>
+        </q-btn>
+        <q-btn
+          class="col-12"
+          v-if="service.boton2"
+          dense
+          flat
+          :icon="service.icono2"
+          :to="service.ruta2"
+          :label="service.boton2"
+        >
+          <svg
+            width="32"
+            height="32"
+            class="p-1"
+          >
+            <use :xlink:href="`${spriteUrl}#${service.icono2}`" />
+          </svg>
+        </q-btn>
+        <q-btn
+          class="col-12"
+          v-if="service.boton3"
+          dense
+          flat
+          :icon="service.icono3"
+          :to="service.ruta3"
+          :label="service.boton3"
+        >
+          <svg
+            width="32"
+            height="32"
+            class="p-1"
+          >
+            <use :xlink:href="`${spriteUrl}#${service.icono3}`" />
+          </svg>
+        </q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -77,6 +198,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
+
 const props = defineProps({
   service: {
     type: Object,
@@ -86,19 +208,23 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  spriteUrl: {
+    type: String,
+    required: false,
+  },
 })
 const emit = defineEmits(['update:modelValue'])
 
 const opened = ref(props.modelValue)
 const tab = ref('duracion')
 
-const autoplay = ref(true);
+const autoplay = ref(true)
 
 watch(
   () => props.modelValue,
   (val) => {
     opened.value = val
-  }
+  },
 )
 watch(opened, (val) => {
   emit('update:modelValue', val)
@@ -119,7 +245,8 @@ const costos = computed(() => {
   const list = []
   const s = props.service
   if (s.costo_servicio) list.push({ label: 'Servicio', value: s.costo_servicio, icon: 'work' })
-  if (s.costo_alojamiento) list.push({ label: 'Alojamiento', value: s.costo_alojamiento, icon: 'home' })
+  if (s.costo_alojamiento)
+    list.push({ label: 'Alojamiento', value: s.costo_alojamiento, icon: 'home' })
   if (s.costo_dominio) list.push({ label: 'Dominio', value: s.costo_dominio, icon: 'language' })
   if (s.costo_correo) list.push({ label: 'Correo', value: s.costo_correo, icon: 'email' })
   return list
@@ -133,7 +260,6 @@ const costos = computed(() => {
 }
 
 .contenedor-carousel {
-
   min-height: 320px;
 }
 

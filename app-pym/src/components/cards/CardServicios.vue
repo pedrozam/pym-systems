@@ -1,8 +1,15 @@
 <template>
-  <q-card class="card-servicio p-4 bg-gradient text-white shadow-2xl overflow-hidden animate-slide-in-left" bordered
-    flat>
+  <q-card
+    class="card-servicio p-4 bg-gradient text-white shadow-2xl overflow-hidden animate-slide-in-left"
+    bordered
+    flat
+  >
     <div class="card-img-wrap">
-      <img :src="service.image" :alt="service.nombre_servicio" class="card-img" />
+      <img
+        :src="service.image"
+        :alt="service.nombre_servicio"
+        class="card-img"
+      />
       <div class="card-overlay"></div>
       <div class="card-titulo-wrapper">
         <h3 class="card-titulo">{{ service.nombre_servicio }}</h3>
@@ -15,25 +22,34 @@
 
     <q-separator />
 
+    <BotonInicio
+      class="absolute inset-0 w-full h-full bg-black/80 opacity-0 hover:opacity-100 transition-opacity"
+      label="Ver más"
+      icon="visibility"
+      @click="openDialog"
+    />
 
-    <BotonInicio class="absolute inset-0 w-full h-full bg-black/80 opacity-0 hover:opacity-100 transition-opacity"
-      label="Ver más" icon="visibility" @click="openDialog" />
-
-
-    <DialogServicios :service="service" v-model="dialogOpen" />
+    <DialogServicios
+      :service="service"
+      v-model="dialogOpen"
+      :spriteUrl="spriteUrl"
+    />
   </q-card>
 </template>
-
 
 <script setup>
 import { ref } from 'vue'
 import BotonInicio from 'src/components/botones/BotonInicio.vue'
 import DialogServicios from 'components/dialog/DialogServicios.vue'
 
-const { service } = defineProps({
+const { service, spriteUrl } = defineProps({
   service: {
     type: Object,
     required: true,
+  },
+  spriteUrl: {
+    type: String,
+    required: false,
   },
 })
 const dialogOpen = ref(false)
@@ -50,8 +66,9 @@ const openDialog = () => {
   border: 1px solid rgba(14, 176, 255, 0.35);
   background: linear-gradient(145deg, rgba(11, 31, 51, 0.96), rgba(4, 13, 24, 0.85));
   box-shadow: 0 0 30px rgba(12, 173, 255, 0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .card-servicio:hover {

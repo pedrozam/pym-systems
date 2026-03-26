@@ -1,49 +1,92 @@
 <template>
-  <q-card class="q-pa-md bg-dark text-white" style="min-width: 400px; max-width: 500px;">
+  <q-card
+    class="q-pa-md bg-dark text-white"
+    style="min-width: 400px; max-width: 500px"
+  >
     <q-card-section>
       <div class="text-h6 flex items-center justify-between">
         <div class="flex items-center">
-          <img src="/favicon.ico" alt="Logo" class="w-8 h-8 mr-2" />
+          <img
+            src="/favicon.ico"
+            alt="Logo"
+            class="w-8 h-8 mr-2"
+          />
           Contactar a PyM Systems
         </div>
-        <q-btn flat round dense icon="close" @click="$emit('close')" />
+        <q-btn
+          flat
+          round
+          dense
+          icon="close"
+          @click="$emit('close')"
+        />
       </div>
     </q-card-section>
 
     <q-card-section>
-      <InputText class="border-neon p-2 mb-4" etiqueta="Tu nombre *" tipo="text" v-model:valor="form.nombre"
-        :validacion="[val => !!val || 'El nombre es requerido']" />
+      <InputText
+        class="border-neon p-2 mb-4"
+        etiqueta="Tu nombre *"
+        tipo="text"
+        v-model:valor="form.nombre"
+        :validacion="[(val) => !!val || 'El nombre es requerido']"
+      />
 
-      <InputText class="border-neon p-2 mb-4" etiqueta="Empresa o Institución" tipo="text"
-        v-model:valor="form.empresa" />
+      <InputText
+        class="border-neon p-2 mb-4"
+        etiqueta="Empresa o Institución"
+        tipo="text"
+        v-model:valor="form.empresa"
+      />
 
-      <InputText class="border-neon p-2 mb-4" etiqueta="Celular de contacto *" tipo="tel" v-model:valor="form.celular"
-        mascara="########" :validacion="[val => !!val || 'El celular es requerido']" />
+      <InputText
+        class="border-neon p-2 mb-4"
+        etiqueta="Celular de contacto *"
+        tipo="tel"
+        v-model:valor="form.celular"
+        mascara="########"
+        :validacion="[(val) => !!val || 'El celular es requerido']"
+      />
 
-      <InputText class="border-neon p-2 mb-4" etiqueta="Correo electrónico" tipo="email" v-model:valor="form.email"
+      <InputText
+        class="border-neon p-2 mb-4"
+        etiqueta="Correo electrónico"
+        tipo="email"
+        v-model:valor="form.email"
         :validacion="[
-          val => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Ingrese un correo válido'
-        ]" />
+          (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Ingrese un correo válido',
+        ]"
+      />
 
-      <InputText class="border-neon p-2 mb-4" etiqueta="Mensaje a enviar *" tipo="textarea" v-model:valor="form.mensaje"
-        :validacion="[val => !!val || 'El mensaje es requerido']" :rows="4" />
-
-
+      <InputText
+        class="border-neon p-2 mb-4"
+        etiqueta="Mensaje a enviar *"
+        tipo="textarea"
+        v-model:valor="form.mensaje"
+        :validacion="[(val) => !!val || 'El mensaje es requerido']"
+        :rows="4"
+      />
     </q-card-section>
 
     <q-card-actions class="justify-center">
-
-      <q-btn label="Contactar por WhatsApp" color="positive" @click="enviarWhatsApp" :loading="cargando"
-        class="q-px-lg normal-case">
-        <svg width="32" height="32" class="p-1">
+      <q-btn
+        label="Contactar por WhatsApp"
+        color="positive"
+        @click="enviarWhatsApp"
+        :loading="cargando"
+        class="q-px-lg normal-case"
+      >
+        <svg
+          width="32"
+          height="32"
+          class="p-1"
+        >
           <use :xlink:href="`${spriteUrl}#waap`" />
         </svg>
       </q-btn>
     </q-card-actions>
 
-    <q-card-section class="text-center text-sm text-grey-6">
-      * Campos obligatorios
-    </q-card-section>
+    <q-card-section class="text-center text-sm text-grey-6"> * Campos obligatorios </q-card-section>
   </q-card>
 </template>
 
@@ -51,9 +94,15 @@
 import { ref, reactive } from 'vue'
 import { useQuasar } from 'quasar'
 import InputText from '../inputs/InputText.vue'
-import spriteUrl from 'assets/sprite.svg'
+
 const $q = useQuasar()
 const cargando = ref(false)
+const { spriteUrl } = defineProps({
+  spriteUrl: {
+    type: String,
+    required: true,
+  },
+})
 
 const emit = defineEmits(['close'])
 
@@ -62,7 +111,7 @@ const form = reactive({
   empresa: '',
   celular: '',
   email: '',
-  mensaje: ''
+  mensaje: '',
 })
 
 const enviarWhatsApp = () => {
@@ -72,7 +121,7 @@ const enviarWhatsApp = () => {
       type: 'negative',
       message: 'Por favor complete los campos obligatorios (*)',
       position: 'top',
-      timeout: 3000
+      timeout: 3000,
     })
     return
   }
@@ -83,7 +132,7 @@ const enviarWhatsApp = () => {
       type: 'negative',
       message: 'Por favor ingrese un correo electrónico válido',
       position: 'top',
-      timeout: 3000
+      timeout: 3000,
     })
     return
   }
@@ -112,12 +161,12 @@ const enviarWhatsApp = () => {
     type: 'positive',
     message: '¡Mensaje preparado! Se abrirá WhatsApp para enviarlo.',
     position: 'top',
-    timeout: 6000
+    timeout: 6000,
   })
 
   // Limpiar formulario y cerrar
   setTimeout(() => {
-    Object.keys(form).forEach(key => {
+    Object.keys(form).forEach((key) => {
       form[key] = ''
     })
     cargando.value = false

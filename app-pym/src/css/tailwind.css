@@ -136,17 +136,198 @@
   /* Rebote escalado para los puntos de carga */
 }
 
-/* Spotlight del mouse con gradientes de colores */
+/* Spotlight del mouse con efecto de humo y formas variables */
 .mouse-spotlight {
   position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--color-green-700) 0%, transparent 20%, var(--color-blue-400) 50%, transparent 90%);
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  transition: all 0.02s linear;
+  will-change: left, top, filter, transform;
+  animation: morphShape 3s ease-in-out infinite, turbulence 0.5s ease-in-out infinite;
+}
+
+/* Animación para cambiar la forma constantemente */
+@keyframes morphShape {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    filter: blur(12px);
+  }
+
+  25% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    filter: blur(14px);
+  }
+
+  50% {
+    border-radius: 30% 70% 50% 50% / 30% 60% 40% 70%;
+    filter: blur(10px);
+  }
+
+  75% {
+    border-radius: 70% 30% 40% 60% / 50% 40% 60% 50%;
+    filter: blur(16px);
+  }
+
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    filter: blur(12px);
+  }
+}
+
+/* Capas de humo con diferentes velocidades de morphing */
+.mouse-spotlight::before,
+.mouse-spotlight::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.mouse-spotlight::before {
+  background: radial-gradient(circle at 30% 40%,
+      rgba(255, 100, 100, 0.7) 0%,
+      rgba(100, 200, 255, 0.5) 35%,
+      rgba(255, 100, 200, 0.3) 65%,
+      transparent 95%);
+  filter: blur(18px);
+  animation: morphShapeFast 1.5s ease-in-out infinite;
+}
+
+.mouse-spotlight::after {
+  background: radial-gradient(circle at 70% 60%,
+      rgba(0, 255, 200, 0.6) 0%,
+      rgba(255, 150, 50, 0.4) 45%,
+      rgba(150, 50, 255, 0.2) 75%,
+      transparent 100%);
+  filter: blur(24px);
+  animation: morphShapeSlow 2.5s ease-in-out infinite;
+}
+
+@keyframes morphShapeFast {
+  0% {
+    border-radius: 45% 55% 35% 65% / 55% 40% 60% 45%;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+
+  50% {
+    border-radius: 65% 35% 55% 45% / 45% 60% 40% 55%;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  100% {
+    border-radius: 45% 55% 35% 65% / 55% 40% 60% 45%;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+@keyframes morphShapeSlow {
+  0% {
+    border-radius: 70% 30% 60% 40% / 50% 65% 35% 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  33% {
+    border-radius: 35% 65% 45% 55% / 40% 50% 50% 60%;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  66% {
+    border-radius: 55% 45% 70% 30% / 60% 40% 55% 45%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    border-radius: 70% 30% 60% 40% / 50% 65% 35% 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+@keyframes smokeDrift {
+  0% {
+    transform: translate(-50%, -50%) translateX(-5px) translateY(-5px);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) translateX(5px) translateY(5px);
+    opacity: 0.9;
+  }
+}
+
+/* Animación de desvanecimiento para las estelas */
+@keyframes fadeOutSmoke {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+    opacity: 0.8;
+    filter: blur(8px);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
+    opacity: 0.5;
+    filter: blur(15px);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2) rotate(10deg);
+    opacity: 0;
+    filter: blur(25px);
+  }
+}
+
+/* Clase para las estelas de humo con formas variables */
+.smoke-trail {
+  position: fixed;
   pointer-events: none;
   z-index: 5;
   transform: translate(-50%, -50%);
-  /* Efecto de luz que sigue al mouse */
+  animation: fadeOutSmoke 0.8s ease-out forwards;
+  will-change: left, top, width, height, border-radius;
+}
+
+/* Efecto de turbulencia para el humo */
+@keyframes turbulence {
+  0% {
+    transform: translate(-50%, -50%) skew(0deg, 0deg);
+  }
+
+  25% {
+    transform: translate(-50%, -50%) skew(2deg, 1deg);
+  }
+
+  75% {
+    transform: translate(-50%, -50%) skew(-1deg, -2deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) skew(0deg, 0deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .mouse-spotlight {
+    width: 100px !important;
+    height: 100px !important;
+    filter: blur(6px);
+  }
+
+  .mouse-spotlight::before,
+  .mouse-spotlight::after {
+    display: none;
+    /* Reduce capas en móvil para mejor rendimiento */
+  }
+
+  .smoke-trail {
+    display: none;
+    /* Desactiva estelas en móvil */
+  }
 }
 
 /* Toolbar personalizada con altura fija */

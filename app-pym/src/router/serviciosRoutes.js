@@ -51,6 +51,10 @@ const serviciosRoutes = [
     path: 'presentacion',
     component: () => import('pages/presentacion/PresentacionIndex.vue'),
   },
+  {
+    path: 'quienes-somos',
+    component: () => import('pages/presentacion/QuienesSomos.vue'),
+  },
 ]
 
 export default serviciosRoutes
