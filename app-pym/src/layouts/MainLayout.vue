@@ -2,11 +2,16 @@
   <div
     class="digital-laptop-bg"
     @mousemove="updateMouse"
+    @click="handleClick"
   >
     <div
       class="mouse-spotlight"
+      :class="{ active: isSpotlightActive }"
       :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
-    ></div>
+    >
+      <div class="scan-line-h"></div>
+      <div class="scan-line-v"></div>
+    </div>
 
     <div class="neon-typing-lines"></div>
     <div class="neon-typing-highlight"></div>
@@ -36,7 +41,7 @@
                 v-model="model"
                 flat
                 stretch
-                toggle-color="red"
+                toggle-color="primary"
                 :options="menuOptions"
                 class="items-center gap-1 icon-hover neon-menu-items"
               />
@@ -136,6 +141,7 @@
     />
   </q-dialog>
 </template>
+
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useQuasar } from 'quasar'
@@ -152,13 +158,10 @@ const mouseY = ref(0)
 const showLogin = ref(false)
 const showContactar = ref(false)
 const model = ref('inicio')
+const isSpotlightActive = ref(false)
 
-// Variables para el efecto de humo
-let hue = 0
-let lastX = 0
-let lastY = 0
 let spotlightElement = null
-let lastTrailTime = 0
+let activeTimeout = null
 
 const menuOptions = [
   { label: 'Inicio', value: 'inicio', icon: 'home', to: '/' },
@@ -172,111 +175,71 @@ function updateMouse(event) {
   mouseX.value = event.clientX
   mouseY.value = event.clientY
 
-  // Actualizar el gradiente de colores dinámicamente
+  // Activar efecto visual al mover el mouse
   if (spotlightElement) {
-    // Calcular velocidad del mouse
-    const deltaX = Math.abs(event.clientX - lastX)
-    const deltaY = Math.abs(event.clientY - lastY)
-    const speed = Math.min(Math.sqrt(deltaX * deltaX + deltaY * deltaY) * 1.5, 25)
+    isSpotlightActive.value = true
+    clearTimeout(activeTimeout)
+    activeTimeout = setTimeout(() => {
+      isSpotlightActive.value = false
+    }, 200)
 
-    // Cambiar color basado en velocidad y posición
-    const positionHue = (event.clientX / window.innerWidth) * 360
-    hue = (hue + speed + 2) % 360
-
-    // Mezclar color basado en posición y velocidad
-    const finalHue = (hue + positionHue) / 2
-
-    // Crear gradiente radial con múltiples puntos de luz para efecto orgánico
-    const gradient = `radial-gradient(circle at ${30 + Math.sin(Date.now() * 0.005) * 20}% ${40 + Math.cos(Date.now() * 0.007) * 20}%, 
-      hsla(${finalHue}, 100%, 65%, 0.95) 0%,
-      hsla(${(finalHue + 40) % 360}, 100%, 60%, 0.85) 12%,
-      hsla(${(finalHue + 80) % 360}, 100%, 55%, 0.75) 25%,
-      hsla(${(finalHue + 120) % 360}, 100%, 50%, 0.65) 38%,
-      hsla(${(finalHue + 160) % 360}, 100%, 45%, 0.55) 52%,
-      hsla(${(finalHue + 200) % 360}, 100%, 40%, 0.45) 66%,
-      hsla(${(finalHue + 240) % 360}, 100%, 35%, 0.35) 80%,
-      transparent 100%)`
-
-    spotlightElement.style.background = gradient
-
-    // Ajustar tamaño basado en velocidad (más rápido = más grande)
-    const baseSize = 150
-    const sizeIncrease = Math.min(speed * 3, 80)
-    spotlightElement.style.width = `${baseSize + sizeIncrease}px`
-    spotlightElement.style.height = `${baseSize + sizeIncrease}px`
-
-    // Crear estela de humo con limitador de frecuencia
+    // Crear efecto de datos al mover rápido
     const now = Date.now()
-    if (speed > 5 && now - lastTrailTime > 50) {
-      const numberOfTrails = Math.min(Math.floor(speed / 8), 3)
-      for (let i = 0; i < numberOfTrails; i++) {
-        setTimeout(() => {
-          createSmokeTrail(event.clientX, event.clientY, finalHue, speed, i)
-        }, i * 30)
-      }
-      lastTrailTime = now
+    if (window._lastDataPoint && now - window._lastDataPoint > 100) {
+      createDataEffect(event.clientX, event.clientY)
+      window._lastDataPoint = now
     }
+  }
+}
 
-    lastX = event.clientX
-    lastY = event.clientY
+function handleClick(event) {
+  // Crear efecto ripple al hacer click
+  createDigitalRipple(event.clientX, event.clientY)
+
+  // Crear múltiples puntos de datos
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      createDataEffect(
+        event.clientX + (Math.random() - 0.5) * 50,
+        event.clientY + (Math.random() - 0.5) * 50,
+      )
+    }, i * 50)
   }
 }
 
-// Función para crear estela de humo con formas aleatorias
-function createSmokeTrail(x, y, baseHue, speed) {
-  const trail = document.createElement('div')
+function createDataEffect(x, y) {
+  // Crear puntos de datos
+  const dataPoint = document.createElement('div')
+  dataPoint.className = 'data-point'
+  dataPoint.style.left = x + 'px'
+  dataPoint.style.top = y + 'px'
+  document.body.appendChild(dataPoint)
 
-  // Tamaño variable basado en velocidad y índice
-  const size = 40 + Math.random() * 80 + speed * 1.5
+  setTimeout(() => dataPoint.remove(), 500)
 
-  // Formas aleatorias para cada estela
-  const randomShape = getRandomShape()
+  // Crear código flotante aleatorio
+  const codeDigits = ['01', '10', '11', '00', '0', '1', 'FF', 'A1', 'B2']
+  const codeDigit = document.createElement('div')
+  codeDigit.className = 'code-digit'
+  codeDigit.textContent = codeDigits[Math.floor(Math.random() * codeDigits.length)]
+  codeDigit.style.left = x + (Math.random() - 0.5) * 40 + 'px'
+  codeDigit.style.top = y + (Math.random() - 0.5) * 40 + 'px'
+  document.body.appendChild(codeDigit)
 
-  trail.className = 'smoke-trail'
-  trail.style.cssText = `
-    left: ${x + (Math.random() - 0.5) * 30}px;
-    top: ${y + (Math.random() - 0.5) * 30}px;
-    width: ${size}px;
-    height: ${size}px;
-    border-radius: ${randomShape};
-    background: radial-gradient(circle at ${20 + Math.random() * 60}% ${20 + Math.random() * 60}%,
-      hsla(${baseHue + Math.random() * 80}, 100%, 65%, 0.8) 0%,
-      hsla(${baseHue + 100 + Math.random() * 80}, 100%, 60%, 0.6) 25%,
-      hsla(${baseHue + 200 + Math.random() * 80}, 100%, 55%, 0.4) 50%,
-      transparent 85%);
-    filter: blur(${6 + Math.random() * 18 + speed * 0.5}px);
-    animation: fadeOutSmoke ${0.6 + Math.random() * 0.6}s ease-out forwards;
-    transform: translate(-50%, -50%) rotate(${Math.random() * 360}deg);
-  `
-
-  document.body.appendChild(trail)
-
-  // Remover la estela después de la animación
-  setTimeout(() => {
-    if (trail && trail.remove) {
-      trail.remove()
-    }
-  }, 1200)
+  setTimeout(() => codeDigit.remove(), 1000)
 }
 
-// Generar formas orgánicas aleatorias
-function getRandomShape() {
-  const shapes = [
-    `${40 + Math.random() * 30}% ${50 + Math.random() * 30}% ${30 + Math.random() * 40}% ${50 + Math.random() * 30}% / ${45 + Math.random() * 30}% ${40 + Math.random() * 30}% ${50 + Math.random() * 30}% ${45 + Math.random() * 30}%`,
-    `${50 + Math.random() * 40}% ${30 + Math.random() * 40}% ${40 + Math.random() * 30}% ${60 + Math.random() * 30}% / ${55 + Math.random() * 30}% ${45 + Math.random() * 30}% ${40 + Math.random() * 30}% ${50 + Math.random() * 30}%`,
-    `${45 + Math.random() * 35}% ${55 + Math.random() * 35}% ${35 + Math.random() * 45}% ${45 + Math.random() * 35}% / ${50 + Math.random() * 40}% ${50 + Math.random() * 30}% ${45 + Math.random() * 35}% ${55 + Math.random() * 30}%`,
-  ]
-  return shapes[Math.floor(Math.random() * shapes.length)]
-}
+function createDigitalRipple(x, y) {
+  const ripple = document.createElement('div')
+  ripple.className = 'digital-ripple'
+  ripple.style.left = x + 'px'
+  ripple.style.top = y + 'px'
+  ripple.style.width = '40px'
+  ripple.style.height = '40px'
+  ripple.style.transform = 'translate(-50%, -50%)'
+  document.body.appendChild(ripple)
 
-// Limpiar estelas periódicamente
-function cleanupSmokeTrails() {
-  const trails = document.querySelectorAll('.smoke-trail')
-  if (trails.length > 60) {
-    for (let i = 0; i < trails.length - 40; i++) {
-      trails[i].remove()
-    }
-  }
+  setTimeout(() => ripple.remove(), 600)
 }
 
 function selectMenuItem(option) {
@@ -289,35 +252,28 @@ function selectMenuItem(option) {
 onMounted(() => {
   $q.dark.set(false)
 
-  // Obtener referencia al elemento spotlight
   setTimeout(() => {
     spotlightElement = document.querySelector('.mouse-spotlight')
     if (spotlightElement) {
-      spotlightElement.style.width = '150px'
-      spotlightElement.style.height = '150px'
+      spotlightElement.style.width = '200px'
+      spotlightElement.style.height = '200px'
     }
   }, 100)
-
-  // Limpiar estelas cada 4 segundos
-  const cleanupInterval = setInterval(cleanupSmokeTrails, 4000)
 
   setTimeout(() => {
     logoInToolbar.value = true
   }, 5000)
 
-  // Guardar intervalo para limpiar en el unmount
-  window._cleanupInterval = cleanupInterval
+  window._lastDataPoint = 0
 })
 
 onBeforeUnmount(() => {
-  // Limpiar todas las estelas
-  const trails = document.querySelectorAll('.smoke-trail')
-  trails.forEach((trail) => trail.remove())
+  if (activeTimeout) clearTimeout(activeTimeout)
 
-  // Limpiar intervalo
-  if (window._cleanupInterval) {
-    clearInterval(window._cleanupInterval)
-  }
+  // Limpiar elementos creados
+  document
+    .querySelectorAll('.data-point, .code-digit, .digital-ripple')
+    .forEach((el) => el.remove())
 })
 </script>
 
@@ -351,12 +307,11 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
 }
 
-/* Estilos responsivos para mostrar/ocultar menús */
+/* Estilos responsivos */
 @media (min-width: 768px) {
   .mobile-menu-container {
     display: none;
   }
-
   .desktop-menu {
     display: flex;
   }
@@ -366,57 +321,67 @@ onBeforeUnmount(() => {
   .desktop-menu {
     display: none;
   }
-
   .mobile-menu-container {
     display: block;
   }
+  .custom-toolbar {
+    padding: 0.5rem;
+  }
+  .right-buttons {
+    gap: 0.25rem;
+  }
 }
 
-/* Estilos para los efectos neon y animaciones */
+/* Efectos neon para el menú */
 .neon-menu-items :deep(.q-btn) {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  color: #b5e2ff;
 }
 
-/* Efecto neon al pasar el mouse */
 .neon-menu-items :deep(.q-btn:hover) {
   text-shadow:
-    0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(255, 215, 0, 0.6),
-    0 0 30px rgba(255, 215, 0, 0.4);
+    0 0 10px #05d7ff,
+    0 0 20px #05d7ff,
+    0 0 30px #05d7ff;
   transform: scale(1.05);
-  animation: neonPulse 1s infinite;
+  color: #05d7ff;
 }
 
-/* Efecto digital al hacer clic */
 .neon-menu-items :deep(.q-btn:active) {
   transform: scale(0.95);
-  animation: digitalClick 0.3s ease-out;
 }
 
-/* Efecto para el botón del menú móvil */
+.neon-menu-items :deep(.q-btn-item--active) {
+  text-shadow:
+    0 0 15px #05d7ff,
+    0 0 25px #05d7ff;
+  color: #05d7ff !important;
+}
+
+.neon-menu-items :deep(.q-btn-item--active)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #05d7ff, transparent);
+  animation: linePulse 1.5s infinite;
+}
+
 .neon-menu-btn {
   transition: all 0.3s ease;
+  color: #b5e2ff;
 }
 
 .neon-menu-btn:hover {
   text-shadow:
-    0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(255, 215, 0, 0.6);
+    0 0 10px #05d7ff,
+    0 0 20px #05d7ff;
   transform: scale(1.1);
-  animation: neonPulse 1s infinite;
-}
-
-.neon-menu-btn:active {
-  transform: scale(0.9);
-  animation: digitalClick 0.3s ease-out;
-}
-
-/* Estilos para los items del menú móvil */
-.mobile-menu-list {
-  min-width: 220px;
-  padding: 0.5rem 0;
+  color: #05d7ff;
 }
 
 .mobile-menu-item {
@@ -427,136 +392,54 @@ onBeforeUnmount(() => {
   transition: all 0.3s ease;
   color: #fff;
   font-weight: 500;
-  position: relative;
-  overflow: hidden;
-  font-size: 0.95rem;
 }
 
 .mobile-menu-item:hover {
   text-shadow:
-    0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(255, 215, 0, 0.6);
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    0 0 10px #05d7ff,
+    0 0 20px #05d7ff;
+  background: linear-gradient(90deg, transparent, rgba(5, 215, 255, 0.1), transparent);
   transform: translateX(5px);
-  animation: neonPulse 1s infinite;
-}
-
-.mobile-menu-item:active {
-  transform: translateX(5px) scale(0.98);
-  animation: digitalClick 0.3s ease-out;
-}
-
-.mobile-menu-item .q-icon {
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.mobile-menu-item:hover .q-icon {
-  transform: scale(1.1);
+  color: #05d7ff;
 }
 
 .login-item {
-  border-top: 1px solid rgba(255, 215, 0, 0.3);
+  border-top: 1px solid rgba(5, 215, 255, 0.3);
   margin-top: 0.5rem;
   padding-top: 0.75rem;
 }
 
-/* Animaciones */
-@keyframes neonPulse {
-  0% {
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  }
-
-  50% {
-    text-shadow:
-      0 0 20px rgba(255, 215, 0, 0.8),
-      0 0 30px rgba(255, 215, 0, 0.6);
-  }
-
-  100% {
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  }
-}
-
-@keyframes digitalClick {
-  0% {
-    filter: brightness(1);
-    letter-spacing: normal;
-    transform: scale(1);
-  }
-
-  50% {
-    filter: brightness(1.3);
-    letter-spacing: 2px;
-    transform: scale(0.98);
-  }
-
-  100% {
-    filter: brightness(1);
-    letter-spacing: normal;
-    transform: scale(1);
-  }
-}
-
-/* Efecto de brillo adicional para items seleccionados */
-.neon-menu-items :deep(.q-btn-item--active) {
-  text-shadow:
-    0 0 15px rgba(255, 215, 0, 1),
-    0 0 25px rgba(255, 215, 0, 0.8);
-  position: relative;
-}
-
-.neon-menu-items :deep(.q-btn-item--active)::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #ffd700, transparent);
-  animation: linePulse 1.5s infinite;
-}
-
 @keyframes linePulse {
-  0% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scaleX(0.8);
   }
-
   50% {
     opacity: 1;
     transform: scaleX(1);
   }
-
-  100% {
-    opacity: 0.3;
-    transform: scaleX(0.8);
-  }
 }
 
-/* Ajustes para el toolbar en móvil */
-@media (max-width: 767px) {
-  .custom-toolbar {
-    padding: 0.5rem;
-  }
-
-  .right-buttons {
-    gap: 0.25rem;
-  }
-}
-
-/* Estilo para el menú desplegable */
 :deep(.q-menu) {
   background: rgba(0, 0, 0, 0.95) !important;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid rgba(5, 215, 255, 0.3);
   border-radius: 8px;
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(255, 215, 0, 0.2);
+    0 0 20px rgba(5, 215, 255, 0.2);
 }
 
-:deep(.q-menu .q-item) {
-  padding: 0;
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.floating-button:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
 }
 </style>

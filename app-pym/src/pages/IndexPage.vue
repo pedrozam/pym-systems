@@ -1,17 +1,13 @@
 <template>
   <q-page class="q-pa-none">
-    <ServiciosIndex :spriteUrl="spriteUrl" />
-    <PresentacionIndex :spriteUrl="spriteUrl" />
+    <div class="q-pa-md">
+      <h1 class="text-h4 text-center">Bienvenidos</h1>
+      <p class="text-subtitle2 text-center text-white">
+        Tu solución integral para la gestión de sistemas informaticos y automatización de procesos
+        empresariales.
+      </p>
+    </div>
   </q-page>
 </template>
 
-<script setup>
-import ServiciosIndex from 'pages/servicios/ServiciosIndex.vue'
-import PresentacionIndex from 'pages/presentacion/PresentacionIndex.vue'
-const { spriteUrl } = defineProps({
-  spriteUrl: {
-    type: String,
-    required: true,
-  },
-})
-</script>
+<script setup></script>

@@ -31,9 +31,7 @@ const options = {
         }
     },
     apis: [
-            `${path.join(__dirname, "../routes/mid_defensorias.routes.js")}`,
-            
-            
+            `${path.join(__dirname, "../routes/serviciospym.routes.js")}`,
 
         ]
 };

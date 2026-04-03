@@ -5,7 +5,8 @@ const path = require('path');
 const testRoutes = require ('./app/routes/test.routes')
 const workflowRoutes= require ("./app/routes/workflow.routes")
 const parametricasRoutes= require ("./app/routes/parametricas.routes")
-const authRoutes= require ("./app/routes/auth.routes")
+const authRoutes = require("./app/routes/auth.routes")
+const serviciosRoutes = require("./app/routes/serviciospym.routes")
 
 const cors = require("cors")
 
@@ -37,7 +38,8 @@ app.use('/api',testRoutes);
 
 app.use('/api/workflow',workflowRoutes);
 app.use('/api/parametricas',parametricasRoutes);
-app.use('/api/auth',authRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/servicios', serviciosRoutes);
 
 
 module.exports = app;
