@@ -14,12 +14,6 @@ services:
       - pym
     environment:
       - TZ=America/La_Paz
-      - DB_USER=pym_user
-      - DB_HOST=postgres
-      - DB_PASSWORD=fzZf9DdAZi
-      - DB_NAME=db_pymsystems
-      - DB_PORT=5432
-      - NODE_ENV=production
     volumes:
       - ./backend-pym/src/app/public:/app/src/app/public
       - /etc/localtime:/etc/localtime:ro
@@ -35,14 +29,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      # Configuración de nginx
-      - ./nginx/frontend.conf:/etc/nginx/conf.d/default.conf:ro
-      # Certificados SSL
-      - ./ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - ./ssl/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
-      # NO montes ./dist/pwa porque ya está en el builder
+      - ./nginx/frontend.conf:/etc/nginx/frontend.conf
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
+
     depends_on:
       - app
       - postgres
@@ -68,6 +58,9 @@ services:
       - /etc/timezone:/etc/timezone:ro
     networks:
       - pym
+volumes:
+  pym:
+  nginx:
 
 networks:
   pym:
