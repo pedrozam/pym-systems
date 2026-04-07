@@ -3,6 +3,14 @@
     class="relative bg-cover bg-center bg-no-repeat"
     :style="backgroundStyle"
   >
+    <div class="text-center text-white mb-6">
+      <h2 class="text-3xl font-bold">Tecnologias utilizadas</h2>
+      <p class="text-base text-cyan-200">
+        Aqui podrás revisar las tecnologías que empleamos en nuestros proyectos. Da clic a cualquiera de ellas para que puedas tener mas información.
+      </p>
+      
+
+    </div>
     <!-- Contenedor principal -->
     <div class="relative min-h-screen w-full overflow-hidden">
       <!-- PRIMERA ETAPA: texto centrado vertical/horizontalmente -->
