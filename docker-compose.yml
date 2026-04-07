@@ -14,6 +14,12 @@ services:
       - pym
     environment:
       - TZ=America/La_Paz
+      - DB_USER=pym_user
+      - DB_HOST=postgres
+      - DB_PASSWORD=fzZf9DdAZi
+      - DB_NAME=db_pymsystems
+      - DB_PORT=5432
+      - NODE_ENV=production
     volumes:
       - ./backend-pym/src/app/public:/app/src/app/public
       - /etc/localtime:/etc/localtime:ro
