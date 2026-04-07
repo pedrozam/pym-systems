@@ -1,0 +1,24 @@
+// ============================================
+// IMPORTAR TODOS LOS ESTILOS
+// ============================================
+
+// Animaciones
+@import './animaciones.scss';
+
+// Layouts y estructura
+@import './layoutsElements.scss';
+
+// Componentes
+@import './cards.scss';
+@import './botones.scss';
+
+// Tipografía
+@import './tipografia.scss';
+
+// Estilos para Quasar Tooltip
+:deep(.q-tooltip) {
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 6px 12px !important;
+  color: white !important;
+}

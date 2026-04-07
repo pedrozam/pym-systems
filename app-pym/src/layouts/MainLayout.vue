@@ -6,12 +6,8 @@
   >
     <div
       class="mouse-spotlight"
-      :class="{ active: isSpotlightActive }"
       :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
-    >
-      <div class="scan-line-h"></div>
-      <div class="scan-line-v"></div>
-    </div>
+    ></div>
 
     <div class="neon-typing-lines"></div>
     <div class="neon-typing-highlight"></div>
@@ -45,6 +41,15 @@
                 :options="menuOptions"
                 class="items-center gap-1 icon-hover neon-menu-items"
               />
+
+              <q-btn
+                @click="showLogin = true"
+                round
+                class="login-btn"
+              >
+                <q-icon name="account_circle" />
+                <q-tooltip>Iniciar sesión</q-tooltip>
+              </q-btn>
             </div>
 
             <!-- Contenedor para botones de la derecha -->
@@ -255,8 +260,8 @@ onMounted(() => {
   setTimeout(() => {
     spotlightElement = document.querySelector('.mouse-spotlight')
     if (spotlightElement) {
-      spotlightElement.style.width = '200px'
-      spotlightElement.style.height = '200px'
+      spotlightElement.style.width = '80px'
+      spotlightElement.style.height = '80px'
     }
   }, 100)
 
@@ -337,38 +342,54 @@ onBeforeUnmount(() => {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  color: #b5e2ff;
+  color: #a8d8ff;
+  background: transparent !important;
+  font-weight: 500;
+}
+
+.neon-menu-items :deep(.q-btn::before) {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
 }
 
 .neon-menu-items :deep(.q-btn:hover) {
   text-shadow:
-    0 0 10px #05d7ff,
-    0 0 20px #05d7ff,
-    0 0 30px #05d7ff;
-  transform: scale(1.05);
-  color: #05d7ff;
+    0 0 12px #00f0ff,
+    0 0 24px rgba(0, 240, 255, 0.6);
+  transform: scale(1.08);
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.05) !important;
+}
+
+.neon-menu-items :deep(.q-btn:hover::before) {
+  width: 80%;
 }
 
 .neon-menu-items :deep(.q-btn:active) {
   transform: scale(0.95);
 }
 
-.neon-menu-items :deep(.q-btn-item--active) {
+.neon-menu-items :deep(.q-btn[aria-pressed='true']) {
   text-shadow:
-    0 0 15px #05d7ff,
-    0 0 25px #05d7ff;
-  color: #05d7ff !important;
+    0 0 20px #00f0ff,
+    0 0 40px #00f0ff,
+    0 0 60px rgba(0, 240, 255, 1) !important;
+  color: #00f0ff !important;
+  background: rgba(0, 240, 255, 0.15) !important;
+  animation: heartbeat 1.2s ease-in-out infinite !important;
 }
 
-.neon-menu-items :deep(.q-btn-item--active)::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #05d7ff, transparent);
-  animation: linePulse 1.5s infinite;
+.neon-menu-items :deep(.q-btn[aria-pressed='true'])::before {
+  width: 95% !important;
+  height: 4px;
+  background: radial-gradient(ellipse at center, #00f0ff, #dce0e4);
 }
 
 .neon-menu-btn {
@@ -409,15 +430,42 @@ onBeforeUnmount(() => {
   padding-top: 0.75rem;
 }
 
-@keyframes linePulse {
+/* Estilos para el botón de login */
+.login-btn {
+  transition: all 0.3s ease !important;
+  position: relative;
+  color: #a8d8ff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn:hover {
+  text-shadow:
+    0 0 12px #00f0ff,
+    0 0 24px rgba(0, 240, 255, 0.6) !important;
+  transform: scale(1.12);
+  color: #00f0ff !important;
+  background: rgba(0, 240, 255, 0.1) !important;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
+}
+
+@keyframes heartbeat {
   0%,
   100% {
-    opacity: 0.3;
-    transform: scaleX(0.8);
+    transform: scale(1);
   }
-  50% {
-    opacity: 1;
-    transform: scaleX(1);
+  14% {
+    transform: scale(1.08);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.08);
+  }
+  70% {
+    transform: scale(1);
   }
 }
 

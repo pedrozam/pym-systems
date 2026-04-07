@@ -1,0 +1,122 @@
+// ============================================
+// BOTONES Y ELEMENTOS INTERACTIVOS
+// ============================================
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.15);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Los colores son configurados dinámicamente desde Vue */
+}
+
+/* CEO Image Container */
+.ceo-image {
+  position: relative;
+  width: 280px;
+  height: 320px;
+  margin: 0 auto 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ceo-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 0.5s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.ceo-photo-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, rgba(22, 179, 196, 0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Overlay para CV */
+.cv-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 10;
+  cursor: pointer;
+  animation: fadeInOverlay 0.3s ease;
+
+  svg {
+    filter: drop-shadow(0 0 5px rgba(22, 179, 196, 0.5));
+  }
+
+  span {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: rgba(22, 179, 196, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid rgba(22, 179, 196, 0.5);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ceo-image {
+    width: 220px;
+    height: 260px;
+  }
+
+  .cv-overlay span {
+    font-size: 0.75rem;
+  }
+
+  .cv-overlay svg {
+    width: 30px;
+    height: 30px;
+  }
+}

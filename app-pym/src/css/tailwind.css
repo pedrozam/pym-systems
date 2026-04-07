@@ -197,7 +197,7 @@
   width: 24px;
   height: 24px;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 5;
   transform: translate(-50%, -50%);
   transition: all 0.05s linear;
   will-change: left, top;
@@ -309,7 +309,7 @@
   box-shadow: 0 0 8px #05d7ff;
   animation: dataPointPulse 0.5s ease-out forwards;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 5;
 }
 
 @keyframes dataPointPulse {
@@ -335,7 +335,7 @@
   animation: codeFloat 0.8s ease-out forwards;
   pointer-events: none;
   white-space: nowrap;
-  z-index: 9998;
+  z-index: 5;
 }
 
 @keyframes codeFloat {

@@ -1,0 +1,172 @@
+// ============================================
+// CARDS Y CONTENEDORES DE CONTENIDO
+// ============================================
+
+/* Cards neon */
+.card-neon {
+  background: rgba(11, 31, 51, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid rgba(22, 179, 196, 0.3);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    border-color: #16b3c4;
+    box-shadow: 0 0 30px rgba(22, 179, 196, 0.3);
+    transform: translateY(-5px);
+  }
+}
+
+/* CEO Cards */
+.ceo-card {
+  background: rgba(11, 31, 51, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid rgba(22, 179, 196, 0.3);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.6s ease-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &:hover {
+    border-color: #16b3c4;
+    box-shadow: 0 0 30px rgba(22, 179, 196, 0.4);
+    transform: translateY(-5px);
+
+    .ceo-photo {
+      transform: scale(1.05);
+    }
+
+    .ceo-photo-glow {
+      opacity: 1;
+      animation: photoGlow 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+/* Team Cards */
+.team-card {
+  background: rgba(11, 31, 51, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(22, 179, 196, 0.2);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    border-color: #16b3c4;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 20px rgba(22, 179, 196, 0.3);
+  }
+}
+
+/* Imagen con degradado y rotación */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  background: linear-gradient(135deg, #16b3c4, #4fd1e8, #0b1f33);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.rotating-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: opacity 0.5s ease-in-out;
+  animation: imageFade 0.5s ease-in-out;
+}
+
+.image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
+  z-index: 10;
+  border-top: 1px solid rgba(22, 179, 196, 0.3);
+  animation: slideUpIn 0.5s ease-out;
+}
+
+.floating-shapes {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 40%, rgba(22, 179, 196, 0.3), transparent 70%);
+  animation: floatShapes 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Team Images */
+.team-image {
+  margin-bottom: 1rem;
+}
+
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  background: rgba(22, 179, 196, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .image-container {
+    height: 250px;
+    margin-top: 1rem;
+  }
+
+  .ceo-card,
+  .team-card {
+    margin-bottom: 1rem;
+  }
+}
