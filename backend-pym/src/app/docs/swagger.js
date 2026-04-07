@@ -6,8 +6,8 @@ const path = require("path")
 dotenv.config();
 const port = process.env.PORT || 3000;
 const uri = process.env.URI || 'http://localhost';
-//Metadata info about our API
 
+//Metadata info about our API
 const options = {
     definition: {
         openapi: "3.0.0",
@@ -17,7 +17,7 @@ const options = {
         },
         servers: [
             {
-                url: `${uri}:${port}`
+                url: "/"
             }
         ],
         components: {

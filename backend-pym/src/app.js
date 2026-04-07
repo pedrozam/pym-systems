@@ -25,7 +25,7 @@ app.use('/public', express.static(path.join(__dirname, 'app', 'public')));
 app.use(express.json());
 
 app.use(cors({
-  origin: ['https://www.pymsystems.com', 'https://pymsystems.com', 'http://localhost:5173', 'http://localhost:3000'],
+  origin: ['https://www.pymsystems.com', 'https://pymsystems.com', 'http://localhost:9000', 'http://localhost:5173', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
