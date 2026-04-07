@@ -14,7 +14,7 @@ const cors = require("cors")
 const app = express();
 
 dotenv.config(); 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const uri = process.env.URI || 'http://localhost';
 
 
@@ -25,7 +25,14 @@ app.use('/public', express.static(path.join(__dirname, 'app', 'public')));
 app.use(express.json());
 
 app.use(cors({
-  origin: ['https://www.pymsystems.com', 'https://pymsystems.com', 'http://localhost:9000', 'http://localhost:5173', 'http://localhost:3000'],
+  origin: [
+    'https://www.pymsystems.com',
+    'https://pymsystems.com',
+    'http://localhost:9000', 
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5000'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

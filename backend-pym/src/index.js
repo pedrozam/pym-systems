@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const {swaggerDocs: V1SwaggerDocs} = require("./app/docs/swagger")
 
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const uri = process.env.URI || 'http://localhost';
 
 
