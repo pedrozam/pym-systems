@@ -6,6 +6,10 @@ const path = require("path")
 dotenv.config();
 const port = process.env.PORT || 3000;
 const uri = process.env.URI || 'http://localhost';
+const nodeEnv = process.env.NODE_ENV || 'development';
+
+// En producción usa /backend, en desarrollo usa /
+const serverUrl = nodeEnv === 'production' ? "/backend" : "/";
 
 //Metadata info about our API
 const options = {
@@ -17,7 +21,8 @@ const options = {
         },
         servers: [
             {
-                url: "/backend"
+                url: serverUrl,
+                description: nodeEnv === 'production' ? 'Production Server (via nginx proxy)' : 'Development Server'
             }
         ],
         components: {
@@ -42,9 +47,11 @@ const swaggerSpec = swaggerJSDoc(options);
 const swaggerDocs = (app, port) => {
     const customOptions = {
         swaggerOptions: {
-            url: "/backend/api/docs.json",
-            deepLinking: true
-        }
+            deepLinking: true,
+            url: nodeEnv === 'production' ? '/backend/api/docs.json' : '/api/docs.json',
+            persistAuthorization: true
+        },
+        customCss: '.swagger-ui { padding-top: 1rem; }'
     };
     
     app.use('/api/docs', swaggerUi.serve);
