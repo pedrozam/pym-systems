@@ -17,7 +17,7 @@ const options = {
         },
         servers: [
             {
-                url: "/"
+                url: "/backend"
             }
         ],
         components: {
@@ -37,9 +37,23 @@ const options = {
 };
 //Docs in JSON format
 const swaggerSpec = swaggerJSDoc(options);
+
+// Configuración personalizada para Swagger UI
+const swaggerOptions = {
+    swaggerOptions: {
+        url: "/backend/api/docs.json",
+        urls: [
+            {
+                url: "/backend/api/docs.json",
+                name: "V1"
+            }
+        ]
+    }
+};
+
 //Function to setup our docs
 const swaggerDocs = (app, port) => {
-    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerOptions));
     app.use('/api/docs.json', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(swaggerSpec);
