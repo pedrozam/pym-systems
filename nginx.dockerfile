@@ -25,11 +25,12 @@ ADD ./nginx/frontend.conf /etc/nginx/conf.d/default.conf
 # Verificar que los archivos se copiaron correctamente
 RUN ls -la /usr/share/nginx/html && \
     test -f /usr/share/nginx/html/index.html || echo "⚠️ index.html no encontrado" && \
+    test -f /usr/share/nginx/html/manifest.json || echo "⚠️ manifest.json no encontrado" && \
     test -f /usr/share/nginx/html/service-worker.js || echo "⚠️ service-worker.js no encontrado"
 
-# Healthcheck para verificar que el service worker está accesible
+# Healthcheck para verificar que los archivos críticos son accesibles
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/service-worker.js || exit 1
+    CMD curl -f http://localhost/manifest.json && curl -f http://localhost/service-worker.js || exit 1
 
 EXPOSE 80 443
 
