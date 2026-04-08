@@ -14,8 +14,12 @@ services:
     environment:
       - TZ=America/La_Paz
       - PORT=5000
-      - URI=0.0.0.0
       - NODE_ENV=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=pym_user
+      - DB_PASSWORD=fzZf9DdAZi
+      - DB_NAME=db_pymsystems
     volumes:
       - ./backend-pym/app/public:/app/app/public
       - /etc/localtime:/etc/localtime:ro
@@ -33,7 +37,7 @@ services:
     volumes:
       - ./ssl:/etc/nginx/ssl:ro
       - ./nginx/frontend.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./certbot/conf:/etc/letsencrypt:ro  # Montar certificados SSL
+      - ./certbot/conf:/etc/letsencrypt:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     depends_on:
