@@ -3,7 +3,7 @@ import { api } from "src/boot/axios";
 class ServiciospymService {
   async gestionServiciospym(dat) {
     try {
-      const { data } = await api.post("api/servicios/gestionServiciospym", dat);
+      const { data } = await api.post("/api/servicios/gestionServiciospym", dat);
       return data;
     } catch (error) {
       console.log(error);
@@ -12,7 +12,7 @@ class ServiciospymService {
   }
   async listarServiciospym(estado) {
     try {
-      const { data } = await api.get(`api/servicios/listarServiciospym/${estado}`);
+      const { data } = await api.get(`/api/servicios/listarServiciospym/${estado}`);
       return data;
     } catch (error) {
       console.log(error);
