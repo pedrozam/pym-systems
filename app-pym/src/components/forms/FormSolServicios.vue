@@ -97,7 +97,7 @@
             >
               Detalle de la solicitud
             </h3>
-            {{ formData }}
+
             <!-- Servicio principal seleccionado -->
             <div class="pb-2 border-b border-[rgba(22,179,196,0.2)]">
               <div class="flex justify-between items-center text-sm">
