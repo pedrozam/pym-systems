@@ -6,6 +6,7 @@
     full-height
   >
     <q-card
+      ref="dialogCard"
       class="rounded-2xl border border-[rgba(22,179,196,0.3)] bg-[rgba(11,31,51,0.9)] backdrop-blur-[10px] max-w-[90vw] max-h-[90vh] text-white flex flex-col"
     >
       <q-bar
@@ -24,7 +25,10 @@
         </q-btn>
       </q-bar>
 
-      <q-card-section class="p-8 overflow-y-auto flex-1">
+      <q-card-section
+        ref="scrollContainer"
+        class="p-8 overflow-y-auto flex-1"
+      >
         <!-- New Header Section -->
         <div class="text-center text-white mb-6">
           <h2 class="text-3xl font-bold">Solicítala ahora</h2>
@@ -38,7 +42,7 @@
           <div
             v-for="(costo, index) in mainCostos"
             :key="costo.id_costo"
-            class="rounded-xl border-2 border-[rgba(22,179,196,0.15)] bg-[rgba(11,31,51,0.6)] backdrop-blur-[10px] text-white transition-all duration-300 cursor-pointer overflow-hidden hover:border-[rgba(22,179,196,0.4)] hover:-translate-y-0.5"
+            class="rounded-xl border-2 border-[rgba(22,179,196,0.15)] bg-[rgba(11,31,51,0.6)] backdrop-blur-[10px] text-white transition-all duration-300 cursor-pointer overflow-hidden group transition hover:border-[rgba(22,179,196,0.4)] hover:-translate-y-0.5"
             :class="{
               'selected-card': selectedCostoId === costo.id_costo,
             }"
@@ -71,10 +75,12 @@
               </div>
 
               <!-- SVG Icon Section -->
-              <div class="flex justify-center items-center p-2 min-h-[60px]">
+              <div
+                class="flex justify-center items-center p-2 min-h-[60px] group-hover:scale-115 group-hover:-rotate-24 transition-transform"
+              >
                 <svg
                   v-if="costo.svg_costo"
-                  class="size-28 transition group-hover:-rotate-12 group-hover:scale-125"
+                  class="size-28"
                   :class="{ 'opacity-50': !iconLoaded }"
                 >
                   <use :href="`${spriteUrl}#${costo.svg_costo}`" />
@@ -89,7 +95,7 @@
 
               <!-- Delivery Time Section -->
               <div
-                class="flex items-center justify-center gap-2 py-2 px-3 bg-[rgba(22,179,196,0.1)] rounded-full my-1"
+                class="flex items-center justify-center gap-2 py-2 px-3 bg-[rgba(22,179,196,0.1)] rounded-full my-1 group-hover:scale-115 transition-transform"
               >
                 <q-icon
                   name="schedule"
@@ -136,15 +142,16 @@
 
         <!-- Sección de dos columnas: Servicios Extras (izquierda) y Resumen (derecha) -->
         <div
+          ref="extraSection"
           v-if="selectedCostoId"
-          class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mt-4"
+          class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mt-4 group transition"
         >
           <!-- Columna Izquierda: Servicios Extras -->
           <div
-            class="bg-[rgba(22,179,196,0.05)] border border-[rgba(22,179,196,0.2)] rounded-xl p-4"
+            class="bg-[rgba(22,179,196,0.05)] border border-[rgba(22,179,196,0.2)] rounded-xl p-4 group transition"
           >
-            <h3 class="text-xl font-bold text-[#4fd1e8] text-center mb-4 tracking-wide">
-              Servicios extras
+            <h3 class="text-xl font-bold text-[#4fd1e8] text-left mb-4 tracking-wide">
+              Servicios extras:
             </h3>
             <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3">
               <div
@@ -185,6 +192,12 @@
                     <use :href="`${spriteUrl}#${extra.svg_costo}`" />
                   </svg>
                 </div>
+              </div>
+              <div
+                v-if="selectedExtras.length === 0"
+                class="text-center text-[#c0e0e8] p-4 italic w-full"
+              >
+                Si no seleccionas ninguno puedes hacerlo despues...
               </div>
             </div>
             <div
@@ -256,6 +269,7 @@
             <!-- Botón Enviar solicitud -->
             <q-btn
               class="cta-button"
+              icon="send"
               label="Enviar solicitud"
               flat
               @click="openFormModal"
@@ -278,7 +292,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, nextTick } from 'vue'
 import FormSolServicios from '../forms/FormSolServicios.vue'
 
 const props = defineProps({
@@ -304,6 +318,8 @@ const selectedCostoId = ref(null)
 const iconLoaded = ref(true)
 const selectedExtrasIds = ref([])
 const formModalOpened = ref(false)
+const scrollContainer = ref(null)
+const extraSection = ref(null)
 
 // Costos principales: donde id_servicio es diferente de 0
 const mainCostos = computed(() => {
@@ -338,6 +354,39 @@ const totalAmount = computed(() => {
   return total
 })
 
+// Función para scroll suave
+const smoothScrollToBottom = async () => {
+  await nextTick()
+  if (scrollContainer.value && scrollContainer.value.$el) {
+    const container = scrollContainer.value.$el
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: 'smooth',
+    })
+  } else if (scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: scrollContainer.value.scrollHeight,
+      behavior: 'smooth',
+    })
+  }
+}
+
+const scrollToTop = async () => {
+  await nextTick()
+  if (scrollContainer.value && scrollContainer.value.$el) {
+    const container = scrollContainer.value.$el
+    container.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  } else if (scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+}
+
 watch(
   () => props.modelValue,
   (val) => {
@@ -359,9 +408,21 @@ const close = () => {
 }
 
 const selectCosto = (costoId) => {
-  selectedCostoId.value = costoId
-  // Resetear extras al cambiar el plan principal
-  selectedExtrasIds.value = []
+  // Si se hace clic en la misma tarjeta que ya está seleccionada
+  if (selectedCostoId.value === costoId) {
+    // Deseleccionar
+    selectedCostoId.value = null
+    selectedExtrasIds.value = []
+    // Scroll hacia arriba
+    scrollToTop()
+  } else {
+    // Seleccionar nueva tarjeta
+    selectedCostoId.value = costoId
+    // Resetear extras al cambiar el plan principal
+    selectedExtrasIds.value = []
+    // Scroll hacia abajo después de seleccionar
+    smoothScrollToBottom()
+  }
 }
 
 // Toggle selección de servicio extra

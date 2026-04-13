@@ -1,12 +1,19 @@
 <template>
   <div
-    class="digital-laptop-bg"
+    class="digital-laptop-bg relative overflow-hidden"
     @mousemove="updateMouse"
     @click="handleClick"
   >
     <div
-      class="mouse-spotlight"
-      :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
+      class="mouse-spotlight fixed pointer-events-none rounded-full bg-gradient-radial from-cyan-400/40 via-cyan-500/20 to-transparent transition-all duration-75"
+      :class="isSpotlightActive ? 'scale-110 opacity-100' : 'opacity-70'"
+      :style="{
+        left: mouseX + 'px',
+        top: mouseY + 'px',
+        width: '40px',
+        height: '40px',
+        transform: 'translate(-50%, -50%)',
+      }"
     ></div>
 
     <div class="neon-typing-lines"></div>
@@ -18,11 +25,11 @@
           elevated
           class="bg-black/75"
         >
-          <q-toolbar class="custom-toolbar">
+          <q-toolbar class="flex justify-between items-center w-full px-2 md:px-4 py-2">
             <!-- Logo a la izquierda -->
             <a
               href="/"
-              class="logo-container"
+              class="flex-shrink-0"
             >
               <img
                 src="/favicon.ico"
@@ -32,20 +39,21 @@
             </a>
 
             <!-- Menú para pantallas grandes (centrado) -->
-            <div class="desktop-menu">
+            <div class="hidden md:flex flex-1 justify-center mx-4">
               <q-btn-toggle
                 v-model="model"
                 flat
                 stretch
                 toggle-color="primary"
                 :options="menuOptions"
-                class="items-center gap-1 icon-hover neon-menu-items"
+                class="items-center gap-1"
+                :class="neonBtnClass"
               />
 
               <q-btn
                 @click="showLogin = true"
                 round
-                class="login-btn"
+                class="ml-2 transition-all duration-300 hover:scale-110 hover:text-cyan-400 hover:shadow-[0_0_16px_rgba(0,240,255,0.5)] text-cyan-200"
               >
                 <q-icon name="account_circle" />
                 <q-tooltip>Iniciar sesión</q-tooltip>
@@ -53,26 +61,26 @@
             </div>
 
             <!-- Contenedor para botones de la derecha -->
-            <div class="right-buttons">
+            <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
               <!-- Menú hamburguesa para pantallas pequeñas -->
-              <div class="mobile-menu-container">
+              <div class="md:hidden">
                 <q-btn
                   flat
                   round
                   icon="more_vert"
-                  class="mobile-menu-btn neon-menu-btn"
+                  class="transition-all duration-300 hover:scale-110 hover:text-cyan-400 text-cyan-200"
                 >
                   <q-menu
                     anchor="bottom right"
                     self="top right"
                     :offset="[0, 10]"
-                    class="mobile-menu-dropdown bg-black/95 backdrop-blur-md"
+                    class="bg-black/95 backdrop-blur-md border border-cyan-400/30 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.5),0_0_20px_rgba(5,215,255,0.2)]"
                   >
                     <div class="mobile-menu-list">
                       <div
                         v-for="option in menuOptions"
                         :key="option.value"
-                        class="mobile-menu-item"
+                        class="flex items-center px-6 py-3 cursor-pointer transition-all duration-300 hover:translate-x-1 hover:text-cyan-400 hover:bg-gradient-to-r hover:from-transparent hover:via-cyan-400/10 hover:to-transparent text-white font-medium"
                         @click="selectMenuItem(option)"
                       >
                         <q-icon
@@ -82,7 +90,7 @@
                         <span>{{ option.label }}</span>
                       </div>
                       <div
-                        class="mobile-menu-item login-item"
+                        class="flex items-center px-6 py-3 pt-3 mt-2 cursor-pointer transition-all duration-300 hover:translate-x-1 hover:text-cyan-400 border-t border-cyan-400/30 text-white font-medium"
                         @click="showLogin = true"
                       >
                         <q-icon
@@ -100,7 +108,7 @@
               <q-btn
                 round
                 color="primary"
-                class="floating-button"
+                class="fixed bottom-5 left-5 z-[9999] transition-transform hover:scale-105"
                 @click="showContactar = true"
               >
                 <svg
@@ -168,6 +176,9 @@ const isSpotlightActive = ref(false)
 let spotlightElement = null
 let activeTimeout = null
 
+const neonBtnClass =
+  '[&_.q-btn]:relative [&_.q-btn]:overflow-hidden [&_.q-btn]:text-cyan-200 [&_.q-btn]:bg-transparent [&_.q-btn]:font-medium [&_.q-btn]:transition-all [&_.q-btn]:duration-300 [&_.q-btn:hover]:scale-110 [&_.q-btn:hover]:text-cyan-400 [&_.q-btn:hover]:shadow-[0_0_12px_#00f0ff] [&_.q-btn:hover]:bg-cyan-400/5 [&_.q-btn[aria-pressed=true]]:text-cyan-400 [&_.q-btn[aria-pressed=true]]:shadow-[0_0_20px_#00f0ff] [&_.q-btn[aria-pressed=true]]:bg-cyan-400/15 [&_.q-btn[aria-pressed=true]]:animate-pulse'
+
 const menuOptions = [
   { label: 'Inicio', value: 'inicio', icon: 'home', to: '/' },
   { label: 'Quienes somos', value: 'quienes', icon: 'groups', to: '/quienes-somos' },
@@ -180,7 +191,6 @@ function updateMouse(event) {
   mouseX.value = event.clientX
   mouseY.value = event.clientY
 
-  // Activar efecto visual al mover el mouse
   if (spotlightElement) {
     isSpotlightActive.value = true
     clearTimeout(activeTimeout)
@@ -188,7 +198,6 @@ function updateMouse(event) {
       isSpotlightActive.value = false
     }, 200)
 
-    // Crear efecto de datos al mover rápido
     const now = Date.now()
     if (window._lastDataPoint && now - window._lastDataPoint > 100) {
       createDataEffect(event.clientX, event.clientY)
@@ -198,10 +207,8 @@ function updateMouse(event) {
 }
 
 function handleClick(event) {
-  // Crear efecto ripple al hacer click
   createDigitalRipple(event.clientX, event.clientY)
 
-  // Crear múltiples puntos de datos
   for (let i = 0; i < 5; i++) {
     setTimeout(() => {
       createDataEffect(
@@ -213,22 +220,18 @@ function handleClick(event) {
 }
 
 function createDataEffect(x, y) {
-  // Crear puntos de datos
   const dataPoint = document.createElement('div')
   dataPoint.className = 'data-point'
-  dataPoint.style.left = x + 'px'
-  dataPoint.style.top = y + 'px'
+  dataPoint.style.cssText = `position:fixed;left:${x}px;top:${y}px;width:4px;height:4px;background:#00f0ff;border-radius:50%;box-shadow:0 0 8px #00f0ff;pointer-events:none;z-index:10000;animation:fadeOut 0.5s ease-out forwards;`
   document.body.appendChild(dataPoint)
 
   setTimeout(() => dataPoint.remove(), 500)
 
-  // Crear código flotante aleatorio
   const codeDigits = ['01', '10', '11', '00', '0', '1', 'FF', 'A1', 'B2']
   const codeDigit = document.createElement('div')
   codeDigit.className = 'code-digit'
   codeDigit.textContent = codeDigits[Math.floor(Math.random() * codeDigits.length)]
-  codeDigit.style.left = x + (Math.random() - 0.5) * 40 + 'px'
-  codeDigit.style.top = y + (Math.random() - 0.5) * 40 + 'px'
+  codeDigit.style.cssText = `position:fixed;left:${x + (Math.random() - 0.5) * 40}px;top:${y + (Math.random() - 0.5) * 40}px;color:#00f0ff;font-family:monospace;font-size:12px;pointer-events:none;z-index:10001;animation:floatUp 1s ease-out forwards;`
   document.body.appendChild(codeDigit)
 
   setTimeout(() => codeDigit.remove(), 1000)
@@ -237,11 +240,7 @@ function createDataEffect(x, y) {
 function createDigitalRipple(x, y) {
   const ripple = document.createElement('div')
   ripple.className = 'digital-ripple'
-  ripple.style.left = x + 'px'
-  ripple.style.top = y + 'px'
-  ripple.style.width = '40px'
-  ripple.style.height = '40px'
-  ripple.style.transform = 'translate(-50%, -50%)'
+  ripple.style.cssText = `position:fixed;left:${x}px;top:${y}px;width:40px;height:40px;transform:translate(-50%,-50%);border:2px solid #00f0ff;border-radius:50%;pointer-events:none;z-index:10002;animation:rippleExpand 0.6s ease-out forwards;`
   document.body.appendChild(ripple)
 
   setTimeout(() => ripple.remove(), 600)
@@ -259,10 +258,6 @@ onMounted(() => {
 
   setTimeout(() => {
     spotlightElement = document.querySelector('.mouse-spotlight')
-    if (spotlightElement) {
-      spotlightElement.style.width = '80px'
-      spotlightElement.style.height = '80px'
-    }
   }, 100)
 
   setTimeout(() => {
@@ -275,219 +270,48 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (activeTimeout) clearTimeout(activeTimeout)
 
-  // Limpiar elementos creados
   document
     .querySelectorAll('.data-point, .code-digit, .digital-ripple')
     .forEach((el) => el.remove())
 })
 </script>
 
-<style scoped>
-/* Estructura del toolbar */
-.custom-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 0.5rem 1rem;
-}
-
-.logo-container {
-  flex-shrink: 0;
-}
-
-/* Menú desktop centrado */
-.desktop-menu {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin: 0 1rem;
-}
-
-/* Contenedor de botones de la derecha */
-.right-buttons {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-/* Estilos responsivos */
-@media (min-width: 768px) {
-  .mobile-menu-container {
-    display: none;
+<style>
+/* Solo las animaciones que no se pueden hacer con Tailwind fácilmente */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
   }
-  .desktop-menu {
-    display: flex;
-  }
-}
-
-@media (max-width: 767px) {
-  .desktop-menu {
-    display: none;
-  }
-  .mobile-menu-container {
-    display: block;
-  }
-  .custom-toolbar {
-    padding: 0.5rem;
-  }
-  .right-buttons {
-    gap: 0.25rem;
-  }
-}
-
-/* Efectos neon para el menú */
-.neon-menu-items :deep(.q-btn) {
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  color: #a8d8ff;
-  background: transparent !important;
-  font-weight: 500;
-}
-
-.neon-menu-items :deep(.q-btn::before) {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
-  transform: translateX(-50%);
-  transition: width 0.3s ease;
-}
-
-.neon-menu-items :deep(.q-btn:hover) {
-  text-shadow:
-    0 0 12px #00f0ff,
-    0 0 24px rgba(0, 240, 255, 0.6);
-  transform: scale(1.08);
-  color: #00f0ff;
-  background: rgba(0, 240, 255, 0.05) !important;
-}
-
-.neon-menu-items :deep(.q-btn:hover::before) {
-  width: 80%;
-}
-
-.neon-menu-items :deep(.q-btn:active) {
-  transform: scale(0.95);
-}
-
-.neon-menu-items :deep(.q-btn[aria-pressed='true']) {
-  text-shadow:
-    0 0 20px #00f0ff,
-    0 0 40px #00f0ff,
-    0 0 60px rgba(0, 240, 255, 1) !important;
-  color: #00f0ff !important;
-  background: rgba(0, 240, 255, 0.15) !important;
-  animation: heartbeat 1.2s ease-in-out infinite !important;
-}
-
-.neon-menu-items :deep(.q-btn[aria-pressed='true'])::before {
-  width: 95% !important;
-  height: 4px;
-  background: radial-gradient(ellipse at center, #00f0ff, #dce0e4);
-}
-
-.neon-menu-btn {
-  transition: all 0.3s ease;
-  color: #b5e2ff;
-}
-
-.neon-menu-btn:hover {
-  text-shadow:
-    0 0 10px #05d7ff,
-    0 0 20px #05d7ff;
-  transform: scale(1.1);
-  color: #05d7ff;
-}
-
-.mobile-menu-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #fff;
-  font-weight: 500;
-}
-
-.mobile-menu-item:hover {
-  text-shadow:
-    0 0 10px #05d7ff,
-    0 0 20px #05d7ff;
-  background: linear-gradient(90deg, transparent, rgba(5, 215, 255, 0.1), transparent);
-  transform: translateX(5px);
-  color: #05d7ff;
-}
-
-.login-item {
-  border-top: 1px solid rgba(5, 215, 255, 0.3);
-  margin-top: 0.5rem;
-  padding-top: 0.75rem;
-}
-
-/* Estilos para el botón de login */
-.login-btn {
-  transition: all 0.3s ease !important;
-  position: relative;
-  color: #a8d8ff !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login-btn:hover {
-  text-shadow:
-    0 0 12px #00f0ff,
-    0 0 24px rgba(0, 240, 255, 0.6) !important;
-  transform: scale(1.12);
-  color: #00f0ff !important;
-  background: rgba(0, 240, 255, 0.1) !important;
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
-}
-
-@keyframes heartbeat {
-  0%,
   100% {
-    transform: scale(1);
-  }
-  14% {
-    transform: scale(1.08);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.08);
-  }
-  70% {
-    transform: scale(1);
+    opacity: 0;
+    transform: scale(2);
   }
 }
 
-:deep(.q-menu) {
-  background: rgba(0, 0, 0, 0.95) !important;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(5, 215, 255, 0.3);
-  border-radius: 8px;
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(5, 215, 255, 0.2);
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
 }
 
-.floating-button {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 9999;
+@keyframes rippleExpand {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3);
+  }
 }
 
-.floating-button:hover {
-  transform: scale(1.05);
-  transition: transform 0.2s ease;
+.bg-gradient-radial {
+  background-image: radial-gradient(circle, var(--tw-gradient-stops));
 }
 </style>
