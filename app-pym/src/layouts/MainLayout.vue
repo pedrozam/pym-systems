@@ -290,12 +290,11 @@
       </q-layout>
     </div>
 
-    <q-dialog
+    <LoginForm
       v-model="showLogin"
-      class="flex flex-center"
-    >
-      <LoginForm />
-    </q-dialog>
+      @login-success="handleLoginSuccess"
+    />
+
   </div>
 
   <q-dialog

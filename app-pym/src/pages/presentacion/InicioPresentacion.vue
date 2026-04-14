@@ -19,7 +19,6 @@
             class="absolute -bottom-2 left-0 w-full h-0.5 bg-linear-to-r from-transparent via-turquesa to-transparent animate-glow"
           ></div>
         </div>
-       
       </div>
 
       <!-- Carousel de Servicios - Nuevo diseño con efecto scroll -->
@@ -67,12 +66,9 @@
                       :alt="service.nombre_servicio"
                       class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                     />
-                    <!-- Overlay gradiente para mejor contraste -->
                     <div
                       class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent md:from-black/80"
                     ></div>
-
-                    <!-- Icono flotante -->
                     <div class="absolute top-4 left-4 md:top-6 md:left-6">
                       <div
                         class="bg-turquesa/20 backdrop-blur-md rounded-full p-3 border border-turquesa/40"
@@ -88,7 +84,7 @@
                     </div>
                   </div>
 
-                  <!-- Lado derecho: Información - Fondo más oscuro -->
+                  <!-- Lado derecho: Información -->
                   <div
                     class="bg-black/60 backdrop-blur-sm p-6 md:p-8 flex flex-col justify-between"
                   >
@@ -99,8 +95,6 @@
                       <p class="text-white/70 mb-6 leading-relaxed">
                         {{ service.descripcion }}
                       </p>
-
-                      <!-- Precio y tiempo -->
                       <div class="flex items-center gap-6 mb-6">
                         <div>
                           <p class="text-turquesa text-xs uppercase tracking-wider font-semibold">
@@ -120,8 +114,6 @@
                           <p class="text-white text-lg font-medium">{{ service.tiempo_entrega }}</p>
                         </div>
                       </div>
-
-                      <!-- Características en 2 columnas -->
                       <div class="grid grid-cols-1 gap-2 mb-6">
                         <div
                           v-for="(feature, idx) in service.features"
@@ -145,8 +137,6 @@
                         </div>
                       </div>
                     </div>
-
-                    <!-- Botón de acción -->
                     <button
                       @click="goToServices"
                       class="mt-4 w-full md:w-auto px-6 py-2.5 bg-linear-to-r from-turquesa to-cyan-500 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(22,179,196,0.4)]"
@@ -161,7 +151,7 @@
         </div>
       </div>
 
-      <!-- Tecnologías que utilizamos con efecto scroll -->
+      <!-- Tecnologías que utilizamos -->
       <div
         class="scroll-section"
         :class="{ 'section-visible': sectionsVisible.technologies }"
@@ -366,7 +356,6 @@
           </div>
         </div>
 
-        <!-- Botón Conocer más -->
         <div class="text-center mt-8">
           <button
             @click="goToTecnologias"
@@ -378,57 +367,19 @@
       </div>
     </div>
 
-    <!-- Modal de tecnología -->
-    <q-dialog
+    <!-- Modal de tecnología - Componente separado -->
+    <DialogVerTecnologia
       v-model="techModalVisible"
-      class="backdrop-blur-sm"
-    >
-      <div
-        class="bg-linear-to-br from-[#0B1F33] to-[#123A56] rounded-2xl max-w-md w-full p-6 border border-turquesa/30 shadow-[0_0_30px_rgba(22,179,196,0.3)]"
-      >
-        <div
-          v-if="selectedTechDetails"
-          class="text-center"
-        >
-          <div class="mb-4 inline-flex p-3 rounded-full bg-white/10 border border-turquesa/40">
-            <svg
-              width="48"
-              height="48"
-            >
-              <use :xlink:href="`${spriteUrl}#${selectedTechDetails.icon}`" />
-            </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-2">{{ selectedTechDetails.name }}</h3>
-          <p class="text-white/70 text-sm mb-4">{{ selectedTechDetails.description }}</p>
-          <a
-            :href="selectedTechDetails.url"
-            target="_blank"
-            class="inline-flex items-center gap-2 text-white hover:text-red transition-colors"
-          >
-            Visitar sitio oficial
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </q-dialog>
+      :technology="selectedTechDetails"
+      :sprite-url="spriteUrl"
+    />
   </q-page>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import DialogVerTecnologia from 'src/components/dialog/DialogVerTecnologia.vue';
 
 const { spriteUrl } = defineProps({
   spriteUrl: {
@@ -455,13 +406,13 @@ const currentSlide = ref(0)
 const techModalVisible = ref(false)
 const selectedTechDetails = ref(null)
 
-// Visibilidad de secciones con scroll - Inicializar como visibles para que se muestren
+// Visibilidad de secciones
 const sectionsVisible = ref({
-  services: true, // Cambiado a true para que se muestre inicialmente
-  technologies: true, // Cambiado a true para que se muestre inicialmente
+  services: true,
+  technologies: true,
 })
 
-// Servicios para el carousel con imágenes
+// Servicios para el carousel
 const services = ref([
   {
     id: 1,
@@ -532,7 +483,7 @@ const services = ref([
   },
 ])
 
-// Tecnologías
+// Tecnologías (igual que antes)
 const frontendTechs = [
   {
     id: 'quasar',
@@ -693,9 +644,8 @@ const devToolsTechs = [
   },
 ]
 
-// Efecto de escritura
+// Funciones (igual que antes)
 const startTypingEffect = () => {
-  // Primera línea
   firstLineInterval = setInterval(() => {
     if (firstLineIndex < firstLineText.length) {
       displayedFirstLine.value += firstLineText.charAt(firstLineIndex)
@@ -705,7 +655,6 @@ const startTypingEffect = () => {
     }
   }, 50)
 
-  // Segunda línea (empieza un poco después)
   setTimeout(() => {
     secondLineInterval = setInterval(() => {
       if (secondLineIndex < secondLineText.length) {
@@ -718,11 +667,8 @@ const startTypingEffect = () => {
   }, 1500)
 }
 
-// Efecto de scroll - Eliminada la variable scrollY no utilizada
 const handleScroll = () => {
   const viewportHeight = window.innerHeight
-
-  // Sección de Servicios
   const servicesSection = document.querySelector('.scroll-section:first-of-type')
   if (servicesSection) {
     const servicesRect = servicesSection.getBoundingClientRect()
@@ -733,7 +679,6 @@ const handleScroll = () => {
     }
   }
 
-  // Sección de Tecnologías
   const techSection = document.querySelector('.scroll-section:last-of-type')
   if (techSection) {
     const techRect = techSection.getBoundingClientRect()
@@ -761,7 +706,6 @@ const showTechModal = (tech) => {
 onMounted(() => {
   startTypingEffect()
   window.addEventListener('scroll', handleScroll)
-  // Pequeño timeout para asegurar que el DOM esté listo y luego verificar visibilidad
   setTimeout(() => {
     handleScroll()
   }, 100)
@@ -775,6 +719,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Todos los estilos se mantienen igual */
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -850,7 +795,6 @@ onUnmounted(() => {
   color: transparent;
 }
 
-/* Efectos de scroll para secciones */
 .scroll-section {
   opacity: 0;
   transform: translateX(-50px);
@@ -862,7 +806,6 @@ onUnmounted(() => {
   transform: translateX(0);
 }
 
-/* Para la sección de tecnologías, efecto desde la derecha */
 .scroll-section:last-of-type {
   transform: translateX(50px);
 }
@@ -871,13 +814,11 @@ onUnmounted(() => {
   transform: translateX(0);
 }
 
-/* Aseguramos que las secciones sean visibles inicialmente */
 .scroll-section {
   opacity: 1 !important;
   transform: translateX(0) !important;
 }
 
-/* Solo aplicamos los efectos de scroll cuando la página ha cargado */
 body.loaded .scroll-section {
   transition: all 0.6s ease-out;
 }
@@ -896,7 +837,6 @@ body.loaded .scroll-section {
   background: #22d3e6;
 }
 
-/* Ajustes para q-carousel */
 :deep(.q-carousel__slide) {
   padding: 0 !important;
 }
