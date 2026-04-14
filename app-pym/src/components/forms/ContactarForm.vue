@@ -25,7 +25,6 @@
 
     <q-card-section>
       <InputText
-        class="border-neon p-2 mb-4"
         etiqueta="Tu nombre *"
         tipo="text"
         v-model:valor="form.nombre"
@@ -33,14 +32,12 @@
       />
 
       <InputText
-        class="border-neon p-2 mb-4"
         etiqueta="Empresa o Institución"
         tipo="text"
         v-model:valor="form.empresa"
       />
 
       <InputText
-        class="border-neon p-2 mb-4"
         etiqueta="Celular de contacto *"
         tipo="tel"
         v-model:valor="form.celular"
@@ -49,7 +46,6 @@
       />
 
       <InputText
-        class="border-neon p-2 mb-4"
         etiqueta="Correo electrónico"
         tipo="email"
         v-model:valor="form.email"
@@ -59,7 +55,6 @@
       />
 
       <InputText
-        class="border-neon p-2 mb-4"
         etiqueta="Mensaje a enviar *"
         tipo="textarea"
         v-model:valor="form.mensaje"

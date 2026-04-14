@@ -12,15 +12,13 @@
     </q-card-section>
     <q-card-section>
       <InputText
-        class="border-neon p-2 mb-4"
         etiqueta="Usuario"
         tipo="text"
         v-model:valor="username"
       />
-      <InputPassword
-        class="border-neon p-2 mb-4"
+      <InputText
         etiqueta="Contraseña"
-        tipo="password"
+        tipo="pass"
         v-model:valor="password"
       />
       <div class="text-center mb-4">
@@ -48,7 +46,6 @@
 <script setup>
 import { ref } from 'vue'
 import InputText from '../inputs/InputText.vue'
-import InputPassword from '../inputs/InputPassword.vue'
 
 const username = ref('')
 const password = ref('')

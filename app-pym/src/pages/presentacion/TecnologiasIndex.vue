@@ -3,28 +3,30 @@
     class="relative bg-cover bg-center bg-no-repeat"
     :style="backgroundStyle"
   >
-    <div class="text-center text-white mb-6">
+    <div class="text-center text-white mb-6 px-4">
       <h2 class="text-3xl font-bold">Tecnologias utilizadas</h2>
-      <p class="text-base text-cyan-200">
-        Aqui podrás revisar las tecnologías que empleamos en nuestros proyectos. Da clic a cualquiera de ellas para que puedas tener mas información.
+      <p class="text-base text-cyan-200 max-w-2xl mx-auto">
+        Aqui podrás revisar las tecnologías que empleamos en nuestros proyectos. Da clic a
+        cualquiera de ellas para que puedas tener mas información.
       </p>
-      
-
     </div>
+
     <!-- Contenedor principal -->
     <div class="relative min-h-screen w-full overflow-hidden">
       <!-- PRIMERA ETAPA: texto centrado vertical/horizontalmente -->
       <div
         v-if="showCenteredCard"
         ref="heroContainer"
-        class="fixed inset-0 flex items-center justify-center z-20"
-        :class="{ 'pointer-events-none': true }"
+        class="fixed inset-0 flex items-center justify-center z-20 pointer-events-none"
       >
         <div
           ref="movingCard"
-          class="bg-black/60 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-cyan-400/40 shadow-2xl transition-all duration-500 w-11/12 md:w-auto max-w-2xl"
+          class="bg-black/60 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-cyan-400/40 shadow-2xl transition-all duration-500 w-11/12 md:w-auto max-w-2xl animate-pulse-border"
         >
-          <h2 class="text-3xl md:text-5xl font-extrabold text-white neon-text tracking-tight">
+          <h2
+            class="text-3xl md:text-5xl font-extrabold text-white tracking-tight"
+            :class="neonTextClass"
+          >
             Somos PyM Systems
           </h2>
           <p class="text-base md:text-xl text-cyan-200 mt-3 font-medium">
@@ -36,16 +38,21 @@
       <!-- SEGUNDA ETAPA: Layout final con card a la derecha y tecnologías -->
       <div
         v-else
-        class="pt-8 md:pt-12 px-4 md:px-8 max-w-7xl mx-auto"
-        :class="{ 'fade-in': showFinalLayout }"
+        class="pt-8 md:pt-12 px-4 md:px-8 max-w-7xl mx-auto transition-opacity duration-500"
+        :class="{ 'opacity-100': showFinalLayout, 'opacity-0': !showFinalLayout }"
       >
         <div class="flex flex-wrap gap-6">
           <!-- Card en posición col-4 (derecha) -->
           <div class="w-full lg:w-1/3">
             <div
-              class="bg-black/50 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/50 shadow-2xl h-full"
+              class="bg-black/50 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/50 shadow-2xl h-full transition-all duration-300 hover:shadow-cyan-500/30"
             >
-              <h2 class="text-2xl md:text-3xl font-bold text-white neon-text">Somos PyM Systems</h2>
+              <h2
+                class="text-2xl md:text-3xl font-bold text-white"
+                :class="neonTextClass"
+              >
+                Somos PyM Systems
+              </h2>
               <p class="text-base text-cyan-200 mt-2">
                 Tu aliado en automatización y transformación digital.
               </p>
@@ -86,7 +93,7 @@
             <div class="space-y-8">
               <!-- Card principal de presentación -->
               <div
-                class="tech-card p-5 md:p-7 border border-cyan-300/30 rounded-2xl backdrop-blur-md"
+                class="p-5 md:p-7 border border-cyan-300/30 rounded-2xl backdrop-blur-md bg-cyan-950/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
               >
                 <p class="text-white md:text-xl font-semibold leading-relaxed">
                   <q-icon
@@ -99,7 +106,9 @@
               </div>
 
               <!-- Frontend -->
-              <div class="tech-card p-5 md:p-6 rounded-2xl border border-cyan-300/30">
+              <div
+                class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
+              >
                 <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
                   <i class="fas fa-desktop"></i> Frontend
                 </h3>
@@ -107,13 +116,13 @@
                   <div
                     v-for="tech in frontendTechs"
                     :key="tech.id"
-                    class="flex flex-col items-center gap-1 icon-hover cursor-pointer"
+                    class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                     @click="showTechInfo(tech)"
                   >
                     <svg
                       width="40"
                       height="40"
-                      class="p-1 transition-transform hover:scale-110"
+                      class="p-1 transition-transform"
                     >
                       <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
                     </svg>
@@ -125,7 +134,9 @@
               <!-- Backend y Base de datos en layout de 2 columnas -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Backend -->
-                <div class="tech-card p-5 md:p-6 rounded-2xl border border-cyan-300/30">
+                <div
+                  class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
+                >
                   <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
                     <i class="fas fa-server"></i> Backend
                   </h3>
@@ -133,13 +144,13 @@
                     <div
                       v-for="tech in backendTechs"
                       :key="tech.id"
-                      class="flex flex-col items-center gap-1 icon-hover cursor-pointer"
+                      class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                       @click="showTechInfo(tech)"
                     >
                       <svg
                         width="40"
                         height="40"
-                        class="p-1 transition-transform hover:scale-110"
+                        class="p-1 transition-transform"
                       >
                         <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
                       </svg>
@@ -149,7 +160,9 @@
                 </div>
 
                 <!-- Base de Datos -->
-                <div class="tech-card p-5 md:p-6 rounded-2xl border border-cyan-300/30">
+                <div
+                  class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
+                >
                   <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
                     <i class="fas fa-database"></i> Base de datos
                   </h3>
@@ -157,13 +170,13 @@
                     <div
                       v-for="tech in databaseTechs"
                       :key="tech.id"
-                      class="flex flex-col items-center gap-1 icon-hover cursor-pointer"
+                      class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                       @click="showTechInfo(tech)"
                     >
                       <svg
                         width="40"
                         height="40"
-                        class="p-1 transition-transform hover:scale-110"
+                        class="p-1 transition-transform"
                       >
                         <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
                       </svg>
@@ -174,7 +187,9 @@
               </div>
 
               <!-- Herramientas de Desarrollo -->
-              <div class="tech-card p-5 md:p-6 rounded-2xl border border-cyan-300/30">
+              <div
+                class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
+              >
                 <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
                   <i class="fas fa-tools"></i> Herramientas de desarrollo
                 </h3>
@@ -182,13 +197,13 @@
                   <div
                     v-for="tech in devToolsTechs"
                     :key="tech.id"
-                    class="flex flex-col items-center gap-1 icon-hover cursor-pointer"
+                    class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                     @click="showTechInfo(tech)"
                   >
                     <svg
                       width="40"
                       height="40"
-                      class="p-1 transition-transform hover:scale-110"
+                      class="p-1 transition-transform"
                     >
                       <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
                     </svg>
@@ -213,12 +228,16 @@ const { spriteUrl } = defineProps({
     required: true,
   },
 })
+
 // Estados
 const showCenteredCard = ref(true)
 const showFinalLayout = ref(false)
 const heroContainer = ref(null)
 const movingCard = ref(null)
 const selectedTech = ref(null)
+
+// Clase neon para Tailwind (usando estilos personalizados solo donde es necesario)
+const neonTextClass = 'neon-text'
 
 // Definición de tecnologías con sus descripciones y URLs oficiales
 const frontendTechs = [
@@ -270,14 +289,6 @@ const frontendTechs = [
       'Plataforma de desarrollo de aplicaciones web basada en TypeScript. Proporciona una estructura robusta con inyección de dependencias, componentes reutilizables y herramientas para aplicaciones empresariales.',
     url: 'https://angular.io/',
   },
-  {
-    id: 'php',
-    name: 'PHP',
-    icon: 'php',
-    description:
-      'Lenguaje de programación del lado del servidor ampliamente utilizado para desarrollo web dinámico. Ideal para crear aplicaciones robustas y sistemas de gestión de contenido.',
-    url: 'https://www.php.net/',
-  },
 ]
 
 const backendTechs = [
@@ -312,6 +323,14 @@ const backendTechs = [
     description:
       'Framework progresivo de Node.js para construir aplicaciones del lado del servidor eficientes y escalables. Utiliza TypeScript y combina elementos de OOP, FP y FRP.',
     url: 'https://nestjs.com/',
+  },
+  {
+    id: 'php',
+    name: 'PHP',
+    icon: 'php',
+    description:
+      'Lenguaje de programación del lado del servidor ampliamente utilizado para desarrollo web dinámico. Ideal para crear aplicaciones robustas y sistemas de gestión de contenido.',
+    url: 'https://www.php.net/',
   },
 ]
 
@@ -410,9 +429,14 @@ const backgroundStyle = {
   backgroundRepeat: 'no-repeat',
 }
 
-// Mostrar información de la tecnología seleccionada
+// Mostrar información de la tecnología seleccionada y hacer scroll hacia arriba
 const showTechInfo = (tech) => {
   selectedTech.value = tech
+  // Scroll suave hacia arriba
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
 }
 
 // Función para animar el card hacia la derecha
@@ -492,44 +516,19 @@ const animateCardToRight = () => {
 onMounted(() => {
   setTimeout(() => {
     animateCardToRight()
-  }, 5000)
+  }, 2000)
 })
 </script>
 
 <style scoped>
+/* Estilos personalizados que no se pueden reemplazar fácilmente con Tailwind */
+
 /* Efecto neon para textos */
 .neon-text {
   text-shadow:
     0 0 5px #0ff,
     0 0 10px #0ff,
     0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-/* Estilos para los cards de tecnología */
-.tech-card {
-  backdrop-filter: blur(12px);
-  background: rgba(10, 20, 30, 0.55);
-  border-radius: 1.5rem;
-  transition: all 0.4s ease;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.tech-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-  border-color: rgba(0, 255, 255, 0.7);
-}
-
-/* Efecto hover para íconos */
-.icon-hover {
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.icon-hover:hover {
-  filter: drop-shadow(0 0 8px cyan);
-  transform: scale(1.1);
 }
 
 /* Animación float infinita para el ícono seleccionado */
@@ -549,22 +548,8 @@ onMounted(() => {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Animación de fade in para el layout final */
-.fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Animación de pulso para el card centrado */
-@keyframes gentlePulse {
+/* Animación de pulso para el card centrado (no disponible en Tailwind) */
+@keyframes pulse-border {
   0% {
     box-shadow: 0 0 0px rgba(0, 255, 255, 0.2);
     border-color: rgba(0, 255, 255, 0.3);
@@ -575,12 +560,17 @@ onMounted(() => {
   }
 }
 
-:deep(#movingCard) {
-  animation: gentlePulse 1.8s infinite alternate;
+.animate-pulse-border {
+  animation: pulse-border 1.8s infinite alternate;
+}
+
+/* Drop shadow para hover en íconos (Tailwind no tiene drop-shadow con color personalizado fácilmente) */
+.hover\:drop-shadow-cyan:hover {
+  filter: drop-shadow(0 0 8px cyan);
 }
 
 /* Estilos para el clon animado */
-:deep(#animatedCloneCard) {
+#animatedCloneCard {
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
@@ -598,17 +588,5 @@ onMounted(() => {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0cc;
-}
-
-/* Ajustes responsivos */
-@media (max-width: 1024px) {
-  .tech-card {
-    margin-bottom: 1rem;
-  }
-}
-
-/* Transiciones suaves */
-* {
-  transition: all 0.3s ease;
 }
 </style>

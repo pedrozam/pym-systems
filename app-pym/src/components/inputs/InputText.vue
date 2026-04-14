@@ -6,30 +6,54 @@
     >
       {{ etiqueta }}
     </label>
-    <q-input
-      outlined
-      dense
-      dark
-      :type="inputType"
-      v-model="textComputed"
-      :rules="validationRules"
-      :mask="computedMask"
-      :readonly="deshabilitar"
-      :clearable="!deshabilitar"
-      :hint="hint"
-      :rows="rows"
-      :autogrow="autogrow"
-      color="cyan"
-      :bg-color="bgColor"
-      :class="inputClasses"
-      no-error-icon
-      :fill-mask="true"
-    />
+    <div class="relative">
+      <q-input
+        outlined
+        dense
+        dark
+        :type="inputType"
+        v-model="textComputed"
+        :rules="validationRules"
+        :mask="computedMask"
+        :readonly="deshabilitar"
+        :clearable="!deshabilitar && tipo !== 'pass'"
+        :hint="hint"
+        :rows="rows"
+        :autogrow="autogrow"
+        color="cyan"
+        :bg-color="bgColor"
+        :class="inputClasses"
+        no-error-icon
+        :fill-mask="true"
+      >
+        <!-- Slot para acciones del lado derecho (solo para tipo pass) -->
+        <template
+          v-if="tipo === 'pass' && !deshabilitar"
+          v-slot:append
+        >
+          <!-- Botón para limpiar (opcional) -->
+          <q-icon
+            v-if="textComputed && textComputed.length > 0"
+            name="close"
+            @click="clearPassword"
+            class="cursor-pointer text-[#8aa8b8] hover:text-red-400"
+            size="20px"
+          />
+          <!-- Botón para mostrar/ocultar contraseña -->
+          <q-icon
+            :name="showPassword ? 'visibility_off' : 'visibility'"
+            @click="togglePasswordVisibility"
+            class="cursor-pointer text-[#8aa8b8] hover:text-cyan-400"
+            size="20px"
+          />
+        </template>
+      </q-input>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, ref } from 'vue'
 
 const props = defineProps({
   valor: {
@@ -94,6 +118,9 @@ const {
   bgColor,
 } = toRefs(props)
 
+// Estado para mostrar/ocultar contraseña
+const showPassword = ref(false)
+
 // Clases CSS unificadas
 const inputClasses =
   'z-[999] [&_.q-field__control]:rounded-lg [&_.q-field__native]:text-white [&_.q-field__label]:text-[#8aa8b8]'
@@ -132,7 +159,6 @@ const getValidationRules = () => {
     rules.push((val) => {
       if (!val && !required.value) return true
       if (!val) return 'El número de teléfono es requerido'
-      // Validar formato ## - ###### (2 dígitos, guion, 6 dígitos)
       const telefonoRegex = /^\d{2}-\d{6}$/
       return telefonoRegex.test(val) || 'Debe tener formato ## - ###### (ejemplo: 71-234567)'
     })
@@ -140,15 +166,39 @@ const getValidationRules = () => {
     rules.push((val) => {
       if (!val && !required.value) return true
       if (!val) return 'El nombre es requerido'
-      // Solo letras, espacios, letras acentuadas y ñ, sin espacios al inicio o final
       const nombresRegex = /^[A-Za-záéíóúñÁÉÍÓÚÑ]+(?:\s[A-Za-záéíóúñÁÉÍÓÚÑ]+)*$/
       return nombresRegex.test(val) || 'Solo letras y espacios, sin espacios al inicio o final'
     })
   } else if (tipo?.value === 'email') {
     rules.push((val) => {
-      if (!val) return true // Opcional por defecto
+      if (!val) return true
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       return emailRegex.test(val) || 'Ingrese un correo electrónico válido'
+    })
+  } else if (tipo?.value === 'pass') {
+    // Validación de contraseña segura
+    rules.push((val) => {
+      if (!val && !required.value) return true
+      if (!val && required.value) return 'La contraseña es requerida'
+
+      // Validar mínimo 6 caracteres
+      if (val && val.length < 6) return 'La contraseña debe tener al menos 6 caracteres'
+
+      // Validar que no tenga espacios
+      if (val && /\s/.test(val)) return 'La contraseña no debe contener espacios'
+
+      // Validar al menos un número
+      if (val && !/\d/.test(val)) return 'La contraseña debe contener al menos un número'
+
+      // Validar al menos una letra mayúscula
+      if (val && !/[A-Z]/.test(val))
+        return 'La contraseña debe contener al menos una letra mayúscula'
+
+      // Validar al menos una letra minúscula
+      if (val && !/[a-z]/.test(val))
+        return 'La contraseña debe contener al menos una letra minúscula'
+
+      return true
     })
   }
 
@@ -162,6 +212,9 @@ const inputType = computed(() => {
   if (tipo?.value === 'textarea') return 'textarea'
   if (tipo?.value === 'celular' || tipo?.value === 'telefono') return 'tel'
   if (tipo?.value === 'email') return 'email'
+  if (tipo?.value === 'pass') {
+    return showPassword.value ? 'text' : 'password'
+  }
   return 'text'
 })
 
@@ -180,6 +233,16 @@ const toUpperCaseNames = (value) => {
   return value
 }
 
+// Función para alternar visibilidad de contraseña
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
+
+// Función para limpiar el campo de contraseña
+const clearPassword = () => {
+  emit('update:valor', '')
+}
+
 const textComputed = computed({
   get: () => {
     let value = valor.value
@@ -192,7 +255,6 @@ const textComputed = computed({
       }
     }
 
-    // Devolver en mayúsculas para nombres
     return toUpperCaseNames(value) || ''
   },
   set: (val) => {
@@ -215,7 +277,6 @@ const textComputed = computed({
         processedValue = '+591' + numbersOnly.slice(3, 11)
       }
     } else if (tipo?.value === 'telefono') {
-      // Solo números, máximo 8 dígitos (2 + 6)
       let numbers = val?.replace(/\D/g, '') || ''
       numbers = numbers.slice(0, 8)
 
@@ -227,7 +288,6 @@ const textComputed = computed({
         processedValue = numbers
       }
     } else if (tipo?.value === 'nombres') {
-      // Eliminar espacios al inicio y múltiples espacios, luego convertir a mayúsculas
       processedValue = val?.replace(/^\s+/, '').replace(/\s+/g, ' ') || ''
       processedValue = processedValue.replace(/\s$/, '')
       processedValue = processedValue.toUpperCase()

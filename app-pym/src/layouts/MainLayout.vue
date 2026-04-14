@@ -183,7 +183,7 @@ const menuOptions = [
   { label: 'Inicio', value: 'inicio', icon: 'home', to: '/' },
   { label: 'Quienes somos', value: 'quienes', icon: 'groups', to: '/quienes-somos' },
   { label: 'Servicios', value: 'servicios', icon: 'settings', to: '/servicios' },
-  { label: 'Tecnología', value: 'tecnologia', icon: 'code', to: '/presentacion' },
+  { label: 'Tecnología', value: 'tecnologia', icon: 'code', to: '/tecnologias' },
   { label: 'Proyectos en curso', value: 'proyectos', icon: 'developer_board', to: '/proyectos' },
 ]
 

@@ -1,4 +1,4 @@
-import serviciosRoutes from './serviciosRoutes'
+import paginaRoutes from './paginaRoutes'
 
 
 const routes = [
@@ -7,10 +7,10 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      ...serviciosRoutes,
+      ...paginaRoutes,
     ],
   },
-  
+
 
   // Always leave this as last one,
   // but you can also remove it

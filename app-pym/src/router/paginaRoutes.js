@@ -4,8 +4,8 @@ const serviciosRoutes = [
     component: () => import('pages/servicios/ServiciosIndex.vue'),
   },
   {
-    path: 'presentacion',
-    component: () => import('pages/presentacion/PresentacionIndex.vue'),
+    path: 'tecnologias',
+    component: () => import('pages/presentacion/TecnologiasIndex.vue'),
   },
   {
     path: 'quienes-somos',
