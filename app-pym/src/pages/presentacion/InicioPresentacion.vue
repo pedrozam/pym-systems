@@ -19,9 +19,7 @@
             class="absolute -bottom-2 left-0 w-full h-0.5 bg-linear-to-r from-transparent via-turquesa to-transparent animate-glow"
           ></div>
         </div>
-        <p class="text-white/60 mt-2 max-w-2xl mx-auto">
-          {{ displayedSecondLine }}<span class="typing-cursor-second"></span>
-        </p>
+       
       </div>
 
       <!-- Carousel de Servicios - Nuevo diseño con efecto scroll -->
@@ -71,7 +69,7 @@
                     />
                     <!-- Overlay gradiente para mejor contraste -->
                     <div
-                      class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent md:from-black/30"
+                      class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent md:from-black/80"
                     ></div>
 
                     <!-- Icono flotante -->
@@ -405,7 +403,7 @@
           <a
             :href="selectedTechDetails.url"
             target="_blank"
-            class="inline-flex items-center gap-2 text-turquesa hover:text-turquesa-light transition-colors"
+            class="inline-flex items-center gap-2 text-white hover:text-red transition-colors"
           >
             Visitar sitio oficial
             <svg

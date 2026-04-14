@@ -2,10 +2,7 @@
    IMPORTS
    ============================================ */
 @import "tailwindcss" important;
-/* Importa Tailwind CSS con prioridad alta para que sus estilos no sean sobreescritos */
-
 @import 'tailwind-animations';
-/* Importa animaciones adicionales de Tailwind para efectos visuales */
 
 /* ============================================
    TEMA PRINCIPAL: FONDO DIGITAL
@@ -16,6 +13,8 @@
   overflow: hidden;
   background: radial-gradient(circle at 20% 20%, #0a122a 0%, #04060f 40%, #020310 75%, #00050a 100%);
   color: #b5e2ff;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 /* Pseudoelementos compartidos para efectos de fondo */
@@ -63,7 +62,6 @@
 /* ============================================
    EFECTOS DE ESCRITURA NEON (CÓDIGO MATRIX)
    ============================================ */
-/* Líneas de código tipeándose */
 .neon-typing-lines {
   position: absolute;
   inset: 0;
@@ -72,9 +70,9 @@
   background-size: 110px 40px;
   z-index: 1;
   opacity: 0.35;
+  pointer-events: none;
 }
 
-/* Barra de resaltado tipo escáner */
 .neon-typing-highlight {
   position: absolute;
   inset: 15% 10% auto 8%;
@@ -84,6 +82,7 @@
   box-shadow: 0 0 40px rgba(0, 225, 255, 0.36), inset 0 0 18px rgba(189, 101, 255, 0.5);
   animation: keyline-scan 5s infinite;
   z-index: 2;
+  pointer-events: none;
 }
 
 @keyframes keyline-scan {
@@ -104,11 +103,37 @@
 }
 
 /* ============================================
-   CONTENEDOR PRINCIPAL
+   CONTENEDOR PRINCIPAL - CORREGIDO
    ============================================ */
 .laptop-content {
   position: relative;
   z-index: 3;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+}
+
+/* ============================================
+   Q-LAYOUT - CORREGIDO
+   ============================================ */
+.q-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+}
+
+/* ============================================
+   Q-PAGE-CONTAINER - CORREGIDO
+   ============================================ */
+.q-page-container {
+  flex: 1 !important;
+}
+
+/* ============================================
+   Q-FOOTER - CORREGIDO
+   ============================================ */
+.q-footer {
+  margin-top: auto !important;
 }
 
 /* ============================================
@@ -190,7 +215,6 @@
 
 /* ============================================
    SPOTLIGHT DIGITAL (EFECTO DE MOUSE)
-   Versión pequeña, redonda y sutil
    ============================================ */
 .mouse-spotlight {
   position: fixed;
@@ -222,7 +246,6 @@
   }
 }
 
-/* Anillo neon exterior */
 .mouse-spotlight::before {
   content: '';
   position: absolute;
@@ -250,7 +273,6 @@
   }
 }
 
-/* Punto central brillante */
 .mouse-spotlight::after {
   content: '';
   position: absolute;
@@ -279,7 +301,6 @@
   }
 }
 
-/* Estado activo: más brillo al mover rápido */
 .mouse-spotlight.speed-fast {
   width: 32px;
   height: 32px;
@@ -299,7 +320,6 @@
 /* ============================================
    EFECTOS DIGITALES ADICIONALES
    ============================================ */
-/* Puntos de datos que aparecen al mover el mouse */
 .data-point {
   position: absolute;
   width: 3px;
@@ -324,7 +344,6 @@
   }
 }
 
-/* Texto de código flotante */
 .code-digit {
   position: absolute;
   color: #05d7ff;
@@ -350,7 +369,6 @@
   }
 }
 
-/* Ripple digital al hacer clic */
 .digital-ripple {
   position: absolute;
   border: 1px solid #05d7ff;
