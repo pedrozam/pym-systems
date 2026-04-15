@@ -36,8 +36,8 @@ services:
       # 🔧 VARIABLES PARA NODE Y EMAIL
       - NODE_TLS_REJECT_UNAUTHORIZED=0  # Solo para pruebas (quitar en producción)
       - EMAIL_HOST=smtp.privateemail.com
-      - EMAIL_PORT=587
-      - EMAIL_SECURE=false
+      - EMAIL_PORT=465
+      - EMAIL_SECURE=true
       - EMAIL_USER=pedrozam@pymsystems.com
       - EMAIL_PASSWORD=tu_contraseña_aqui
     volumes:

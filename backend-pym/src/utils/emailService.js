@@ -28,11 +28,12 @@ class EmailService {
 
     // 🔥 CORREGIDO: Convertir EMAIL_SECURE a booleano correctamente
     const isSecure = process.env.EMAIL_SECURE === 'true' || process.env.EMAIL_SECURE === true;
-    
+    const port = parseInt(process.env.EMAIL_PORT) || 465;
+
     const config = {
       host: process.env.EMAIL_HOST || "mail.privateemail.com",
       port: parseInt(process.env.EMAIL_PORT) || 587,
-      secure: isSecure, // 🔥 Ahora es booleano correcto
+       secure: port === 465 ? true : isSecure, // 🔥 Ahora es booleano correcto
       auth: {
         user: process.env.EMAIL_USER.trim(),
         pass: process.env.EMAIL_PASSWORD.trim(),
