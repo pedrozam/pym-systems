@@ -28,7 +28,7 @@ class EmailService {
     const config = {
       host: process.env.EMAIL_HOST || "mail.privateemail.com",
       port: parseInt(process.env.EMAIL_PORT) || 587,
-      secure: false,
+      secure: process.env.EMAIL_SECURE || false,
       auth: {
         user: process.env.EMAIL_USER.trim(), // Asegurar que no hay espacios
         pass: process.env.EMAIL_PASSWORD.trim(),
