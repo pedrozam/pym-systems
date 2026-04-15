@@ -26,36 +26,27 @@ class EmailService {
       return;
     }
 
-    // 🔥 CORREGIDO: Convertir EMAIL_SECURE a booleano correctamente
-    const isSecure = process.env.EMAIL_SECURE === 'true' || process.env.EMAIL_SECURE === true;
-    const port = parseInt(process.env.EMAIL_PORT) || 465;
-
     const config = {
       host: process.env.EMAIL_HOST || "mail.privateemail.com",
       port: parseInt(process.env.EMAIL_PORT) || 587,
-       secure: port === 465 ? true : isSecure, // 🔥 Ahora es booleano correcto
+      secure: process.env.EMAIL_SECURE || false,
       auth: {
-        user: process.env.EMAIL_USER.trim(),
+        user: process.env.EMAIL_USER.trim(), // Asegurar que no hay espacios
         pass: process.env.EMAIL_PASSWORD.trim(),
       },
       tls: {
-        rejectUnauthorized: false, // Solo para pruebas
-        ciphers: 'SSLv3:TLSv1.2',
+        rejectUnauthorized: false,
       },
-      connectionTimeout: 30000, // Aumentado a 30 segundos
-      greetingTimeout: 30000,
-      socketTimeout: 45000,
-      logger: true, // Para ver logs detallados
-      debug: true,  // Para depuración
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
     };
 
-    console.log(`📧 Configurando con: ${config.auth.user}@${config.host}:${config.port} (secure: ${config.secure})`);
+    console.log(`📧 Configurando con: ${config.auth.user}@${config.host}:${config.port}`);
     this.transporter = nodemailer.createTransport(config);
     
     this.verifyConnection();
   }
 
-  // 🔥 ELIMINADO EL MÉTODO DUPLICADO - Solo uno queda
   async verifyConnection() {
     if (!this.transporter) {
       console.error("❌ Transporter no inicializado por falta de credenciales");
@@ -67,7 +58,17 @@ class EmailService {
       console.log("✅ Private Email configurado correctamente");
     } catch (error) {
       console.error("❌ Error al verificar Private Email:", error.message);
-      console.error("   Detalles del error:", error);
+    }
+  }
+
+  async verifyConnection() {
+    if (!this.transporter) return;
+    
+    try {
+      await this.transporter.verify();
+      console.log("✅ Private Email configurado correctamente");
+    } catch (error) {
+      console.error("❌ Error al verificar Private Email:", error.message);
     }
   }
 
@@ -83,7 +84,7 @@ class EmailService {
       try {
         plantillaHTML = await fs.readFile("src/assets/plantillaCorreo.html", "utf-8");
       } catch (fileError) {
-        console.log("📄 Usando plantilla por defecto");
+        // Plantilla por defecto si no existe
         plantillaHTML = `
           <!DOCTYPE html>
           <html>
@@ -118,19 +119,17 @@ class EmailService {
       };
 
       console.log(`📧 Enviando correo a: ${user.correo}`);
-      console.log(`   Asunto: ${mailOptions.subject}`);
-      
       const info = await this.transporter.sendMail(mailOptions);
-      console.log(`✅ Correo enviado a: ${user.correo} - MessageId: ${info.messageId}`);
+      console.log(`✅ Correo enviado a: ${user.correo}`);
       return info;
       
     } catch (error) {
       console.error("❌ Error al enviar correo:", error.message);
-      console.error("   Stack:", error.stack);
       throw error;
     }
   }
 
+  // Mantén tus otros métodos aquí...
   encriptarTexto(texto) {
     const timestamp = Date.now();
     const textoConTimestamp = `${texto}|${timestamp}`;
