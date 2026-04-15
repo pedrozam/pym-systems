@@ -22,8 +22,8 @@ services:
       - NET_ADMIN
       - NET_RAW
     # 🔥 HOSTS EXTERNOS (opcional, si conoces IPs específicas)
-    extra_hosts:
-      - "smtp.privateemail.com:199.xxx.xxx.xxx"  # Comenta si no sabes la IP
+    #extra_hosts:
+     # - "smtp.privateemail.com:199.xxx.xxx.xxx"  # Comenta si no sabes la IP
     environment:
       - TZ=America/La_Paz
       - PORT=5000
