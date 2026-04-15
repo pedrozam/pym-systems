@@ -15,6 +15,7 @@ class EmailService {
     console.log("EMAIL_PORT:", process.env.EMAIL_PORT || "NO DEFINIDO");
     console.log("EMAIL_USER:", process.env.EMAIL_USER || "NO DEFINIDO");
     console.log("EMAIL_PASSWORD:", process.env.EMAIL_PASSWORD ? "*** DEFINIDO ***" : "NO DEFINIDO");
+    console.log("EMAIL_SECURE:", process.env.EMAIL_SECURE || "NO DEFINIDO");
     console.log("======================================");
 
     // Validar que existan las credenciales
