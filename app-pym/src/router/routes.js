@@ -1,5 +1,5 @@
 import paginaRoutes from './paginaRoutes'
-
+import bbqRoutes  from  './bbqRoutes'
 
 const routes = [
   {
@@ -8,6 +8,14 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       ...paginaRoutes,
+    ],
+  },
+  {
+    path: '/bbq',
+    component: () => import('layouts/BbqLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/bbq/IndexBbq.vue') },
+      ...bbqRoutes,
     ],
   },
 

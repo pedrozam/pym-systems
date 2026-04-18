@@ -1,5 +1,5 @@
 // newlester.controller.js
-const emailService =require("../../utils/emailService");
+const emailService =require("../../utils/emailServiceBrevo");
 const con = require("../../infraestructure/config/config");
 
 const gestionNewlester = async (req, res) => {
