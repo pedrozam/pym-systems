@@ -23,7 +23,7 @@ const gestionNewlester = async (req, res) => {
           const correo = req.body.correo || req.body.email;
           if (correo) {
             const nombre = req.body.nombre || "Suscriptor";
-            const mensaje = `Hola ${nombre}, tenemos registro de tu correo en nuestra lista de suscriptores. Avisarte que: ${resultado.notificacion}`;
+            const mensaje = `Recibes este mensaje porque te tenemos registrado(a) en nuestra lista de suscriptores. Recibe el siguiente aviso: ${resultado.notificacion}`;
             
             const datosCorreo = [
               "Suscriptores - PyM Systems",
