@@ -225,7 +225,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import useServiciosPym from 'src/composables/useServiciosPym'
+import useServiciosPym from 'src/composables/useServiciospym'
 
 const { spriteUrl } = defineProps({
   spriteUrl: {

@@ -384,7 +384,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import useServiciosPym from 'src/composables/useServiciosPym';
+import useServiciosPym from 'src/composables/useServiciospym';
 import DialogVerTecnologia from 'src/components/dialog/DialogVerTecnologia.vue';
 
 const { spriteUrl } = defineProps({
