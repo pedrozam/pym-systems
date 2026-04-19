@@ -11,6 +11,10 @@ const serviciosRoutes = [
     path: 'quienes-somos',
     component: () => import('pages/presentacion/QuienesSomos.vue'),
   },
+  {
+    path: 'staticsGA4',
+    component: () => import('pages/presentacion/EstadisticasGa4Page.vue'),
+  },
 ]
 
 export default serviciosRoutes

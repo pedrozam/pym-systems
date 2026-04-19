@@ -22,3 +22,5 @@ backend-pym/pass.js
 /backend-pym/*.env
 /backend-pym/.env
 /backend-pym/.vscode
+
+/backend-pym/src/credentials/ga4-service-account.json

@@ -416,6 +416,7 @@ const sectionsVisible = ref({
 const services = ref([
   {
     id: 1,
+
     nombre_servicio: 'Páginas Web',
     descripcion:
       'Landing pages y sitios web profesionales para tu negocio, emprendimiento o perfil profesional.',
