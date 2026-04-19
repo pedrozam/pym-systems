@@ -13,6 +13,10 @@
           />
         </div>
 
+        <div>
+          <simple-visitor-counter/>
+        </div>
+
         <!-- Social media links -->
         <div class="flex flex-col items-start md:items-end gap-2">
           <h3 class="text-cyan-400 font-semibold text-sm uppercase tracking-wider mb-2">
@@ -152,6 +156,7 @@
 <script setup>
 import useNewlester from 'src/composables/useNewlester'
 import { ref, watch } from 'vue'
+import SimpleVisitorCounter from './SimpleVisitorCounter.vue';
 
 // Obtener los datos del composable
 const {
