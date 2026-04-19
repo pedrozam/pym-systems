@@ -54,9 +54,22 @@ export default function () {
     });
   };
 
+   const listarTecnologias = async (estado) => {
+    $q.loading.show();
+    const resp = await service.listarTecnologias(estado);
+    state.dataServpym.list = resp.datos;
+    $q.loading.hide();
+    $q.notify({
+      message: "Se obtuvo la lista de tecnologías PyM.",
+      color: "positive",
+      icon:'done'
+    });
+  };
+
   return {
     ...toRefs(state),
     gestionServiciospym,
-    listarServiciospym
+    listarServiciospym,
+    listarTecnologias
   };
 }

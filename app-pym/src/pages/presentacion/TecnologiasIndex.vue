@@ -68,15 +68,15 @@
                     height="40"
                     class="animate-float"
                   >
-                    <use :xlink:href="`${spriteUrl}#${selectedTech.icon}`" />
+                    <use :xlink:href="`${spriteUrl}#${selectedTech.svg}`" />
                   </svg>
-                  <h3 class="text-xl font-bold text-cyan-300">{{ selectedTech.name }}</h3>
+                  <h3 class="text-xl font-bold text-cyan-300">{{ selectedTech.nombre_tecnologia }}</h3>
                 </div>
                 <p class="text-sm text-white/80 leading-relaxed mb-3">
-                  {{ selectedTech.description }}
+                  {{ selectedTech.descripcion_tecnologia }}
                 </p>
                 <a
-                  :href="selectedTech.url"
+                  :href="selectedTech.url_tecnologia"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-cyan-400 hover:text-cyan-300 text-sm inline-flex items-center gap-1 transition-colors"
@@ -107,6 +107,7 @@
 
               <!-- Frontend -->
               <div
+                v-if="frontendTechs.length > 0"
                 class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
               >
                 <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
@@ -115,7 +116,7 @@
                 <div class="flex flex-wrap gap-5 items-center">
                   <div
                     v-for="tech in frontendTechs"
-                    :key="tech.id"
+                    :key="tech.id_tecnologia"
                     class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                     @click="showTechInfo(tech)"
                   >
@@ -124,9 +125,9 @@
                       height="40"
                       class="p-1 transition-transform"
                     >
-                      <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                      <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                     </svg>
-                    <span class="text-xs text-white/70">{{ tech.name }}</span>
+                    <span class="text-xs text-white/70">{{ tech.nombre_tecnologia }}</span>
                   </div>
                 </div>
               </div>
@@ -135,6 +136,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Backend -->
                 <div
+                  v-if="backendTechs.length > 0"
                   class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
                 >
                   <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
@@ -143,7 +145,7 @@
                   <div class="flex flex-wrap gap-5 items-center">
                     <div
                       v-for="tech in backendTechs"
-                      :key="tech.id"
+                      :key="tech.id_tecnologia"
                       class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                       @click="showTechInfo(tech)"
                     >
@@ -152,15 +154,16 @@
                         height="40"
                         class="p-1 transition-transform"
                       >
-                        <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                        <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                       </svg>
-                      <span class="text-xs text-white/70">{{ tech.name }}</span>
+                      <span class="text-xs text-white/70">{{ tech.nombre_tecnologia }}</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Base de Datos -->
                 <div
+                  v-if="databaseTechs.length > 0"
                   class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
                 >
                   <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
@@ -169,7 +172,7 @@
                   <div class="flex flex-wrap gap-5 items-center">
                     <div
                       v-for="tech in databaseTechs"
-                      :key="tech.id"
+                      :key="tech.id_tecnologia"
                       class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                       @click="showTechInfo(tech)"
                     >
@@ -178,9 +181,9 @@
                         height="40"
                         class="p-1 transition-transform"
                       >
-                        <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                        <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                       </svg>
-                      <span class="text-xs text-white/70">{{ tech.name }}</span>
+                      <span class="text-xs text-white/70">{{ tech.nombre_tecnologia }}</span>
                     </div>
                   </div>
                 </div>
@@ -188,6 +191,7 @@
 
               <!-- Herramientas de Desarrollo -->
               <div
+                v-if="devToolsTechs.length > 0"
                 class="p-5 md:p-6 rounded-2xl border border-cyan-300/30 bg-cyan-950/30 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/30"
               >
                 <h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
@@ -196,7 +200,7 @@
                 <div class="flex flex-wrap gap-5 items-center">
                   <div
                     v-for="tech in devToolsTechs"
-                    :key="tech.id"
+                    :key="tech.id_tecnologia"
                     class="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer hover:scale-110 hover:drop-shadow-cyan"
                     @click="showTechInfo(tech)"
                   >
@@ -205,9 +209,9 @@
                       height="40"
                       class="p-1 transition-transform"
                     >
-                      <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                      <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                     </svg>
-                    <span class="text-xs text-white/70">{{ tech.name }}</span>
+                    <span class="text-xs text-white/70">{{ tech.nombre_tecnologia }}</span>
                   </div>
                 </div>
               </div>
@@ -220,7 +224,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import useServiciosPym from 'src/composables/useServiciosPym'
 
 const { spriteUrl } = defineProps({
   spriteUrl: {
@@ -229,196 +234,44 @@ const { spriteUrl } = defineProps({
   },
 })
 
+// Usar el composable
+const { listarTecnologias, dataServpym } = useServiciosPym()
+
 // Estados
 const showCenteredCard = ref(true)
 const showFinalLayout = ref(false)
 const heroContainer = ref(null)
 const movingCard = ref(null)
 const selectedTech = ref(null)
+const isLoading = ref(true)
 
-// Clase neon para Tailwind (usando estilos personalizados solo donde es necesario)
+// Clase neon para Tailwind
 const neonTextClass = 'neon-text'
 
-// Definición de tecnologías con sus descripciones y URLs oficiales
-const frontendTechs = [
-  {
-    id: 'quasar',
-    name: 'Quasar',
-    icon: 'quasar',
-    description:
-      'Framework Vue.js que permite desarrollar aplicaciones para múltiples plataformas (web, móvil, escritorio) con un solo código base. Ofrece componentes pre-construidos y rendimiento excepcional.',
-    url: 'https://quasar.dev/',
-  },
-  {
-    id: 'vue',
-    name: 'Vue 3',
-    icon: 'vue',
-    description:
-      'Framework progresivo de JavaScript para construir interfaces de usuario. Vue 3 ofrece Composition API, mejor rendimiento y TypeScript mejorado, permitiendo crear aplicaciones reactivas y escalables.',
-    url: 'https://vuejs.org/',
-  },
-  {
-    id: 'html',
-    name: 'HTML5',
-    icon: 'html',
-    description:
-      'Lenguaje de marcado esencial para la estructura de páginas web. HTML5 introduce elementos semánticos, soporte multimedia nativo y APIs avanzadas para aplicaciones web modernas.',
-    url: 'https://developer.mozilla.org/es/docs/Web/HTML',
-  },
-  {
-    id: 'css',
-    name: 'CSS3',
-    icon: 'css',
-    description:
-      'Lenguaje de estilos que permite diseñar interfaces visualmente atractivas. CSS3 incluye animaciones, flexbox, grid layout y responsive design para experiencias web profesionales.',
-    url: 'https://developer.mozilla.org/es/docs/Web/CSS',
-  },
-  {
-    id: 'tailwind',
-    name: 'Tailwind',
-    icon: 'tailwind',
-    description:
-      'Framework CSS utility-first que permite construir diseños personalizados rápidamente sin salir del HTML. Ofrece flexibilidad, consistencia y excelente rendimiento.',
-    url: 'https://tailwindcss.com/',
-  },
-  {
-    id: 'angular',
-    name: 'Angular',
-    icon: 'angular',
-    description:
-      'Plataforma de desarrollo de aplicaciones web basada en TypeScript. Proporciona una estructura robusta con inyección de dependencias, componentes reutilizables y herramientas para aplicaciones empresariales.',
-    url: 'https://angular.io/',
-  },
-]
+// Computed para filtrar tecnologías por tipo
+const frontendTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'Frontend' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-const backendTechs = [
-  {
-    id: 'node',
-    name: 'Node.js',
-    icon: 'node',
-    description:
-      'Entorno de ejecución de JavaScript del lado del servidor. Permite construir aplicaciones escalables y de alto rendimiento usando el mismo lenguaje tanto en frontend como backend.',
-    url: 'https://nodejs.org/',
-  },
-  {
-    id: 'express',
-    name: 'ExpressJS',
-    icon: 'express',
-    description:
-      'Framework minimalista y flexible para Node.js que proporciona características robustas para aplicaciones web y APIs. Es el estándar de facto para servidores con Node.js.',
-    url: 'https://expressjs.com/',
-  },
-  {
-    id: 'spring',
-    name: 'SpringBoot',
-    icon: 'spring',
-    description:
-      'Framework de Java que simplifica la creación de aplicaciones empresariales. Spring Boot ofrece configuración automática, microservicios y ecosistema completo para desarrollo backend.',
-    url: 'https://spring.io/projects/spring-boot',
-  },
-  {
-    id: 'nest',
-    name: 'NestJs',
-    icon: 'nestjs',
-    description:
-      'Framework progresivo de Node.js para construir aplicaciones del lado del servidor eficientes y escalables. Utiliza TypeScript y combina elementos de OOP, FP y FRP.',
-    url: 'https://nestjs.com/',
-  },
-  {
-    id: 'php',
-    name: 'PHP',
-    icon: 'php',
-    description:
-      'Lenguaje de programación del lado del servidor ampliamente utilizado para desarrollo web dinámico. Ideal para crear aplicaciones robustas y sistemas de gestión de contenido.',
-    url: 'https://www.php.net/',
-  },
-]
+const backendTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'Backend' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-const databaseTechs = [
-  {
-    id: 'pg',
-    name: 'PostgreSQL',
-    icon: 'pg',
-    description:
-      'Sistema de base de datos relacional de código abierto potente y avanzado. Ofrece características como integridad transaccional, concurrencia y soporte para datos JSON.',
-    url: 'https://www.postgresql.org/',
-  },
-  {
-    id: 'mysql',
-    name: 'MySQL',
-    icon: 'mysql',
-    description:
-      'Sistema de gestión de bases de datos relacional ampliamente utilizado. Es conocido por su velocidad, confiabilidad y facilidad de uso en aplicaciones web.',
-    url: 'https://www.mysql.com/',
-  },
-  {
-    id: 'oracle',
-    name: 'Oracle',
-    icon: 'oracle',
-    description:
-      'Base de datos empresarial líder en el mercado. Ofrece alto rendimiento, seguridad avanzada y características para aplicaciones críticas y big data.',
-    url: 'https://www.oracle.com/database/',
-  },
-]
+const databaseTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'Base de Datos' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-const devToolsTechs = [
-  {
-    id: 'github',
-    name: 'GitHub',
-    icon: 'github',
-    description:
-      'Plataforma de desarrollo colaborativo basada en Git. Permite alojar proyectos, control de versiones, revisión de código y gestión de equipos de desarrollo.',
-    url: 'https://github.com/',
-  },
-  {
-    id: 'gitlab',
-    name: 'GitLab',
-    icon: 'gitlab',
-    description:
-      'Plataforma DevOps completa que proporciona gestión de repositorios Git, CI/CD, seguimiento de problemas y despliegue continuo en un solo lugar.',
-    url: 'https://gitlab.com/',
-  },
-  {
-    id: 'docker',
-    name: 'Docker',
-    icon: 'docker',
-    description:
-      'Plataforma de contenedores que permite empaquetar aplicaciones y sus dependencias en entornos aislados, garantizando consistencia en desarrollo y producción.',
-    url: 'https://www.docker.com/',
-  },
-  {
-    id: 'vc',
-    name: 'Visual Studio Code',
-    icon: 'vc',
-    description:
-      'Editor de código ligero pero potente desarrollado por Microsoft. Ofrece debugging inteligente, resaltado de sintaxis, control de versiones integrado y miles de extensiones.',
-    url: 'https://code.visualstudio.com/',
-  },
-  {
-    id: 'dbeaver',
-    name: 'DBeaver',
-    icon: 'dbeaver',
-    description:
-      'Cliente de base de datos universal gratuito y de código abierto. Soporta múltiples bases de datos como MySQL, PostgreSQL, Oracle, SQL Server y más.',
-    url: 'https://dbeaver.io/',
-  },
-  {
-    id: 'openvpn',
-    name: 'OpenVPN',
-    icon: 'openvpn',
-    description:
-      'Solución de red privada virtual (VPN) de código abierto. Proporciona conexiones seguras y encriptadas para acceso remoto a redes privadas.',
-    url: 'https://openvpn.net/',
-  },
-  {
-    id: 'canva',
-    name: 'Canva',
-    icon: 'canva',
-    description:
-      'Plataforma de diseño gráfico online que permite crear diseños profesionales para interfaces, presentaciones, branding y material visual para proyectos.',
-    url: 'https://www.canva.com/',
-  },
-]
+const devToolsTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'DevOps & Herramientas' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
 // Background style con la imagen
 const backgroundStyle = {
@@ -427,6 +280,13 @@ const backgroundStyle = {
   backgroundPosition: 'center',
   backgroundAttachment: 'fixed',
   backgroundRepeat: 'no-repeat',
+}
+
+// Cargar tecnologías desde el servicio
+const loadTecnologias = async () => {
+  isLoading.value = true
+  await listarTecnologias('ACTIVO')
+  isLoading.value = false
 }
 
 // Mostrar información de la tecnología seleccionada y hacer scroll hacia arriba
@@ -512,8 +372,10 @@ const animateCardToRight = () => {
   }, 50)
 }
 
-// Iniciar la animación después de 5 segundos
-onMounted(() => {
+// Iniciar la animación después de cargar los datos
+onMounted(async () => {
+  await loadTecnologias()
+  
   setTimeout(() => {
     animateCardToRight()
   }, 2000)
@@ -548,7 +410,7 @@ onMounted(() => {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Animación de pulso para el card centrado (no disponible en Tailwind) */
+/* Animación de pulso para el card centrado */
 @keyframes pulse-border {
   0% {
     box-shadow: 0 0 0px rgba(0, 255, 255, 0.2);
@@ -564,7 +426,7 @@ onMounted(() => {
   animation: pulse-border 1.8s infinite alternate;
 }
 
-/* Drop shadow para hover en íconos (Tailwind no tiene drop-shadow con color personalizado fácilmente) */
+/* Drop shadow para hover en íconos */
 .hover\:drop-shadow-cyan:hover {
   filter: drop-shadow(0 0 8px cyan);
 }

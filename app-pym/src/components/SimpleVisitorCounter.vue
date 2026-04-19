@@ -7,7 +7,7 @@
       clickable
       @click="$router.push('/staticsGA4')"
     >
-      Google Analytics: {{ totalVisits.toLocaleString() }} {{totalVisits>1? 'visitas':'visita'}}
+      Google Analytics: {{ totalVisits.toLocaleString() }} {{ totalVisits > 1 ? 'visitas' : 'visita' }} <small> (page views)</small>
 
       <q-tooltip :offset="[0, 10]" class="!bg-transparent !p-0">
         <div class="bg-gradient-to-r from-[#0B1F33] to-[#123A56] text-white text-xs px-3 py-1.5 rounded-lg border border-[#16B3C4] shadow-lg flex items-center gap-2">
@@ -21,16 +21,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { api } from 'src/boot/axios'
+import { ref, onMounted } from 'vue'
+import useGA4 from 'src/composables/useGA4'
 
 const totalVisits = ref(0)
 
+// Usar el composable
+const { fetchMetrics } = useGA4()
+
 onMounted(async () => {
   try {
-    const response = await api.get('/api/ga4/metrics')
-    if (response.data.success) {
-      totalVisits.value = response.data.data.totalUsers
+    const data = await fetchMetrics()
+    if (data && data.pageViews !== undefined) {
+      totalVisits.value = data.pageViews
     }
   } catch (error) {
     console.error('Error cargando visitas:', error)

@@ -112,21 +112,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import { api } from 'src/boot/axios'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import useGA4 from 'src/composables/useGA4'
 import Chart from 'chart.js/auto'
 
-// Estados
-const loading = ref(false)
-const metrics = ref({
-  totalUsers: 0,
-  activeUsers: 0,
-  newUsers: 0,
-  pageViews: 0
-})
-const dailyVisits = ref([])
-let chartInstance = null
+// Usar el composable
+const {
+  loading,
+  metrics,
+  dailyVisits,
+  fetchAllData
+} = useGA4()
+
+const chartInstance = ref(null)
 let intervalId = null
+
+// Referencia para el canvas
+const dailyVisitsChart = ref(null)
 
 // Lista de métricas para mostrar
 const metricsList = computed(() => [
@@ -152,36 +154,9 @@ const metricsList = computed(() => [
   }
 ])
 
-// Cargar métricas básicas
-const loadMetrics = async () => {
-  try {
-    const response = await api.get('/api/ga4/metrics')
-    if (response.data.success) {
-      metrics.value = response.data.data
-    }
-  } catch (error) {
-    console.error('Error cargando métricas:', error)
-    showError('Error al cargar métricas básicas')
-  }
-}
-
-// Cargar visitas diarias
-const loadDailyVisits = async () => {
-  try {
-    const response = await api.get('/api/ga4/daily-visits')
-    if (response.data.success && response.data.data) {
-      dailyVisits.value = response.data.data
-      updateChart()
-    }
-  } catch (error) {
-    console.error('Error cargando visitas diarias:', error)
-    showError('Error al cargar visitas diarias')
-  }
-}
-
 // Actualizar gráfico con estilo neón
 const updateChart = () => {
-  if (!dailyVisits.value.length) return
+  if (!dailyVisits.value || !dailyVisits.value.length) return
 
   const dates = dailyVisits.value.map(item => {
     const date = item.date
@@ -190,14 +165,13 @@ const updateChart = () => {
 
   const visits = dailyVisits.value.map(item => item.visits)
 
-  if (chartInstance) {
-    chartInstance.destroy()
+  if (chartInstance.value) {
+    chartInstance.value.destroy()
   }
 
-  const canvas = document.querySelector('canvas')
-  if (canvas) {
-    const ctx = canvas.getContext('2d')
-    chartInstance = new Chart(ctx, {
+  if (dailyVisitsChart.value) {
+    const ctx = dailyVisitsChart.value.getContext('2d')
+    chartInstance.value = new Chart(ctx, {
       type: 'line',
       data: {
         labels: dates,
@@ -251,19 +225,19 @@ const updateChart = () => {
 
 // Cargar todos los datos
 const loadAllData = async () => {
-  loading.value = true
   try {
-    await Promise.all([
-      loadMetrics(),
-      loadDailyVisits()
-    ])
+    await fetchAllData()
     showSuccess('Datos actualizados correctamente')
   } catch (error) {
     console.error('Error cargando datos:', error)
-  } finally {
-    loading.value = false
+    showError('Error al cargar los datos')
   }
 }
+
+// Observar cambios en dailyVisits para actualizar el gráfico
+watch(dailyVisits, () => {
+  updateChart()
+}, { deep: true })
 
 // Notificaciones con estilo
 const showSuccess = (message) => {
@@ -303,7 +277,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   if (intervalId) clearInterval(intervalId)
-  if (chartInstance) chartInstance.destroy()
+  if (chartInstance.value) chartInstance.value.destroy()
 })
 </script>
 

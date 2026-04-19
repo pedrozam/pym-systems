@@ -4,7 +4,8 @@ const passport = require("passport");
 
 
 const {
-   listarServiciospym
+   listarServiciospym,
+   listarTecnologias
 } = require ('../controllers/serviciospym.controller')
 
 /**
@@ -32,6 +33,33 @@ const {
 router.get(
     '/listarServiciospym/:estado',
     listarServiciospym
+);
+
+/**
+ * @swagger
+ * /api/servicios/listarTecnologias/{estado}:
+ *  get:
+ *      summary: Obtiene listado de tecnologías de PyM Systems
+ *      tags: [Servicios PyM]
+ *      parameters:
+ *           - name: estado
+ *             in: path
+ *             description: Estado de la tecnología a listar
+ *             required: true
+ *             schema:
+ *                  type: string
+ *                  style: simple
+ *      responses:
+ *          200:
+ *              description: Peticion Exitosa
+ *          400:
+ *             description: Peticion No existe
+ *
+ */
+
+router.get(
+    '/listarTecnologias/:estado',
+    listarTecnologias
 );
 
 module.exports = router;

@@ -23,6 +23,7 @@
 
       <!-- Carousel de Servicios - Nuevo diseño con efecto scroll -->
       <div
+        v-if="services.length > 0"
         class="max-w-5xl mx-auto mb-16 scroll-section"
         :class="{ 'section-visible': sectionsVisible.services }"
       >
@@ -50,7 +51,7 @@
           >
             <q-carousel-slide
               v-for="(service, index) in services"
-              :key="service.id"
+              :key="service.id_servicio"
               :name="index"
               class="q-pa-none"
             >
@@ -78,7 +79,7 @@
                           height="32"
                           class="text-turquesa"
                         >
-                          <use :xlink:href="`${spriteUrl}#${service.icon}`" />
+                          <use :xlink:href="`${spriteUrl}#${getServiceIcon(service.nom_tipo_servicio)}`" />
                         </svg>
                       </div>
                     </div>
@@ -111,7 +112,7 @@
                           <p class="text-turquesa text-xs uppercase tracking-wider font-semibold">
                             Tiempo estimado
                           </p>
-                          <p class="text-white text-lg font-medium">{{ service.tiempo_entrega }}</p>
+                          <p class="text-white text-lg font-medium">{{ getTiempoEntrega(service) }}</p>
                         </div>
                       </div>
                       <div class="grid grid-cols-1 gap-2 mb-6">
@@ -166,6 +167,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Frontend -->
           <div
+            v-if="frontendTechs.length > 0"
             class="bg-black/30 backdrop-blur-md rounded-xl p-5 border border-white/10 hover:border-turquesa/30 transition-all duration-300"
           >
             <h3 class="text-lg font-semibold text-turquesa mb-3 flex items-center gap-2">
@@ -186,7 +188,7 @@
             <div class="flex flex-wrap gap-4">
               <div
                 v-for="tech in frontendTechs"
-                :key="tech.id"
+                :key="tech.id_tecnologia"
                 class="group relative cursor-pointer"
                 @click="showTechModal(tech)"
               >
@@ -197,7 +199,7 @@
                     width="32"
                     height="32"
                   >
-                    <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                    <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                   </svg>
                 </div>
                 <div
@@ -206,7 +208,7 @@
                   <div
                     class="bg-gray-900 text-white text-xs rounded-lg py-1 px-2 whitespace-nowrap border border-turquesa/50"
                   >
-                    {{ tech.name }}
+                    {{ tech.nombre_tecnologia }}
                   </div>
                 </div>
               </div>
@@ -215,6 +217,7 @@
 
           <!-- Backend -->
           <div
+            v-if="backendTechs.length > 0"
             class="bg-black/30 backdrop-blur-md rounded-xl p-5 border border-white/10 hover:border-turquesa/30 transition-all duration-300"
           >
             <h3 class="text-lg font-semibold text-turquesa mb-3 flex items-center gap-2">
@@ -234,7 +237,7 @@
             <div class="flex flex-wrap gap-4">
               <div
                 v-for="tech in backendTechs"
-                :key="tech.id"
+                :key="tech.id_tecnologia"
                 class="group relative cursor-pointer"
                 @click="showTechModal(tech)"
               >
@@ -245,7 +248,7 @@
                     width="32"
                     height="32"
                   >
-                    <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                    <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                   </svg>
                 </div>
                 <div
@@ -254,7 +257,7 @@
                   <div
                     class="bg-gray-900 text-white text-xs rounded-lg py-1 px-2 whitespace-nowrap border border-turquesa/50"
                   >
-                    {{ tech.name }}
+                    {{ tech.nombre_tecnologia }}
                   </div>
                 </div>
               </div>
@@ -263,6 +266,7 @@
 
           <!-- Base de Datos -->
           <div
+            v-if="databaseTechs.length > 0"
             class="bg-black/30 backdrop-blur-md rounded-xl p-5 border border-white/10 hover:border-turquesa/30 transition-all duration-300"
           >
             <h3 class="text-lg font-semibold text-turquesa mb-3 flex items-center gap-2">
@@ -280,7 +284,7 @@
             <div class="flex flex-wrap gap-4">
               <div
                 v-for="tech in databaseTechs"
-                :key="tech.id"
+                :key="tech.id_tecnologia"
                 class="group relative cursor-pointer"
                 @click="showTechModal(tech)"
               >
@@ -291,7 +295,7 @@
                     width="32"
                     height="32"
                   >
-                    <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                    <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                   </svg>
                 </div>
                 <div
@@ -300,7 +304,7 @@
                   <div
                     class="bg-gray-900 text-white text-xs rounded-lg py-1 px-2 whitespace-nowrap border border-turquesa/50"
                   >
-                    {{ tech.name }}
+                    {{ tech.nombre_tecnologia }}
                   </div>
                 </div>
               </div>
@@ -309,6 +313,7 @@
 
           <!-- Herramientas DevOps -->
           <div
+            v-if="devToolsTechs.length > 0"
             class="bg-black/30 backdrop-blur-md rounded-xl p-5 border border-white/10 hover:border-turquesa/30 transition-all duration-300"
           >
             <h3 class="text-lg font-semibold text-turquesa mb-3 flex items-center gap-2">
@@ -328,7 +333,7 @@
             <div class="flex flex-wrap gap-4">
               <div
                 v-for="tech in devToolsTechs"
-                :key="tech.id"
+                :key="tech.id_tecnologia"
                 class="group relative cursor-pointer"
                 @click="showTechModal(tech)"
               >
@@ -339,7 +344,7 @@
                     width="32"
                     height="32"
                   >
-                    <use :xlink:href="`${spriteUrl}#${tech.icon}`" />
+                    <use :xlink:href="`${spriteUrl}#${tech.svg}`" />
                   </svg>
                 </div>
                 <div
@@ -348,7 +353,7 @@
                   <div
                     class="bg-gray-900 text-white text-xs rounded-lg py-1 px-2 whitespace-nowrap border border-turquesa/50"
                   >
-                    {{ tech.name }}
+                    {{ tech.nombre_tecnologia }}
                   </div>
                 </div>
               </div>
@@ -377,8 +382,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import useServiciosPym from 'src/composables/useServiciosPym';
 import DialogVerTecnologia from 'src/components/dialog/DialogVerTecnologia.vue';
 
 const { spriteUrl } = defineProps({
@@ -390,21 +396,20 @@ const { spriteUrl } = defineProps({
 
 const router = useRouter()
 
+// Usar el composable
+const { listarServiciospym, listarTecnologias, dataServpym } = useServiciosPym()
+
 // Efecto de escritura
 const firstLineText = 'Tu solución integral para la gestión de sistemas informáticos'
-const secondLineText =
-  'Automatización de procesos empresariales, desarrollo web y soporte técnico especializado'
 const displayedFirstLine = ref('')
-const displayedSecondLine = ref('')
 let firstLineIndex = 0
-let secondLineIndex = 0
 let firstLineInterval = null
-let secondLineInterval = null
 
 // Estado del carousel
 const currentSlide = ref(0)
 const techModalVisible = ref(false)
 const selectedTechDetails = ref(null)
+const isLoading = ref(true)
 
 // Visibilidad de secciones
 const sectionsVisible = ref({
@@ -412,240 +417,70 @@ const sectionsVisible = ref({
   technologies: true,
 })
 
-// Servicios para el carousel
-const services = ref([
-  {
-    id: 1,
+// Servicios desde el backend
+const services = ref([])
 
-    nombre_servicio: 'Páginas Web',
-    descripcion:
-      'Landing pages y sitios web profesionales para tu negocio, emprendimiento o perfil profesional.',
-    icon: 'globe-alt',
-    costo_minimo: 350,
-    tiempo_entrega: '7 días',
-    image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&h=600&fit=crop',
-    features: [
-      'Diseño personalizado responsivo',
-      'Integración con redes sociales y WhatsApp',
-      'Catálogo de productos o servicios',
-      'Contador de visitas',
-      'Administración sencilla de tu página',
-    ],
-  },
-  {
-    id: 2,
-    nombre_servicio: 'Sistemas Web',
-    descripcion:
-      'Automatización completa para tu empresa. Explícanos tus procesos y te haremos una propuesta.',
-    icon: 'cog',
-    costo_minimo: 1500,
-    tiempo_entrega: '15 días',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-    features: [
-      'Módulos de ventas y compras',
-      'Gestión de clientes y proveedores',
-      'Reportes y dashboard personalizados',
-      'Múltiples niveles de usuarios',
-      'Integración con base de datos propia',
-    ],
-  },
-  {
-    id: 3,
-    nombre_servicio: 'E-Commerce',
-    descripcion: 'Tienda virtual profesional para automatizar tus ventas en línea.',
-    icon: 'shopping-cart',
-    costo_minimo: 1500,
-    tiempo_entrega: '20 días',
-    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&h=600&fit=crop',
-    features: [
-      'Catálogo de productos ilimitado',
-      'Carrito de compras y pasarela de pagos',
-      'Gestión de pedidos y envíos',
-      'Panel administrativo intuitivo',
-      'SEO optimizado para mejores resultados',
-    ],
-  },
-  {
-    id: 4,
-    nombre_servicio: 'Soporte Técnico',
-    descripcion:
-      'Mantenimiento y asistencia especializada para equipos CPU, laptops, MAC e impresoras.',
-    icon: 'support',
-    costo_minimo: 50,
-    tiempo_entrega: 'Inmediato',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop',
-    features: [
-      'Planes de mantenimiento preventivo',
-      'Asistencia rápida remota/presencial',
-      'Diagnóstico sin compromiso',
-      'Soluciones a medida de tu presupuesto',
-      'Soporte para múltiples equipos',
-    ],
-  },
-])
+// Computed para filtrar tecnologías por tipo
+const frontendTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'Frontend' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-// Tecnologías (igual que antes)
-const frontendTechs = [
-  {
-    id: 'quasar',
-    name: 'Quasar',
-    icon: 'quasar',
-    description: 'Framework Vue.js para múltiples plataformas con un solo código base.',
-    url: 'https://quasar.dev/',
-  },
-  {
-    id: 'vue',
-    name: 'Vue 3',
-    icon: 'vue',
-    description:
-      'Framework progresivo para construir interfaces de usuario reactivas y escalables.',
-    url: 'https://vuejs.org/',
-  },
-  {
-    id: 'html',
-    name: 'HTML5',
-    icon: 'html',
-    description: 'Lenguaje de marcado esencial para la estructura de páginas web.',
-    url: 'https://developer.mozilla.org/es/docs/Web/HTML',
-  },
-  {
-    id: 'css',
-    name: 'CSS3',
-    icon: 'css',
-    description: 'Lenguaje de estilos para diseñar interfaces visualmente atractivas.',
-    url: 'https://developer.mozilla.org/es/docs/Web/CSS',
-  },
-  {
-    id: 'tailwind',
-    name: 'Tailwind',
-    icon: 'tailwind',
-    description: 'Framework CSS utility-first para diseños personalizados rápidos.',
-    url: 'https://tailwindcss.com/',
-  },
-  {
-    id: 'angular',
-    name: 'Angular',
-    icon: 'angular',
-    description: 'Plataforma TypeScript para aplicaciones web empresariales.',
-    url: 'https://angular.io/',
-  },
-]
+const backendTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'Backend' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-const backendTechs = [
-  {
-    id: 'node',
-    name: 'Node.js',
-    icon: 'node',
-    description: 'Entorno JavaScript del lado del servidor para apps escalables.',
-    url: 'https://nodejs.org/',
-  },
-  {
-    id: 'express',
-    name: 'ExpressJS',
-    icon: 'express',
-    description: 'Framework minimalista para Node.js y APIs robustas.',
-    url: 'https://expressjs.com/',
-  },
-  {
-    id: 'spring',
-    name: 'SpringBoot',
-    icon: 'spring',
-    description: 'Framework Java para aplicaciones empresariales y microservicios.',
-    url: 'https://spring.io/projects/spring-boot',
-  },
-  {
-    id: 'nest',
-    name: 'NestJs',
-    icon: 'nestjs',
-    description: 'Framework Node.js progresivo usando TypeScript.',
-    url: 'https://nestjs.com/',
-  },
-  {
-    id: 'php',
-    name: 'PHP',
-    icon: 'php',
-    description: 'Lenguaje del lado del servidor para desarrollo web dinámico.',
-    url: 'https://www.php.net/',
-  },
-]
+const databaseTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'Base de Datos' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-const databaseTechs = [
-  {
-    id: 'pg',
-    name: 'PostgreSQL',
-    icon: 'pg',
-    description: 'Base de datos relacional avanzada con soporte JSON.',
-    url: 'https://www.postgresql.org/',
-  },
-  {
-    id: 'mysql',
-    name: 'MySQL',
-    icon: 'mysql',
-    description: 'Sistema de gestión de bases de datos rápido y confiable.',
-    url: 'https://www.mysql.com/',
-  },
-  {
-    id: 'oracle',
-    name: 'Oracle',
-    icon: 'oracle',
-    description: 'Base de datos empresarial líder en rendimiento y seguridad.',
-    url: 'https://www.oracle.com/database/',
-  },
-]
+const devToolsTechs = computed(() => {
+  return dataServpym.value?.list?.filter(
+    tech => tech.nombre_tipo_tecnologia === 'DevOps & Herramientas' && tech.estado === 'ACTIVO'
+  ).sort((a, b) => a.orden - b.orden) || []
+})
 
-const devToolsTechs = [
-  {
-    id: 'github',
-    name: 'GitHub',
-    icon: 'github',
-    description: 'Plataforma colaborativa para control de versiones Git.',
-    url: 'https://github.com/',
-  },
-  {
-    id: 'gitlab',
-    name: 'GitLab',
-    icon: 'gitlab',
-    description: 'Plataforma DevOps con CI/CD integrado.',
-    url: 'https://gitlab.com/',
-  },
-  {
-    id: 'docker',
-    name: 'Docker',
-    icon: 'docker',
-    description: 'Plataforma de contenedores para entornos consistentes.',
-    url: 'https://www.docker.com/',
-  },
-  {
-    id: 'vc',
-    name: 'VS Code',
-    icon: 'vc',
-    description: 'Editor ligero con debugging y control de versiones integrado.',
-    url: 'https://code.visualstudio.com/',
-  },
-  {
-    id: 'dbeaver',
-    name: 'DBeaver',
-    icon: 'dbeaver',
-    description: 'Cliente universal gratuito para múltiples bases de datos.',
-    url: 'https://dbeaver.io/',
-  },
-  {
-    id: 'openvpn',
-    name: 'OpenVPN',
-    icon: 'openvpn',
-    description: 'Solución VPN de código abierto para conexiones seguras.',
-    url: 'https://openvpn.net/',
-  },
-  {
-    id: 'canva',
-    name: 'Canva',
-    icon: 'canva',
-    description: 'Plataforma de diseño gráfico para crear materiales visuales.',
-    url: 'https://www.canva.com/',
-  },
-]
+// Mapeo de tipos de servicio a íconos
+const getServiceIcon = (tipoServicio) => {
+  const iconMap = {
+    'Pagina Web': 'globe-alt',
+    'Sistema Web': 'cog',
+    'Sitio E-Commerce': 'shopping-cart',
+    'Mantenimiento de equipos': 'support'
+  }
+  return iconMap[tipoServicio] || 'globe-alt'
+}
 
-// Funciones (igual que antes)
+// Obtener tiempo de entrega del primer costo
+const getTiempoEntrega = (service) => {
+  if (service.costos && service.costos.length > 0) {
+    const costoPrincipal = service.costos.find(c => c.id_servicio === service.id_servicio)
+    if (costoPrincipal) {
+      return costoPrincipal.tiempo_entrega
+    }
+  }
+  return service.tiempo_inicial || 'Consultar'
+}
+
+// Cargar servicios desde el backend
+const loadServices = async () => {
+  await listarServiciospym('VIGENTE')
+  if (dataServpym.value?.list) {
+    services.value = dataServpym.value.list
+  }
+}
+
+// Cargar tecnologías desde el backend
+const loadTecnologias = async () => {
+  await listarTecnologias('ACTIVO')
+}
+
+// Efecto de escritura
 const startTypingEffect = () => {
   firstLineInterval = setInterval(() => {
     if (firstLineIndex < firstLineText.length) {
@@ -655,17 +490,6 @@ const startTypingEffect = () => {
       clearInterval(firstLineInterval)
     }
   }, 50)
-
-  setTimeout(() => {
-    secondLineInterval = setInterval(() => {
-      if (secondLineIndex < secondLineText.length) {
-        displayedSecondLine.value += secondLineText.charAt(secondLineIndex)
-        secondLineIndex++
-      } else {
-        clearInterval(secondLineInterval)
-      }
-    }, 50)
-  }, 1500)
 }
 
 const handleScroll = () => {
@@ -700,11 +524,22 @@ const goToTecnologias = () => {
 }
 
 const showTechModal = (tech) => {
-  selectedTechDetails.value = tech
+  // Transformar la tecnología al formato esperado por el modal
+  selectedTechDetails.value = {
+    id: tech.id_tecnologia,
+    name: tech.nombre_tecnologia,
+    icon: tech.svg,
+    description: tech.descripcion_tecnologia,
+    url: tech.url_tecnologia
+  }
   techModalVisible.value = true
 }
 
-onMounted(() => {
+onMounted(async () => {
+  // Cargar datos desde los servicios
+  await Promise.all([loadServices(), loadTecnologias()])
+  isLoading.value = false
+  
   startTypingEffect()
   window.addEventListener('scroll', handleScroll)
   setTimeout(() => {
@@ -714,7 +549,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (firstLineInterval) clearInterval(firstLineInterval)
-  if (secondLineInterval) clearInterval(secondLineInterval)
   window.removeEventListener('scroll', handleScroll)
 })
 </script>
@@ -770,8 +604,7 @@ onUnmounted(() => {
   animation: glow 2s ease-in-out infinite;
 }
 
-.typing-cursor,
-.typing-cursor-second {
+.typing-cursor {
   display: inline-block;
   width: 3px;
   height: 1.2em;
@@ -779,10 +612,6 @@ onUnmounted(() => {
   margin-left: 2px;
   animation: blink 1s infinite;
   vertical-align: middle;
-}
-
-.typing-cursor-second {
-  height: 1em;
 }
 
 .neon-text-cyan {

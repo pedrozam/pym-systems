@@ -19,6 +19,15 @@ class ServiciospymService {
     }
   }
 
+  async listarTecnologias(estado) {
+    try {
+      const { data } = await api.get(`/api/servicios/listarTecnologias/${estado}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
 }
 

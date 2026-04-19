@@ -1,51 +1,63 @@
-import { ref } from 'vue'
-import { api } from 'src/boot/axios'
+import { ref } from "vue";
+import GA4Service from "src/services/GA4Service";
 
-export function useGA4() {
-  const loading = ref(false)
+export default function () {
+  const service = new GA4Service();
+
+  const loading = ref(false);
   const metrics = ref({
     totalUsers: 0,
     activeUsers: 0,
     newUsers: 0,
-    pageViews: 0
-  })
-  const dailyVisits = ref([])
+    pageViews: 0,
+  });
+  const dailyVisits = ref([]);
 
   const fetchMetrics = async () => {
-    loading.value = true
+    loading.value = true;
     try {
-      const response = await api.get('/api/ga4/metrics')
-      if (response.data.success) {
-        metrics.value = response.data.data
-        return response.data.data
+      const resp = await service.getMetrics();
+      if (resp && resp.success) {
+        metrics.value = resp.data;
+        return resp.data;
       }
+      return null;
     } catch (error) {
-      console.error('Error fetching GA4 metrics:', error)
-      throw error
+      console.error("Error fetching GA4 metrics:", error);
+      throw error;
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
   const fetchDailyVisits = async () => {
+    loading.value = true;
     try {
-      const response = await api.get('/api/ga4/daily-visits')
-      if (response.data.success) {
-        dailyVisits.value = response.data.data
-        return response.data.data
+      const resp = await service.getDailyVisits();
+      if (resp && resp.success) {
+        dailyVisits.value = resp.data;
+        return resp.data;
       }
+      return null;
     } catch (error) {
-      console.error('Error fetching daily visits:', error)
-      throw error
+      console.error("Error fetching daily visits:", error);
+      throw error;
+    } finally {
+      loading.value = false;
     }
-  }
+  };
 
   const fetchAllData = async () => {
-    await Promise.all([
-      fetchMetrics(),
-      fetchDailyVisits()
-    ])
-  }
+    loading.value = true;
+    try {
+      await Promise.all([fetchMetrics(), fetchDailyVisits()]);
+    } catch (error) {
+      console.error("Error fetching all GA4 data:", error);
+      throw error;
+    } finally {
+      loading.value = false;
+    }
+  };
 
   return {
     loading,
@@ -53,6 +65,6 @@ export function useGA4() {
     dailyVisits,
     fetchMetrics,
     fetchDailyVisits,
-    fetchAllData
-  }
+    fetchAllData,
+  };
 }
