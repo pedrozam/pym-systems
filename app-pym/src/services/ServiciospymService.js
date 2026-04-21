@@ -28,7 +28,19 @@ class ServiciospymService {
     }
   }
 
+  async gestionContactoWaap(dat) {
+    try {
+      const { data } = await api.post("/api/servicios/gestionContactoWaap", dat);
+      return data;
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
 
 }
 
 export default ServiciospymService;
+
+

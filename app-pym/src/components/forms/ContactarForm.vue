@@ -27,14 +27,14 @@
       <InputText
         etiqueta="Tu nombre *"
         tipo="text"
-        v-model:valor="form.nombre"
+        v-model:valor="form.nombre_contacto"
         :validacion="[(val) => !!val || 'El nombre es requerido']"
       />
 
       <InputText
         etiqueta="Empresa o Institución"
         tipo="text"
-        v-model:valor="form.empresa"
+        v-model:valor="form.institucion_empresa"
       />
 
       <InputText
@@ -48,7 +48,7 @@
       <InputText
         etiqueta="Correo electrónico"
         tipo="email"
-        v-model:valor="form.email"
+        v-model:valor="form.correo"
         :validacion="[
           (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Ingrese un correo válido',
         ]"
@@ -89,6 +89,7 @@
 import { ref, reactive } from 'vue'
 import { useQuasar } from 'quasar'
 import InputText from '../inputs/InputText.vue'
+import useServiciospym from 'src/composables/useServiciospym'
 
 const $q = useQuasar()
 const cargando = ref(false)
@@ -98,7 +99,7 @@ const { spriteUrl } = defineProps({
     required: true,
   },
 })
-
+const {gestionContactoWaap,dataServpym}=useServiciospym();
 const emit = defineEmits(['close'])
 
 const form = reactive({
@@ -109,9 +110,9 @@ const form = reactive({
   mensaje: '',
 })
 
-const enviarWhatsApp = () => {
+const enviarWhatsApp = async() => {
   // Validar campos requeridos
-  if (!form.nombre || !form.celular || !form.mensaje) {
+  if (!form.nombre_contacto || !form.celular || !form.mensaje) {
     $q.notify({
       type: 'negative',
       message: 'Por favor complete los campos obligatorios (*)',
@@ -122,7 +123,7 @@ const enviarWhatsApp = () => {
   }
 
   // Validar email si fue proporcionado
-  if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+  if (form.correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.correo)) {
     $q.notify({
       type: 'negative',
       message: 'Por favor ingrese un correo electrónico válido',
@@ -134,39 +135,50 @@ const enviarWhatsApp = () => {
 
   cargando.value = true
 
-  // Construir mensaje para WhatsApp
-  let mensajeWhatsApp = `*Nuevo contacto desde PyM Systems*%0A%0A`
-  mensajeWhatsApp += `*Nombre:* ${form.nombre}%0A`
-  if (form.empresa) mensajeWhatsApp += `*Empresa/Institución:* ${form.empresa}%0A`
-  mensajeWhatsApp += `*Celular:* ${form.celular}%0A`
-  if (form.email) mensajeWhatsApp += `*Correo:* ${form.email}%0A`
-  mensajeWhatsApp += `*Mensaje:*%0A${form.mensaje}`
+  //guardamos el mensaje en la BD
+  form.estado='INICIAL';
+  form.transaccion='ENVIAR';
+  form.id_usuario_sesion=2;
+  const resContact=await gestionContactoWaap(form);
+  console.log(resContact);
+  console.log(dataServpym.resultGestion);
 
-  // Número de teléfono (sin el +)
-  const numeroTelefono = '59160140028'
+  if(resContact>0){
+      // Consstruir mensaje para WhatsApp
+    let mensajeWhatsApp = `*Nuevo contacto desde PyM Systems*%0A%0A`
+    mensajeWhatsApp += `*Nombre:* ${form.nombre_contacto}%0A`
+    if (form.empresa) mensajeWhatsApp += `*Empresa/Institución:* ${form.institucion_empresa}%0A`
+    mensajeWhatsApp += `*Celular:* ${form.celular}%0A`
+    if (form.email) mensajeWhatsApp += `*Correo:* ${form.correo}%0A`
+    mensajeWhatsApp += `*Mensaje:*%0A${form.mensaje}`
 
-  // Abrir WhatsApp
-  const url = `https://wa.me/${numeroTelefono}?text=${mensajeWhatsApp}`
+    // Número de teléfono (sin el +)
+    const numeroTelefono = '59160140028'
 
-  // Abrir en nueva pestaña
-  window.open(url, '_blank')
+    // Abrir WhatsApp
+    const url = `https://wa.me/${numeroTelefono}?text=${mensajeWhatsApp}`
 
-  // Mostrar notificación de éxito
-  $q.notify({
-    type: 'positive',
-    message: '¡Mensaje preparado! Se abrirá WhatsApp para enviarlo.',
-    position: 'top',
-    timeout: 6000,
-  })
+    // Abrir en nueva pestaña
+    window.open(url, '_blank')
 
-  // Limpiar formulario y cerrar
-  setTimeout(() => {
-    Object.keys(form).forEach((key) => {
-      form[key] = ''
+    // Mostrar notificación de éxito
+    $q.notify({
+      type: 'positive',
+      message: '¡Mensaje preparado! Se abrirá WhatsApp para enviarlo.',
+      position: 'top',
+      timeout: 6000,
     })
-    cargando.value = false
-    emit('close')
-  }, 9000)
+
+    // Limpiar formulario y cerrar
+    setTimeout(() => {
+      Object.keys(form).forEach((key) => {
+        form[key] = ''
+      })
+      cargando.value = false
+      emit('close')
+    }, 9000)
+  }
+  
 }
 </script>
 

@@ -33,7 +33,7 @@
         <div class="text-center text-white mb-6">
           <h2 class="text-3xl font-bold">Solicítala ahora</h2>
           <p class="text-base text-cyan-200">
-            ¡Solicita y obtén tu Landing Page ahora e ingresa al mundo digital!
+            ¡Solicita y obtén tu {{service.nom_tipo_servicio}} ahora e ingresa al mundo digital!
           </p>
         </div>
 
