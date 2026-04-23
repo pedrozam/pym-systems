@@ -9,7 +9,7 @@
 
     <!-- Carousel de Servicios -->
     <div v-if="services.length > 0" class="max-w-7xl mx-auto">
-      <div 
+      <div
         class="carousel-modern relative"
         @mouseenter="pauseAutoplay"
         @mouseleave="resumeAutoplay"
@@ -18,23 +18,23 @@
           <!-- Cards visibles -->
           <div class="carousel-visible">
             <!-- Card Anterior -->
-            <div 
+            <div
               class="carousel-card card-side"
               :class="{ 'card-side-left': true, 'card-hidden': isMobile }"
               @click="goToSlide(prevIndex)"
             >
               <div class="card-inner">
                 <div class="card-glow"></div>
-                
+
                 <div class="card-image-container">
-                  <img 
-                    :src="services[prevIndex]?.image" 
+                  <img
+                    :src="services[prevIndex]?.image"
                     :alt="services[prevIndex]?.nombre_servicio"
                     class="card-image"
                   />
                   <div class="image-overlay"></div>
                 </div>
-                
+
                 <div class="card-content">
                   <h3 class="card-title">{{ services[prevIndex]?.nombre_servicio }}</h3>
                   <p class="card-description">{{ truncateText(services[prevIndex]?.descripcion, 60) }}</p>
@@ -52,26 +52,26 @@
             </div>
 
             <!-- Card Actual (Destacada) -->
-            <div 
+            <div
               class="carousel-card card-center"
               :class="{ 'card-center-mobile': isMobile }"
             >
               <div class="card-inner-center">
                 <div class="card-glow-center"></div>
-                
+
                 <div class="card-image-container-center">
-                  <img 
-                    :src="services[currentIndex]?.image" 
+                  <img
+                    :src="services[currentIndex]?.image"
                     :alt="services[currentIndex]?.nombre_servicio"
                     class="card-image-center-img"
                   />
                   <div class="image-overlay-center"></div>
                 </div>
-                
+
                 <div class="card-content-center">
                   <h3 class="card-title-center">{{ services[currentIndex]?.nombre_servicio }}</h3>
                   <p class="card-description-center">{{ truncateText(services[currentIndex]?.descripcion, 100) }}</p>
-                  
+
                   <div class="card-info-center">
                     <div class="info-item-center">
                       <span class="info-label-center">Desde</span>
@@ -83,7 +83,7 @@
                       <span class="info-value-center">{{ services[currentIndex]?.tiempo_inicial }}</span>
                     </div>
                   </div>
-                  
+
                   <div class="card-features">
                     <div
                       v-for="(feature, idxF) in services[currentIndex]?.features?.slice(0, 3)"
@@ -100,7 +100,7 @@
                       <span>{{ feature }}</span>
                     </div>
                   </div>
-                  
+
                   <button @click.stop="openDialog(services[currentIndex])" class="card-button-center">
                     Ver más detalles
                   </button>
@@ -109,23 +109,23 @@
             </div>
 
             <!-- Card Siguiente -->
-            <div 
+            <div
               class="carousel-card card-side"
               :class="{ 'card-side-right': true, 'card-hidden': isMobile }"
               @click="goToSlide(nextIndex)"
             >
               <div class="card-inner">
                 <div class="card-glow"></div>
-                
+
                 <div class="card-image-container">
-                  <img 
-                    :src="services[nextIndex]?.image" 
+                  <img
+                    :src="services[nextIndex]?.image"
                     :alt="services[nextIndex]?.nombre_servicio"
                     class="card-image"
                   />
                   <div class="image-overlay"></div>
                 </div>
-                
+
                 <div class="card-content">
                   <h3 class="card-title">{{ services[nextIndex]?.nombre_servicio }}</h3>
                   <p class="card-description">{{ truncateText(services[nextIndex]?.descripcion, 60) }}</p>
@@ -182,7 +182,7 @@
           <use :xlink:href="`${spriteUrl}#impuestos`" />
         </svg>
         <div v-show="showTooltip" class="tax-tooltip">
-          Emitimos factura para todos nuestros servicios.
+          Emitimos factura.
         </div>
       </div>
     </div>
@@ -236,11 +236,11 @@ const selectedService = ref({})
 // Navegación con animación
 const nextSlide = () => {
   if (services.value.length === 0 || isTransitioning.value) return
-  
+
   isTransitioning.value = true
   currentIndex.value = nextIndex.value
   resetAutoplayTimer()
-  
+
   setTimeout(() => {
     isTransitioning.value = false
   }, 500)
@@ -248,11 +248,11 @@ const nextSlide = () => {
 
 const prevSlide = () => {
   if (services.value.length === 0 || isTransitioning.value) return
-  
+
   isTransitioning.value = true
   currentIndex.value = prevIndex.value
   resetAutoplayTimer()
-  
+
   setTimeout(() => {
     isTransitioning.value = false
   }, 500)
@@ -260,11 +260,11 @@ const prevSlide = () => {
 
 const goToSlide = (index) => {
   if (services.value.length === 0 || isTransitioning.value || index === currentIndex.value) return
-  
+
   isTransitioning.value = true
   currentIndex.value = index
   resetAutoplayTimer()
-  
+
   setTimeout(() => {
     isTransitioning.value = false
   }, 500)
@@ -355,11 +355,11 @@ onUnmounted(() => {
 
 <style scoped>
 @keyframes pulse-glow {
-  0%, 100% { 
+  0%, 100% {
     box-shadow: 0 0 20px rgba(22, 179, 196, 0.3);
     border-color: rgba(22, 179, 196, 0.3);
   }
-  50% { 
+  50% {
     box-shadow: 0 0 40px rgba(22, 179, 196, 0.6), 0 0 60px rgba(22, 179, 196, 0.3);
     border-color: rgba(22, 179, 196, 0.8);
   }
@@ -839,7 +839,7 @@ onUnmounted(() => {
 .tax-button-container {
   position: fixed;
   bottom: 2.25rem;
-  right: 3.25rem;
+  right: 1.25rem;
   z-index: 1000;
 }
 
@@ -930,15 +930,15 @@ onUnmounted(() => {
   .carousel-card.card-side {
     flex: 0 0 240px;
   }
-  
+
   .carousel-card.card-center {
     flex: 0 0 340px;
   }
-  
+
   .nav-prev {
     left: -12px;
   }
-  
+
   .nav-next {
     right: -12px;
   }
@@ -948,45 +948,45 @@ onUnmounted(() => {
   .carousel-card.card-side {
     display: none;
   }
-  
+
   .carousel-card.card-center {
     flex: 0 0 90%;
     margin: 0 auto;
   }
-  
+
   .carousel-visible {
     gap: 0;
   }
-  
+
   .nav-button {
     width: 40px;
     height: 40px;
   }
-  
+
   .nav-prev {
     left: -8px;
   }
-  
+
   .nav-next {
     right: -8px;
   }
-  
+
   .card-image-container-center {
     height: 180px;
   }
-  
+
   .card-content-center {
     padding: 16px;
   }
-  
+
   .card-title-center {
     font-size: 1.25rem;
   }
-  
+
   .card-description-center {
     font-size: 0.8rem;
   }
-  
+
   .info-value-center {
     font-size: 1rem;
   }

@@ -46,7 +46,7 @@
             :class="{
               'selected-card': selectedCostoId === costo.id_costo,
             }"
-            @click="selectCosto(costo.id_costo)"
+            @click="selectCosto(costo.id_costo, costo.ver_adicionales)"
           >
             <!-- Color Header -->
             <div
@@ -141,6 +141,7 @@
         </div>
 
         <!-- Sección de dos columnas: Servicios Extras (izquierda) y Resumen (derecha) -->
+        
         <div
           ref="extraSection"
           v-if="selectedCostoId"
@@ -149,6 +150,7 @@
           <!-- Columna Izquierda: Servicios Extras -->
           <div
             class="bg-[rgba(22,179,196,0.05)] border border-[rgba(22,179,196,0.2)] rounded-xl p-4 group transition"
+            v-if="mostrarExtras"
           >
             <h3 class="text-xl font-bold text-[#4fd1e8] text-left mb-4 tracking-wide">
               Servicios extras:
@@ -207,6 +209,10 @@
               No hay servicios extras disponibles
             </div>
           </div>
+          <div
+            class="bg-[rgba(22,179,196,0.05)] border border-[rgba(22,179,196,0.2)] rounded-xl p-4 group transition"
+            v-else
+          ></div> 
 
           <!-- Columna Derecha: Resumen de contratación -->
           <div
@@ -320,6 +326,7 @@ const selectedExtrasIds = ref([])
 const formModalOpened = ref(false)
 const scrollContainer = ref(null)
 const extraSection = ref(null)
+const mostrarExtras=ref(false)
 
 // Costos principales: donde id_servicio es diferente de 0
 const mainCostos = computed(() => {
@@ -407,17 +414,21 @@ const close = () => {
   opened.value = false
 }
 
-const selectCosto = (costoId) => {
+const selectCosto = (costoId, verExtras) => {
   // Si se hace clic en la misma tarjeta que ya está seleccionada
+
   if (selectedCostoId.value === costoId) {
     // Deseleccionar
     selectedCostoId.value = null
     selectedExtrasIds.value = []
     // Scroll hacia arriba
     scrollToTop()
+    mostrarExtras.value=false;
   } else {
+    mostrarExtras.value=verExtras;
     // Seleccionar nueva tarjeta
     selectedCostoId.value = costoId
+
     // Resetear extras al cambiar el plan principal
     selectedExtrasIds.value = []
     // Scroll hacia abajo después de seleccionar

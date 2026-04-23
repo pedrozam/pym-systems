@@ -107,19 +107,19 @@
       <!-- Footer links -->
       <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 my-6">
         <a
-          href="/preguntas"
+          href="#/preguntas"
           class="text-gray-400 hover:text-cyan-400 transition-all duration-300 text-sm hover:scale-105"
         >
           Preguntas frecuentes
         </a>
         <a
-          href="/terminos"
+          href="#/terminos"
           class="text-gray-400 hover:text-cyan-400 transition-all duration-300 text-sm hover:scale-105"
         >
           Términos y condiciones
         </a>
         <a
-          href="/privacidad"
+          href="#/privacidad"
           class="text-gray-400 hover:text-cyan-400 transition-all duration-300 text-sm hover:scale-105"
         >
           Privacidad

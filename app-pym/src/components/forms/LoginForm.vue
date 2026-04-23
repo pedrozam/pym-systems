@@ -17,7 +17,7 @@
             class="w-12 h-12"
           />
         </div>
-        
+
         <h3 class="text-2xl font-bold text-white mb-2">Iniciar Sesión</h3>
         <p class="text-white/70 text-sm mb-6">Accede a tu cuenta de PyM Systems</p>
       </div>
@@ -34,7 +34,7 @@
           tipo="pass"
           v-model:valor="password"
         />
-        
+
         <div class="text-center">
           <button
             @click="recoverPassword"
@@ -47,7 +47,7 @@
 
       <!-- Mensaje informativo -->
       <div class="text-center text-white/60 text-xs mt-6 p-3 bg-white/5 rounded-lg">
-        Estás a punto de iniciar sesión en PyM Systems, 
+        Estás a punto de iniciar sesión en PyM Systems,
         si no tienes acceso contacta a soporte técnico.
       </div>
 
@@ -97,10 +97,10 @@ const handleDialogUpdate = (value) => {
 const login = () => {
   // Aquí puedes agregar la lógica real de autenticación
   console.log('Usuario:', username.value, 'Contraseña:', password.value)
-  
+
   // Emitir evento de éxito si la autenticación es correcta
   // emit('login-success', { username: username.value, password: password.value })
-  
+
   // Cerrar el diálogo después del login (opcional)
   dialogVisible.value = false
 }

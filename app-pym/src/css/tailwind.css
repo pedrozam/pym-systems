@@ -146,7 +146,7 @@
   transform: translate(-50%, -50%);
   width: 200px;
   height: 200px;
-  z-index: 9999;
+  z-index: 999;
   animation: pulse 2s infinite;
 }
 

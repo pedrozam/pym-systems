@@ -24,7 +24,10 @@
     </q-card-section>
 
     <q-card-section>
+
+
       <InputText
+        design="modern"
         etiqueta="Tu nombre *"
         tipo="text"
         v-model:valor="form.nombre_contacto"
@@ -32,13 +35,15 @@
       />
 
       <InputText
+        design="modern"
         etiqueta="Empresa o Institución"
         tipo="text"
         v-model:valor="form.institucion_empresa"
       />
 
       <InputText
-        etiqueta="Celular de contacto *"
+        design="modern"
+        etiqueta="Celular de contacto BO*"
         tipo="tel"
         v-model:valor="form.celular"
         mascara="########"
@@ -46,6 +51,7 @@
       />
 
       <InputText
+        design="modern"
         etiqueta="Correo electrónico"
         tipo="email"
         v-model:valor="form.correo"
@@ -55,6 +61,7 @@
       />
 
       <InputText
+
         etiqueta="Mensaje a enviar *"
         tipo="textarea"
         v-model:valor="form.mensaje"
@@ -178,7 +185,7 @@ const enviarWhatsApp = async() => {
       emit('close')
     }, 9000)
   }
-  
+
 }
 </script>
 

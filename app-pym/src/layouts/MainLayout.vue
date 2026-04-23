@@ -110,12 +110,12 @@
               <q-btn
                 round
                 color="primary"
-                class="fixed bottom-5 left-5 z-[9999] transition-transform hover:scale-105"
+                class="fixed bottom-30 right-6  z-50 transition-transform hover:scale-115"
                 @click="showContactar = true"
               >
                 <svg
-                  width="32"
-                  height="32"
+                  width="52"
+                  height="52"
                   class="p-1"
                 >
                   <use :xlink:href="`${spriteUrl}#waap`" />
@@ -152,6 +152,7 @@
   <q-dialog
     v-model="showContactar"
     persistent
+    class="backdrop-blur-sm"
   >
     <ContactarForm
       @close="showContactar = false"
